@@ -1,1 +1,7 @@
-{}
+{
+  "story": {
+    "name": "Room Explorer",
+    "author": "benwig",
+    "first_scene": "escape.json"
+  }
+}
