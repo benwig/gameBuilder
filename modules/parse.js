@@ -3,16 +3,34 @@
 console.log("start loading Parse");
 
 const Parse = (function () {
+  let sceneData = {};
+  let frameData = {};
   
-  let data = "";
+  const processFrame = () => {
+    let i = 0;
+    
+    try {
+      console.log(frameData.text);
+
+      for (i; i < frameData.options.length; i += 1) {
+        console.log(frameData.options[i].text);
+      }
+      
+      // pass options || "none" to Ui.addOptions()
+      
+    }
+    catch(TypeError) {
+      console.error('frameData is currently empty.');
+    }
+    
+  };
   
   return {
     
     proceed(frameID) {
       
       //search data for frame with id === frame
-      const frames = data.scene.frames;
-      let frameData = "";
+      const frames = sceneData.frames;
       let i = 0;
       
       try {
@@ -20,15 +38,17 @@ const Parse = (function () {
         
           if (frames[i].id === frameID) {
             frameData = frames[i];
-            console.log(frameData);
-            return;
+            break;
           } 
           
         }
-      } catch(TypeError) {
+      }
+      catch(TypeError) {
         console.error(`Frame with id ${frameID} could not be found.`);
+        return; 
       }
       
+      processFrame();
     
     },
     
@@ -42,8 +62,8 @@ const Parse = (function () {
         
         if (request.status == 200) {
           
-          data = JSON.parse(request.responseText);
-          const firstFrame = data.scene.first_frame;
+          sceneData = JSON.parse(request.responseText).scene;
+          const firstFrame = sceneData.first_frame;
           Parse.proceed(firstFrame);
           
         } else {
