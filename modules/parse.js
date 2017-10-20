@@ -20,7 +20,7 @@ const Parse = (function () {
       
     }
     catch(TypeError) {
-      console.error('frameData is currently empty.');
+      console.error('It looks like frameData is currently empty.');
     }
     
   };
