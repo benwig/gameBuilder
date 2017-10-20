@@ -1,20 +1,26 @@
 "use strict";
 
-console.log("init loaded");
+console.log("start loading init");
+  
 
-const storyName = "roomExplorer";
+{
 
-// maybe a script which loads all the necessary jsons?
-//const json = require([`stories/${storyName}/metadata`]);
+  const storyName = "roomExplorer";
+  const currentOrigin = window.location.origin;
 
-const request = new XMLHttpRequest();
-request.open("GET", "http://192.168.0.6:8081/stories/roomExplorer/metadata.json", true);
+  const request = new XMLHttpRequest();
+  request.open("GET", `${currentOrigin}/stories/${storyName}/metadata.json`, true);
 
-request.onload = function() {
-  const metadata = JSON.parse(request.responseText);
-  const scene = metadata.story.first_scene;
-  console.log(scene);
-};
+  request.onload = function() {
+    if (request.status == 200) {
+      const metadata = JSON.parse(request.responseText);
+      const firstScene = metadata.story.first_scene;
+      Parse.init(`${currentOrigin}/stories/${storyName}/scenes/${firstScene}`);
+    } else {
+      console.error(`Retrieved response, but status was not 200. Status text: ${request.statusText}`);
+    }
+  };
 
-request.send();
+  request.send();
 
+}
