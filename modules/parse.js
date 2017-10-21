@@ -13,7 +13,7 @@ const Parse = (function () {
     let i = 0;
     
     try {
-      console.log(frameData.text);
+      Ui.setPrompt(frameData.text);
       Ui.clearOptions();
 
       for (i; i < frameData.options.length; i += 1) {

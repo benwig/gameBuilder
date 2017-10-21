@@ -14,9 +14,9 @@ const Ui = (function () {
     addOption: function(text, next) {
       let opt = document.createElement('li');
       let button = document.createElement('button');
-      button.dataset.next = `${next}`;
+      button.dataset.next = next;
       button.addEventListener("click", Parse.proceed.bind(null, next));
-      button.textContent = `${text}`;
+      button.textContent = text;
       opt.appendChild(button);
       optlist.appendChild(opt);
     },
@@ -25,6 +25,10 @@ const Ui = (function () {
       while (optlist.lastChild) {
         optlist.removeChild(optlist.lastChild);
       }
+    },
+    
+    setPrompt: function(text) {
+      prompt.textContent = text;
     }
     
   };
