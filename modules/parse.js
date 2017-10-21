@@ -14,9 +14,10 @@ const Parse = (function () {
     
     try {
       console.log(frameData.text);
+      Ui.clearOptions();
 
       for (i; i < frameData.options.length; i += 1) {
-        console.log(frameData.options[i].text);
+        Ui.addOption(frameData.options[i].text, frameData.options[i].next);
       }
       
       // pass options || "none" to Ui.addOptions()
