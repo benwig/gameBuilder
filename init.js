@@ -1,4 +1,4 @@
-"use strict";
+/*jshint esversion:6, devel: true, browser: true*/
 
 console.log("start loading init");
   
@@ -19,6 +19,10 @@ console.log("start loading init");
     } else {
       console.error(`Retrieved response, but status was not 200. Status text: ${request.statusText}`);
     }
+  };
+  
+  request.onerror = function() {
+    console.error("XMLHttpRequest failed, could not reach Story.");
   };
 
   request.send();

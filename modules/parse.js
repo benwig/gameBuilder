@@ -1,8 +1,11 @@
-"use strict";
+/*jshint esversion:6, devel: true, browser: true*/
 
 console.log("start loading Parse");
 
 const Parse = (function () {
+  
+  "use strict";
+  
   let sceneData = {};
   let frameData = {};
   
@@ -72,11 +75,15 @@ const Parse = (function () {
           
         }
       };
+      
+      request.onerror = function() {
+        console.error("XMLHttpRequest failed, could not reach Scene.");
+      };
 
       request.send();
       
     }
     
-  }
+  };
   
 })();
