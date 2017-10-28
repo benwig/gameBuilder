@@ -1,8 +1,5 @@
 /*jshint esversion:6, devel: true, browser: true*/
 
-console.log("start loading init");
-  
-
 {
 
   const storyName = "roomExplorer";

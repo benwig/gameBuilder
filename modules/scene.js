@@ -29,7 +29,7 @@ const Scene = (function () {
         return;
       }
       
-      View.setPrompt();
+      View.setFrameText();
       View.addOptions();
     
     },
