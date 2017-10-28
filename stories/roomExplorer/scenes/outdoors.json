@@ -1,0 +1,52 @@
+{"scene": {
+  "map": "basicOutdoors.jpg",
+  "first_frame": "001",
+  "frames": [
+    
+    {
+      "id": "o-1",
+      "text": "You find yourself deep inside a forest. When you look behind you, there's no sign of the doorway you just came through. The sun seems to be setting and it's dark beneath the trees.",
+      "options": [
+        {
+          "text": "Head straight ahead, through the trees.",
+          "next": "o-2",
+          "remove": false
+        },
+        {
+          "text": "Climb a tree.",
+          "next": "o-3",
+          "remove": false
+        },
+        {
+          "text": "Retrace your steps. Maybe you can find out more about the vanished building.",
+          "next": "o-4",
+          "remove": false
+        }
+      ]
+    },
+    
+    {
+      "id": "o-2",
+      "text": "You walk through the trees as it gets darker. You see endless forest but no paths.",
+      "options": []
+    },
+    
+    {
+      "id": "o-4",
+      "text": "You investigate the forest behind you, but you can only see pine trees and thick undergrowth. Suddenly, you hear a menacing roar in the twilight.",
+      "options": [
+        {
+          "text": "Run away!",
+          "next": "",
+          "remove": false
+        },
+        {
+          "text": "Stand and fight.",
+          "next": "",
+          "remove": false
+        }
+      ]
+    },
+    
+  ]
+}}

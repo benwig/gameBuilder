@@ -6,8 +6,8 @@ const Parse = (function () {
   
   "use strict";
   
-  let sceneData = {};
-  let frameData = {};
+  const sceneData = {};
+  const frameData = {};
   
   const processFrame = () => {
     let i = 0;
@@ -20,8 +20,6 @@ const Parse = (function () {
         Ui.addOption(frameData.options[i].text, frameData.options[i].next);
       }
       
-      // pass options || "none" to Ui.addOptions()
-      
     }
     catch(TypeError) {
       console.error('It looks like frameData is currently empty.');
@@ -33,10 +31,10 @@ const Parse = (function () {
     
     proceed(frameID) {
       
-      //search data for frame with id === frame
       const frames = sceneData.frames;
       let i = 0;
       
+      //search data for frame with id === frameId
       try {
         for (i; i <= frames.length; i += 1) {
         
@@ -59,21 +57,19 @@ const Parse = (function () {
     //identifies first frame in given scene, and calls Parse.proceed() on it
     init(scenePath) {
       
+      const self = this;
       const request = new XMLHttpRequest();
+      
       request.open("GET", scenePath, true);
 
       request.onload = function() {
         
         if (request.status == 200) {
-          
           sceneData = JSON.parse(request.responseText).scene;
           const firstFrame = sceneData.first_frame;
-          Parse.proceed(firstFrame);
-          
+          self.proceed(firstFrame);
         } else {
-          
           console.error(`Retrieved response, but status was not 200. Status text: ${request.statusText}`);
-          
         }
       };
       

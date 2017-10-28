@@ -1,4 +1,5 @@
 {"scene": {
+  "name": "escape",
   "map": "basicRoom.jpg",
   "first_frame": "001",
   "frames": [
