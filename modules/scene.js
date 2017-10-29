@@ -9,23 +9,37 @@ const Scene = (function () {
   return {
     
     frameData: {},
+    frameIndex: null,
+    
+    //executes the consequences of choosing a particular option, ends by moving on to the 'next' frame
+    processOption(optionId) {
+      
+      let next = this.frameData.options[optionId].next; //save a copy of the option's 'next', in case option is deleted
+      
+      // remove option from sceneData if remove = true
+      if (this.frameData.options[optionId].remove) {
+        sceneData.frames[this.frameIndex].options.splice(optionId, 1);
+      }
+      
+      this.proceedTo(next);
+    },
     
     //sets frameData to current frame
-    proceedTo(frameID) {
+    proceedTo(frameId) {
       
       const frames = sceneData.frames;
       let i = 0;
-      
-      //search data for frame with id === frameId
+
       try {
         for (i; i < frames.length; i += 1) {
-          if (frames[i].id === frameID) {
+          if (frames[i].id === frameId) {
             this.frameData = frames[i];
+            this.frameIndex = i;
             break;
           } 
         }
       } catch(TypeError) {
-        console.error(`Frame with id ${frameID} could not be found.`);
+        console.error(`Frame with id ${frameId} could not be found.`);
         return;
       }
       
@@ -34,7 +48,7 @@ const Scene = (function () {
     
     },
     
-    //identifies first frame in given scene, and calls Story.proceedTo() on it
+    //identifies first frame in given scene, and calls Scene.proceedTo() on it
     init(scenePath) {
       
       const self = this;

@@ -57,6 +57,12 @@
           "text": "Go South",
           "next": "004",
           "remove": false
+        },
+        {
+          "id": "3",
+          "text": "Pick up key",
+          "next": "003",
+          "remove": true
         }
       ]
     },

@@ -19,13 +19,14 @@ const View = (function () {
     },
     
     addOptions() {
+      
       clearOptions();
       
       try {
         for (let i = 0; i < Scene.frameData.options.length; i += 1) {
           let li = document.createElement('li');
           let button = document.createElement('button');
-          button.dataset.next = Scene.frameData.options[i].next;
+          button.dataset.optionId = i;
           button.textContent = Scene.frameData.options[i].text;
           li.appendChild(button);
           options.appendChild(li);
@@ -36,6 +37,5 @@ const View = (function () {
     }
     
   };
-  
-  
+
 })();
