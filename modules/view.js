@@ -5,22 +5,23 @@ const View = (function () {
   "use strict";
   
   const options = document.querySelector("#options");
+  const itemList = document.querySelector('#inventory');
   
-  const clearOptions = function () {
-    while (options.lastChild) {
-        options.removeChild(options.lastChild);
+  const clear = function (parent) {
+    while (parent.lastChild) {
+        parent.removeChild(parent.lastChild);
       }
   };
   
   return {
     
-    setFrameText() {
+    setFrameText () {
       document.querySelector("#frameText").textContent = Scene.frameData.text;
     },
     
-    addOptions() {
+    addOptions () {
       
-      clearOptions();
+      clear(options);
       
       try {
         for (let i = 0; i < Scene.frameData.options.length; i += 1) {
@@ -34,7 +35,21 @@ const View = (function () {
       } catch(TypeError) {
         console.error('It looks like frameData is currently empty.');
       }
+    },
+    
+    updateInventory () {
+      clear(itemList);
+      const items = Inventory.getAll();
+      let i;
+      for (i = 0; i < items.length; i +=1) {
+        let li = document.createElement('li');
+        li.textContent = items[i].name;
+        itemList.appendChild(li);
+      }
     }
+    
+    // removeItem - only removes item with selected index. includes effect for removal
+    // same for getItem
     
   };
 

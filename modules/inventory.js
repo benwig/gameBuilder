@@ -46,11 +46,13 @@ const Inventory = (function () {
     add: function (settings) {
       var x = new Item(settings);
       items.push(x);
+      View.updateInventory();
     },
     
     //delete specified object from items array
     remove: function (index) {
       items.splice(index, 1);
+      View.updateInventory();
     },
     
     //check whether inventory contains at least one instance of specified object
