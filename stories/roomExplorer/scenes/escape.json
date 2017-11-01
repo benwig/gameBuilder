@@ -61,6 +61,7 @@
         {
           "id": "3",
           "text": "Pick up key",
+          "getItem": {"name": "Key", "value": 1, "description": "A strange and mysterious key"},
           "next": "003",
           "remove": true
         }

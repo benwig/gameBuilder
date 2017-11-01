@@ -14,10 +14,16 @@ const Scene = (function () {
     //executes the consequences of choosing a particular option, ends by moving on to the 'next' frame
     processOption(optionId) {
       
-      let next = this.frameData.options[optionId].next; //save a copy of the option's 'next', in case option is deleted
+      const option = this.frameData.options[optionId]
+      const next = option.next; //save a copy of the option's 'next', in case option is deleted
       
-      // remove option from sceneData if remove = true
-      if (this.frameData.options[optionId].remove) {
+      //[optional] add item to inventory
+      if (option.getItem !== undefined) {
+        Inventory.add(option.getItem);
+      }
+      
+      //[optional] remove option from sceneData if remove = true
+      if (option.remove) {
         sceneData.frames[this.frameIndex].options.splice(optionId, 1);
       }
       

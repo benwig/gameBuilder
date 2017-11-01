@@ -4,12 +4,9 @@ const Inventory = (function () {
   
   "use strict";
   
-  //TODO: private inventory array
-  
   const items = [];
   
   //Basic item constructor
-  
   function Item(settings) {
     var settings = settings || {};
     this.name = settings.name || "Unnamed Object"; //name which appears on screen
@@ -72,7 +69,7 @@ const Inventory = (function () {
       return items;
     },
     
-    //returns the index position of the first item in the array which a name matching the argument
+    //returns the index position of the first item in the array which has a name matching the argument
     getIndexOf: function (name) {
       let i;
       for (i = 0; i < items.length; i += 1) {
