@@ -126,8 +126,7 @@
         {
           "id": "2",
           "text": "Go East",
-          "nextif": "006",
-          "nextifconditions": [["hasItem", "Key"]],
+          "nextif": ["006", ["hasItem", "Key"]],
           "next": "007",
           "remove": false
         }

@@ -30,21 +30,22 @@ const Scene = (function () {
       
       //[optional] if conditions are met, send player to a different 'next'
       if (option.nextif !== undefined) {
-        const conditions = option.nextifconditions;
+
+        const nextif = option.nextif;
         let outcome,
             i;
         
-        for (i = 0; i < conditions.length; i += 1) {
+        for (i = 1; i < nextif.length; i += 1) {
           //TODO: change this to switch/case statement
-          if (conditions[i][0] === "hasItem") {
-            if (Inventory.contains(conditions[i][1])) {
+          if (nextif[i][0] === "hasItem") {
+            if (Inventory.contains(nextif[i][1])) {
               outcome = true;
             }
           }
         }
         
         if (outcome) {
-          next = option.nextif;
+          next = option.nextif[0];
         }
         
       }
