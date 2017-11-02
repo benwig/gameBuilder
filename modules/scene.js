@@ -15,17 +15,38 @@ const Scene = (function () {
     processOption(optionId) {
       
       const option = this.frameData.options[optionId]
-      const next = option.next; //save a copy of the option's 'next', in case option is deleted
+      let next = option.next;
       
       //[optional] add item to inventory
       if (option.getItem !== undefined) {
         Inventory.add(option.getItem);
       }
 
-      //[optional] change the 'next' of the selected option so that next time, you go to a different frame
+      //[optional] change the future 'next' of the selected option
       if (option.next2 !== undefined) {
         sceneData.frames[this.frameIndex].options[optionId].next = option.next2;
         delete sceneData.frames[this.frameIndex].options[optionId].next2;
+      }
+      
+      //[optional] if conditions are met, send player to a different 'next'
+      if (option.nextif !== undefined) {
+        const conditions = option.nextifconditions;
+        let outcome,
+            i;
+        
+        for (i = 0; i < conditions.length; i += 1) {
+          //TODO: change this to switch/case statement
+          if (conditions[i][0] === "hasItem") {
+            if (Inventory.contains(conditions[i][1])) {
+              outcome = true;
+            }
+          }
+        }
+        
+        if (outcome) {
+          next = option.nextif;
+        }
+        
       }
       
       //[optional] remove option from sceneData if remove = true
