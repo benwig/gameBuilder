@@ -117,6 +117,19 @@
       "id": "006",
       "text": "Congratulations, you escaped the building!",
       "options": []
+    },
+    
+    {
+      "id": "007",
+      "text": "The door is locked! Maybe there's a key somewhere...",
+      "options": [
+        {
+          "id": "3",
+          "text": "OK",
+          "next": "005",
+          "remove": false
+        }
+      ]
     }
     
   ]

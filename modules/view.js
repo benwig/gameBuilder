@@ -46,10 +46,17 @@ const View = (function () {
         li.textContent = items[i].name;
         itemList.appendChild(li);
       }
-    }
+    },
     
     // removeItem - only removes item with selected index. includes effect for removal
     // same for getItem
+    
+    toggleItemInfo () {
+      //if info box is hidden
+        //show box with text in it
+        //also a dismiss button ("OK")
+      //else hide the info box
+    }
     
   };
 
