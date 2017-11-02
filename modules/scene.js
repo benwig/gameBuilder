@@ -21,6 +21,12 @@ const Scene = (function () {
       if (option.getItem !== undefined) {
         Inventory.add(option.getItem);
       }
+
+      //[optional] change the 'next' of the selected option so that next time, you go to a different frame
+      if (option.next2 !== undefined) {
+        sceneData.frames[this.frameIndex].options[optionId].next = option.next2;
+        delete sceneData.frames[this.frameIndex].options[optionId].next2;
+      }
       
       //[optional] remove option from sceneData if remove = true
       if (option.remove) {

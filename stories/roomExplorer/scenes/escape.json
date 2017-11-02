@@ -11,13 +11,33 @@
         {
           "id": "1",
           "text": "Go North",
-          "next": "002",
+          "next": "002-1",
+          "next2": "002",
           "remove": false
         },
         {
           "id": "2",
           "text": "Go East",
           "next": "004",
+          "remove": false
+        }
+      ]
+    },
+    
+    {
+      "id": "002-1",
+      "text": "A spider falls on your head. Surprise!!!",
+      "options": [
+        {
+          "id": "1",
+          "text": "AAAAAAAAAAAA!",
+          "next": "002",
+          "remove": false
+        },
+        {
+          "id": "2",
+          "text": "Meh, no big deal.",
+          "next": "002",
           "remove": false
         }
       ]
