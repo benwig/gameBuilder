@@ -30,10 +30,8 @@ const Scene = (function () {
       
       //[optional] if conditions are met, send player to a different 'next'
       if (option.nextif !== undefined) {
-
         const nextif = option.nextif;
         let outcome;
-        
         for (let i = 1, nl = nextif.length; i < nl; i += 1) {
           //TODO: change this to switch/case statement
           if (nextif[i][0] === "hasItem") {
@@ -79,6 +77,13 @@ const Scene = (function () {
       
       View.setFrameText();
       View.addOptions();
+      
+      //[optional] change the future text of the current frame
+      if (this.frameData.text2 !== undefined) {
+        debugger;
+        sceneData.frames[this.frameIndex].text = this.frameData.text2;
+        delete sceneData.frames[this.frameIndex].text2;
+      }
     
     },
     

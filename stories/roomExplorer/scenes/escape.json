@@ -9,17 +9,13 @@
       "text": "You are in a red room with two doors.",
       "options": [
         {
-          "id": "1",
           "text": "Go North",
           "next": "002-1",
-          "next2": "002",
-          "remove": false
+          "next2": "002"
         },
         {
-          "id": "2",
           "text": "Go East",
-          "next": "004",
-          "remove": false
+          "next": "004"
         }
       ]
     },
@@ -29,13 +25,11 @@
       "text": "A spider falls on your head. Surprise!!!",
       "options": [
         {
-          "id": "1",
           "text": "AAAAAAAAAAAA!",
           "next": "002",
           "remove": false
         },
         {
-          "id": "2",
           "text": "Meh, no big deal.",
           "next": "002",
           "remove": false
@@ -48,13 +42,11 @@
       "text": "You are in a blue room with two doors.",
       "options": [
         {
-          "id": "1",
           "text": "Go South",
           "next": "001",
           "remove": false
         },
         {
-          "id": "2",
           "text": "Go East",
           "next": "003",
           "remove": false
@@ -67,19 +59,16 @@
       "text": "You are in a yellow room with two doors.",
       "options": [
         {
-          "id": "1",
           "text": "Go West",
           "next": "002",
           "remove": false
         },
         {
-          "id": "2",
           "text": "Go South",
           "next": "004",
           "remove": false
         },
         {
-          "id": "3",
           "text": "Pick up key",
           "getItem": {"name": "Key", "value": 1, "description": "A strange and mysterious key"},
           "next": "003",
@@ -93,19 +82,16 @@
       "text": "You are in a green room with three doors.",
       "options": [
         {
-          "id": "1",
           "text": "Go North",
           "next": "003",
           "remove": false
         },
         {
-          "id": "2",
           "text": "Go West",
           "next": "001",
           "remove": false
         },
         {
-          "id": "3",
           "text": "Go East",
           "next": "005",
           "remove": false
@@ -118,13 +104,11 @@
       "text": "You are in a black room with two doors.",
       "options": [
         {
-          "id": "1",
           "text": "Go West",
           "next": "004",
           "remove": false
         },
         {
-          "id": "2",
           "text": "Go East",
           "nextif": ["006", ["hasItem", "Key"]],
           "next": "007",
@@ -145,7 +129,6 @@
       "text": "The door is locked! Maybe there's a key somewhere...",
       "options": [
         {
-          "id": "3",
           "text": "OK",
           "next": "005",
           "remove": false

@@ -2,7 +2,7 @@
 
 {
 
-  const storyName = "roomExplorer";
+  const storyName = "athensTest";
   const currentOrigin = window.location.origin;
 
   const request = new XMLHttpRequest();

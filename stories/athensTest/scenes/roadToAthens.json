@@ -1,0 +1,162 @@
+{"scene": {
+  "name": "roadToAthens",
+  "map": "road.jpg",
+  "first_frame": "road-start",
+  "frames": [
+    
+    {
+      "id": "road-start",
+      "text": "You are standing on the main road, at the bottom of the track which leads to your house. There are two ways to travel to Athens: go North, around Mount Himetus, or take the Southern road beneath the mountain.",
+      "options": [
+        {
+          "text": "Take the Northern path",
+          "next": "north-1"
+        },
+        {
+          "text": "Take the Southern path",
+          "next": "south-1"
+        },
+        {
+          "text": "Head back to your house",
+          "next": "road-start"
+        }
+      ]
+    },
+    
+    {
+      "id": "north-1",
+      "text": "You trudge along the dusty road for a while. Now you're passing the fields where you keep some of your beehives. Mount Himetus looms to the South.",
+      "text2": "You are on the road between your village and Athens. Mount Himetus looms to the South. Your beehives are in a field nearby.",
+      "options": [
+        {
+          "text": "Follow the road towards Athens",
+          "next": "north-2"
+        },
+        {
+          "text": "Take a detour to inspect your beehives",
+          "next": "honeyfield"
+        },
+        {
+          "text": "Follow the road back to your house",
+          "next": "road-start"
+        }
+      ]
+    },
+    
+    {
+      "id": "north-2",
+      "text": "The road winds out of the mountains from the East. Athens can be seen in the distance, to the West.",
+      "options": [
+        {
+          "text": "Head down into Athens",
+          "next": "road-end"
+        },
+        {
+          "text": "Head back East, towards your village",
+          "next": "north-1"
+        }
+      ]
+    },
+    
+    {
+      "id": "honeyfield",
+      "text": "Bees buzz softly in the long grass in the field where your beehives are kept. The hives are lined up in a row.",
+      "options": [
+        {
+          "text": "Head back to the road",
+          "next": "north-1"
+        },
+        {
+          "text": "Collect honey",
+          "next": "honeyfield-2",
+          "next2": "honeyfield-3"
+        }
+      ]
+    },
+    
+    {
+      "id": "honeyfield-2",
+      "text": "You open up each hive in turn. The bees haven't produced much honey lately, but there's enough to fill a clay pot.",
+      "options": [
+        {
+          "text": "Delicious honey! Wonderful.",
+          "next": "honeyfield",
+          "getItem": {"name": "Honey", "value": 1, "edible": true, "nutrition": 5, "description": "Sweet honey from the slopes of Mount Himetus"}
+        }
+      ]
+    },
+    
+    {
+      "id": "honeyfield-3",
+      "text": "You already took all the honey that was ready. The bees need time to make some more.",
+      "options": [
+        {
+          "text": "Oh well.",
+          "next": "honeyfield"
+        }
+      ]
+    },
+    
+    {
+      "id": "south-1",
+      "text": "The road between your village and Athens winds slowly beneath Mount Himetus' southern slopes.",
+      "options": [
+        {
+          "text": "Follow the road towards Athens",
+          "next": "south-2"
+        },
+        {
+          "text": "Head home towards your village",
+          "next": "road-start"
+        }
+      ]
+    },
+    
+    {
+      "id": "south-2",
+      "text": "As you walk along the road, you cross a broad valley with olive trees scattered across it. A tiny tavern stands in the middle of the valley, close to the road. A sign outside advertises wine and olive oil for sale.",
+      "options": [
+        {
+          "text": "Follow the road towards Athens",
+          "next": "south-3"
+        },
+        {
+          "text": "Head home towards your village",
+          "next": "road-start"
+        },
+        {
+          "text": "Enter the tavern",
+          "next": "tavern"
+        }
+      ]
+    },
+    
+    {
+      "id": "south-3",
+      "text": "The road slopes downhill as it approaches Athens. The city's outer edges are just about visible on the southwestern horizon. To the south, you see a little track, barely distinguishable among the rocks. It leads up a steep slope towards what looks like a cave.",
+      "options": [
+        {
+          "text": "Head down into Athens",
+          "next": "road-end"
+        },
+        {
+          "text": "Follow the road back towards your village",
+          "next": "south-2"
+        },
+        {
+          "text": "Climb the track to the cave",
+          "next": "cave-1"
+        }
+      ]
+    },
+    
+    {
+      "id": "road-end",
+      "text": "You have reached Athens!",
+      "options": []
+    }
+    
+    
+    
+  ]
+}}
