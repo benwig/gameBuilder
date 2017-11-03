@@ -47,3 +47,13 @@ Sit on a jury to make money (need jury token) - lose time but gain energy and mo
 
 ### DOG
 - When on road you encounter a dog, you have the option to throw stones / give pat / ignore. If you throw stones, it bites your leg and you lose speed/time. If you pat, it follows you into Athens. You meet a farmer who has lost his dog, if you have the dog, he gives you some food (loaf of bread).
+
+
+//TODO: linear north road branch - DONE
+//TODO: linear south road branch - DONE
+//TODO: add honey field branch
+//TODO: Add one-off dog branch
+//TODO: Add an inn as a separate Scene
+//TODO: Add time penalties for turning back
+//TODO: Add shrine branch
+//TODO: Add one-off event on way back from shrine branch
