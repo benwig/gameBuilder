@@ -1,6 +1,6 @@
 /*jshint esversion:6, devel: true, browser: true*/
 
-const View = (function (Inventory, Scene) {
+const View = (function () {
   
   "use strict";
   
@@ -24,7 +24,7 @@ const View = (function (Inventory, Scene) {
       clear(options);
       
       try {
-        for (let i = 0; i < Scene.frameData.options.length; i += 1) {
+        for (let i = 0, fol = Scene.frameData.options.length; i < fol; i += 1) {
           let li = document.createElement('li');
           let button = document.createElement('button');
           button.dataset.optionId = i;
@@ -40,8 +40,7 @@ const View = (function (Inventory, Scene) {
     updateInventory () {
       clear(itemList);
       const items = Inventory.getAll();
-      let i;
-      for (i = 0; i < items.length; i +=1) {
+      for (let i = 0, il = items.length; i < il; i +=1) {
         let li = document.createElement('li');
         li.textContent = items[i].name;
         itemList.appendChild(li);

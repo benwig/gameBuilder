@@ -8,7 +8,7 @@
   const request = new XMLHttpRequest();
   request.open("GET", `${currentOrigin}/stories/${storyName}/metadata.json`, true);
 
-  request.onload = function(Scene) {
+  request.onload = function() {
     if (request.status == 200) {
       const metadata = JSON.parse(request.responseText);
       const firstScene = metadata.story.first_scene;

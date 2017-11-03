@@ -1,6 +1,6 @@
 /*jshint esversion:6, devel: true, browser: true*/
 
-const Scene = (function (Inventory, View) {
+const Scene = (function () {
   
   "use strict";
   
@@ -32,11 +32,9 @@ const Scene = (function (Inventory, View) {
       if (option.nextif !== undefined) {
 
         const nextif = option.nextif;
-        let outcome,
-            i,
-            nl;
+        let outcome;
         
-        for (i = 1, nl = nextif.length; i < nl; i += 1) {
+        for (let i = 1, nl = nextif.length; i < nl; i += 1) {
           //TODO: change this to switch/case statement
           if (nextif[i][0] === "hasItem") {
             if (Inventory.contains(nextif[i][1])) {
@@ -65,11 +63,9 @@ const Scene = (function (Inventory, View) {
     proceedTo(frameId) {
       
       const frames = sceneData.frames;
-      let i,
-          fl;
 
       try {
-        for (i = 0, fl = frames.length; i < fl; i += 1) {
+        for (let i = 0, fl = frames.length; i < fl; i += 1) {
           if (frames[i].id === frameId) {
             this.frameData = frames[i];
             this.frameIndex = i;

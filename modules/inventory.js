@@ -1,6 +1,6 @@
 /*jshint esversion:6, devel: true, browser: true*/
 
-const Inventory = (function (View) {
+const Inventory = (function () {
   
   "use strict";
   
@@ -57,8 +57,9 @@ const Inventory = (function (View) {
     
     //check whether inventory contains at least one instance of specified object
     contains: function (name) {
-      let i;
-      for (i = 0; i < items.length; i += 1) {
+      let i,
+          il;
+      for (i = 0, il = items.length; i < il; i += 1) {
         if (items[i].name === name) {
           return true;
         }
@@ -73,8 +74,9 @@ const Inventory = (function (View) {
     
     //returns the index position of the first item in the array which has a name matching the argument
     getIndexOf: function (name) {
-      let i;
-      for (i = 0; i < items.length; i += 1) {
+      let i,
+          il;
+      for (i = 0, il = items.length; i < il; i += 1) {
         if (items[i].name === name) {
           return i;
         }
