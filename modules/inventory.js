@@ -1,6 +1,6 @@
 /*jshint esversion:6, devel: true, browser: true*/
 
-const Inventory = (function () {
+const Inventory = (function (View) {
   
   "use strict";
   
@@ -8,7 +8,7 @@ const Inventory = (function () {
   
   //Basic item constructor
   function Item(settings) {
-    var settings = settings || {};
+    settings = settings || {};
     this.name = settings.name || "Unnamed Object"; //name which appears on screen
     this.description = settings.description || "An undescribed object";
     this.icon = settings.icon || "unknownObject.png"; //image which appears in inventory
@@ -18,7 +18,7 @@ const Inventory = (function () {
     this.speed = settings.speed || 0;
     this.wearable = settings.wearable || false;
     this.using = false;
-  };
+  }
   
   Item.prototype.consume = function () {
     // if this.nutrition > 0
@@ -38,7 +38,7 @@ const Inventory = (function () {
     // if this.using === true
     // subtract this.energy and this.speed from player.energy and player.speed
     // set this.using to false
-  }
+  };
 
   return {
     

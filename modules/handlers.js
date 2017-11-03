@@ -1,6 +1,6 @@
 /*jshint esversion:6, devel: true, browser: true*/
 
-const Handlers = (function () {
+const Handlers = (function (Scene) {
   
   "use strict";
   

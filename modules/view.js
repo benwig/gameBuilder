@@ -1,6 +1,6 @@
 /*jshint esversion:6, devel: true, browser: true*/
 
-const View = (function () {
+const View = (function (Inventory, Scene) {
   
   "use strict";
   

@@ -1,6 +1,6 @@
 /*jshint esversion:6, devel: true, browser: true*/
 
-const Scene = (function () {
+const Scene = (function (Inventory, View) {
   
   "use strict";
   
@@ -14,7 +14,7 @@ const Scene = (function () {
     //executes the consequences of choosing a particular option, ends by moving on to the 'next' frame
     processOption(optionId) {
       
-      const option = this.frameData.options[optionId]
+      const option = this.frameData.options[optionId];
       let next = option.next;
       
       //[optional] add item to inventory
@@ -33,9 +33,10 @@ const Scene = (function () {
 
         const nextif = option.nextif;
         let outcome,
-            i;
+            i,
+            nl;
         
-        for (i = 1; i < nextif.length; i += 1) {
+        for (i = 1, nl = nextif.length; i < nl; i += 1) {
           //TODO: change this to switch/case statement
           if (nextif[i][0] === "hasItem") {
             if (Inventory.contains(nextif[i][1])) {
@@ -43,6 +44,8 @@ const Scene = (function () {
             }
           }
         }
+        
+        //TODO: check other conditions eg choices
         
         if (outcome) {
           next = option.nextif[0];
@@ -62,10 +65,11 @@ const Scene = (function () {
     proceedTo(frameId) {
       
       const frames = sceneData.frames;
-      let i = 0;
+      let i,
+          fl;
 
       try {
-        for (i; i < frames.length; i += 1) {
+        for (i = 0, fl = frames.length; i < fl; i += 1) {
           if (frames[i].id === frameId) {
             this.frameData = frames[i];
             this.frameIndex = i;
