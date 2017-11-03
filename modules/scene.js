@@ -80,7 +80,6 @@ const Scene = (function () {
       
       //[optional] change the future text of the current frame
       if (this.frameData.text2 !== undefined) {
-        debugger;
         sceneData.frames[this.frameIndex].text = this.frameData.text2;
         delete sceneData.frames[this.frameIndex].text2;
       }

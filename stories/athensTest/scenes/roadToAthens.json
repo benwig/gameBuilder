@@ -99,7 +99,8 @@
     
     {
       "id": "south-1",
-      "text": "The road between your village and Athens winds slowly beneath Mount Himetus' southern slopes.",
+      "text": "The road between your village and Athens winds slowly beneath Mount Himetus' southern slopes. As you trudge along the stony path towards Athens, a gleam underfoot catches your eye.",
+      "text2": "The road between your village and Athens winds slowly beneath Mount Himetus' southern slopes.",
       "options": [
         {
           "text": "Follow the road towards Athens",
@@ -108,6 +109,23 @@
         {
           "text": "Head home towards your village",
           "next": "road-start"
+        },
+        {
+          "text": "What is this shiny thing?",
+          "next": "south-coin",
+          "getItem": {"name": "Hemiobol", "value": 1, "description": "A hemiobol"},
+          "remove": true
+        }
+      ]
+    },
+    
+    {
+      "id": "south-coin",
+      "text": "It's a coin - a hemiobol, in fact. You tuck it in your pouch",
+      "options": [
+        {
+          "text": "Nice find!",
+          "next": "south-1"
         }
       ]
     },
@@ -115,6 +133,7 @@
     {
       "id": "south-2",
       "text": "As you walk along the road, you cross a broad valley with olive trees scattered across it. A tiny tavern stands in the middle of the valley, close to the road. A sign outside advertises wine and olive oil for sale.",
+      "text2": "You are on the road outside a tavern in a broad valley.",
       "options": [
         {
           "text": "Follow the road towards Athens",
@@ -122,7 +141,7 @@
         },
         {
           "text": "Head home towards your village",
-          "next": "road-start"
+          "next": "south-1"
         },
         {
           "text": "Enter the tavern",
