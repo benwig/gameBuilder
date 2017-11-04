@@ -59,7 +59,7 @@ const View = (function () {
     },
     
     updateWallet () {
-      wallet.textContent = Wallet.check();
+      wallet.textContent = Wallet.contents();
     },
     
   };

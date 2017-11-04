@@ -38,26 +38,27 @@ const Scene = (function () {
         const nextif = option.nextif;
         let outcome;
         for (let i = 1, nl = nextif.length; i < nl; i += 1) {
-          //TODO: change this to switch/case statement
-          if (nextif[i][0] === "hasItem") {
-            if (Inventory.contains(nextif[i][1])) {
-              outcome = true;
-            }
+          switch (nextif[i][0]) {
+            case "hasItem":
+              outcome = Inventory.contains(nextif[i][1]);
+              break;
+            case "canAfford":
+              outcome = Wallet.canAfford(nextif[i][1]);
+              break;
           }
         }
-        
-        //TODO: check other conditions eg choices
-        
         if (outcome) {
           next = option.nextif[0];
         }
-        
       }
       
       //[optional] remove option from sceneData if remove = true
       if (option.remove) {
         sceneData.frames[this.frameIndex].options.splice(optionId, 1);
       }
+      
+      //TODO: remove optionfrom sceneData if oneoff = true
+      
       
       this.proceedTo(next);
     },
@@ -102,9 +103,13 @@ const Scene = (function () {
       request.onload = function() {
         
         if (request.status == 200) {
-          sceneData = JSON.parse(request.responseText).scene;
-          const firstFrame = sceneData.first_frame;
-          self.proceedTo(firstFrame);
+          try {
+            sceneData = JSON.parse(request.responseText).scene;
+            const firstFrame = sceneData.first_frame;
+            self.proceedTo(firstFrame);
+          } catch (SyntaxError) {
+            console.error(`There's something wrong in the JSON syntax of this scene: ${scenePath} Try pasting running it through JSONLint.com`);
+          }
         } else {
           console.error(`Retrieved response, but status was not 200. Status text: ${request.statusText}`);
         }

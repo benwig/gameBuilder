@@ -18,7 +18,7 @@ const Wallet = (function () {
       return value;
     },
     
-    check: function () {
+    contents: function () {
       return value;
     },
     

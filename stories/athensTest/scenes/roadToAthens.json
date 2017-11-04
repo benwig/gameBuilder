@@ -145,7 +145,7 @@
         },
         {
           "text": "Enter the tavern",
-          "next": "tavern"
+          "next": "tavern-1"
         }
       ]
     },
@@ -165,6 +165,97 @@
         {
           "text": "Climb the track to the cave",
           "next": "cave-1"
+        }
+      ]
+    },
+    
+    {
+      "id": "tavern-1",
+      "text": "You find yourself in a small tavern with a brick floor. It's dark. The innkeeper is stacking plates behind the wooden table which serves as a bar. The tavern is empty, apart from three old men in the far corner, hunched around a table, chewing on bread and olives and muttering in low voices.",
+      "text2": "You are in a small tavern. The innkeeper is resting on a stool behind the bar.",
+      "options": [
+        {
+          "text": "Approach the bar",
+          "next": "tavern-2"
+        },
+        {
+          "text": "Leave the tavern",
+          "next": "south-2"
+        },
+        {
+          "text": "Approach the table",
+          "next": "tavern-3"
+        }
+      ]
+    },
+    
+    {
+      "id": "tavern-2",
+      "text": "'Good morning, traveller! On your way to Athens, perhaps? What can I get you? We have bread, oil... and wine of course, but it's a little early for wine, ho ho ho!'",
+      "text2": "'Well then, traveller. What would you like?'",
+      "options": [
+        {
+          "text": "'Don't shame me for my bad decisions. Give me wine!'",
+          "nextif": ["buy-wine", ["hasItem", "Key"]],
+          "next": "buy-fail",
+          "remove": true,
+          "oneoff": true
+        },
+        {
+          "text": "Buy wine (2 obols)",
+          "nextif": ["buy-wine", ["canAfford", 2]],
+          "next": "buy-fail"
+        },
+        {
+          "text": "Buy bread (1 obol)",
+          "nextif": ["buy-bread", ["canAfford", 1]],
+          "next": "buy-fail"
+        },
+        {
+          "text": "Walk away",
+          "next": "tavern-1"
+        }
+      ]
+    },
+    
+    {
+      "id": "buy-wine",
+      "text": "'Wine it is, then! One glass coming right up.'",
+      "options": [
+        {
+          "text": "Glug",
+          "next": "tavern-2",
+          "money": -2
+        }
+      ]
+    },
+    
+    {
+      "id": "buy-bread",
+      "text": "You're in luck, my daughters just finished baking this morning. Here's a delicious fresh loaf just for you.",
+      "text2": "Here you are, one loaf of fresh bread.",
+      "options": [
+        {
+          "text": "'Thank you'",
+          "next": "tavern-2",
+          "money": -1,
+          "getItem": {"name": "Loaf of bread", "value": 1, "description": "A small loaf of fresh bread from a tavern outside Athens.", "nutrition": 2, "edible": true}
+        },
+        {
+          "text": "'Looks gross. Take it back.'",
+          "next": "tavern-2"
+        }
+      ]
+    },
+    
+    {
+      "id": "buy-fail",
+      "text": "'Hm, well, I can't sell you that if you don't have the coin.'",
+      "text2": "'I'm sorry, you can't afford that.'",
+      "options": [
+        {
+          "text": "Oops",
+          "next": "tavern-2"
         }
       ]
     },
