@@ -57,8 +57,12 @@ const Scene = (function () {
         sceneData.frames[this.frameIndex].options.splice(optionId, 1);
       }
       
-      //TODO: remove optionfrom sceneData if oneoff = true
-      
+      //[optional]remove other options from sceneData if oneoff = true
+      for (let i = 0; i < this.frameData.options.length; i += 1) {
+        if (this.frameData.options[i].oneoff) {
+          sceneData.frames[this.frameIndex].options.splice(i, 1);
+        }
+      }
       
       this.proceedTo(next);
     },
@@ -89,7 +93,7 @@ const Scene = (function () {
         sceneData.frames[this.frameIndex].text = this.frameData.text2;
         delete sceneData.frames[this.frameIndex].text2;
       }
-    
+  
     },
     
     //identifies first frame in given scene, and calls Scene.proceedTo() on it
