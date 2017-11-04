@@ -113,7 +113,7 @@
         {
           "text": "What is this shiny thing?",
           "next": "south-coin",
-          "getItem": {"name": "Hemiobol", "value": 1, "description": "A hemiobol"},
+          "money": 1,
           "remove": true
         }
       ]

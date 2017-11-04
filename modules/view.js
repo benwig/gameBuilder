@@ -6,6 +6,7 @@ const View = (function () {
   
   const options = document.querySelector("#options");
   const itemList = document.querySelector('#inventory');
+  const wallet = document.querySelector('#wallet');
   
   const clear = function (parent) {
     while (parent.lastChild) {
@@ -55,7 +56,11 @@ const View = (function () {
         //show box with text in it
         //also a dismiss button ("OK")
       //else hide the info box
-    }
+    },
+    
+    updateWallet () {
+      wallet.textContent = Wallet.check();
+    },
     
   };
 

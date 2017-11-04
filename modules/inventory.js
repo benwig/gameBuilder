@@ -9,10 +9,10 @@ const Inventory = (function () {
   //Basic item constructor
   function Item(settings) {
     settings = settings || {};
-    this.name = settings.name || "Unnamed Object"; //name which appears on screen
+    this.name = settings.name || "Unnamed Object";
     this.description = settings.description || "An undescribed object";
-    this.icon = settings.icon || "unknownObject.png"; //image which appears in inventory
-    this.value = settings.value || 0; //value in base monetary unit
+    this.icon = settings.icon || "unknownObject.png";
+    this.value = settings.value || 0;
     this.nutrition = settings.nutrition || 0;
     this.energy = settings.energy || 0;
     this.speed = settings.speed || 0;

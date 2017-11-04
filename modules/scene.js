@@ -21,6 +21,11 @@ const Scene = (function () {
       if (option.getItem !== undefined) {
         Inventory.add(option.getItem);
       }
+      
+      //[optional] get/lose money
+      if (option.money !== undefined) {
+        Wallet.changeBy(option.money);
+      }
 
       //[optional] change the future 'next' of the selected option
       if (option.next2 !== undefined) {
