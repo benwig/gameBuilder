@@ -9,8 +9,12 @@ const Handlers = (function () {
     //TODO: new function called processOption() - calls corresponding function in Scene module which processes current choice, does things such as removing option, adding items etc. Then calls proceedTo(next)
     
     processOption(event) {
-      let optionId = event.target.dataset.optionId;
-      Scene.processOption(optionId);
+      try {
+        let optionId = event.target.dataset.optionId;
+        Scene.processOption(optionId);
+      } catch (TypeError) {
+        event.stopPropagation();
+      }
       
     }
     
