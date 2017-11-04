@@ -33,6 +33,10 @@ const Scene = (function () {
         option.next = option.next2;
         delete option.next2;
       }
+        
+      if (option.time !== undefined) {
+        Time.increment(option.time);
+      }
       
       //[optional] if conditions are met, send player to a different 'next'
       if (option.nextif !== undefined) {

@@ -12,6 +12,7 @@
     if (request.status == 200) {
       const metadata = JSON.parse(request.responseText);
       const firstScene = metadata.story.first_scene;
+      View.updateAll();
       Scene.init(`${currentOrigin}/stories/${storyName}/scenes/${firstScene}`);
     } else {
       console.error(`Retrieved response, but status was not 200. Status text: ${request.statusText}`);

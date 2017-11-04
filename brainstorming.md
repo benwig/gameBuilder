@@ -51,9 +51,17 @@ Sit on a jury to make money (need jury token) - lose time but gain energy and mo
 
 //TODO: linear north road branch - DONE
 //TODO: linear south road branch - DONE
-//TODO: add honey field branch
+//TODO: add honey field branch - DONE
 //TODO: Add one-off dog branch
-//TODO: Add an inn as a separate Scene
-//TODO: Add time penalties for turning back
+//TODO: Add tavern - DONE
+//TODO: Add conversation in tavern
+//TODO: Add time penalties for turning back - DONE
 //TODO: Add shrine branch
 //TODO: Add one-off event on way back from shrine branch
+
+### UI STUFF
+//TODO: If an option has "time" attribute, flag this up somehow on the option
+//TODO: Animation for item appearing in your inventory
+//TODO: Animation for item disappearing from your inventory
+//TODO: Time represented as sun moving across sky, maybe with dashes for hours
+//TODO: Button to click for more info about Frame

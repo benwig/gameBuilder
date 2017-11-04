@@ -7,6 +7,7 @@ const View = (function () {
   const options = document.querySelector("#options");
   const itemList = document.querySelector('#inventory');
   const wallet = document.querySelector('#wallet');
+  const clock = document.querySelector('#clock');
   
   const clear = function (parent) {
     while (parent.lastChild) {
@@ -48,6 +49,29 @@ const View = (function () {
       }
     },
     
+    updateWallet () {
+      wallet.textContent = Wallet.contents();
+    },
+    
+    //TODO: convert time (mins) to hour:minute format by dividing by 60 and flooring, then putting colon, then modulo of division by 60
+    updateTime () {
+      let now = Time.get();
+      let hour = (Math.floor(now / 60)).toString();
+      let minutes = now % 60;
+      if (minutes < 10) {
+        minutes = '0' + minutes.toString();
+      } else {
+        minutes = minutes.toString();
+      }
+      clock.textContent = `${hour}:${minutes}`;
+    },
+    
+    updateAll () {
+      this.updateInventory();
+      this.updateTime();
+      this.updateWallet();
+    },
+    
     // removeItem - only removes item with selected index. includes effect for removal
     // same for getItem
     
@@ -56,10 +80,6 @@ const View = (function () {
         //show box with text in it
         //also a dismiss button ("OK")
       //else hide the info box
-    },
-    
-    updateWallet () {
-      wallet.textContent = Wallet.contents();
     },
     
   };

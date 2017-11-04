@@ -10,11 +10,13 @@
       "options": [
         {
           "text": "Take the Northern path",
-          "next": "north-1"
+          "next": "north-1",
+          "time": 15
         },
         {
           "text": "Take the Southern path",
-          "next": "south-1"
+          "next": "south-1",
+          "time": 20
         },
         {
           "text": "Head back to your house",
@@ -30,15 +32,18 @@
       "options": [
         {
           "text": "Take a detour to inspect your beehives",
-          "next": "honeyfield"
+          "next": "honeyfield",
+          "time": 5
         },
         {
           "text": "Follow the road towards Athens",
-          "next": "north-2"
+          "next": "north-2",
+          "time": 30
         },
         {
           "text": "Follow the road back to your house",
-          "next": "road-start"
+          "next": "road-start",
+          "time": 15
         }
       ]
     },
@@ -49,11 +54,13 @@
       "options": [
         {
           "text": "Head down into Athens",
-          "next": "road-end"
+          "next": "road-end",
+          "time": 20
         },
         {
           "text": "Head back East, towards your village",
-          "next": "north-1"
+          "next": "north-1",
+          "time": 30
         }
       ]
     },
@@ -111,11 +118,13 @@
         },
         {
           "text": "Follow the road towards Athens",
-          "next": "south-2"
+          "next": "south-2",
+          "time": 20
         },
         {
           "text": "Head home towards your village",
-          "next": "road-start"
+          "next": "road-start",
+          "time": 20
         }
       ]
     },
@@ -142,11 +151,13 @@
         },
         {
           "text": "Follow the road towards Athens",
-          "next": "south-3"
+          "next": "south-3",
+          "time": 15
         },
         {
           "text": "Head home towards your village",
-          "next": "south-1"
+          "next": "south-1",
+          "time": 20
         }
       ]
     },
@@ -157,15 +168,18 @@
       "options": [
         {
           "text": "Head down into Athens",
-          "next": "road-end"
+          "next": "road-end",
+          "time": 30
         },
         {
           "text": "Climb the track to the cave",
-          "next": "cave-1"
+          "next": "cave-1",
+          "time": 5
         },
         {
           "text": "Follow the road back towards your village",
-          "next": "south-2"
+          "next": "south-2",
+          "time": 15
         }
       ]
     },

@@ -23,24 +23,27 @@ h4 {
   margin: 0;
 }
 
-p {
-  font-size: 1.3em;
-}
-
 .maintext {
   max-width: 700px;
   min-height: 300px;
   margin: 10px;
-  padding: 10px;
 }
 
-.inventory, .wallet {
-  max-width: 600px;
-  margin: 10px;
+.maintext p {
+  font-size: 1.3em;
+}
+
+.inventory, .wallet, .clock {
+  max-width: 700px;
+  margin: 10px 10px 0;
   padding: 10px;
   border: 1px dashed black;
 }
 
 .inventory {
   height: 200px;
+}
+
+.clock {
+  padding: 0 10px;
 }

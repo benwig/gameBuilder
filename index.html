@@ -3,6 +3,9 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
+    <div class="clock">
+      <p>Time: <span id="clock"></span></p>
+    </div>
     <div class="maintext">
       <p id="frameText"></p>
       <ul id="options" onclick="Handlers.processOption(event)">
@@ -17,6 +20,7 @@
       <p id="wallet"></p>
     </div>
     
+    <script src="modules/time.js"></script>
     <script src="modules/wallet.js"></script>
     <script src="modules/inventory.js"></script>
     <script src="modules/scene.js"></script>
