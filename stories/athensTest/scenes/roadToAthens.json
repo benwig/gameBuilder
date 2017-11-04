@@ -36,12 +36,12 @@
           "time": 5
         },
         {
-          "text": "Follow the road towards Athens",
+          "text": "Travel West, towards Athens",
           "next": "north-2",
           "time": 30
         },
         {
-          "text": "Follow the road back to your house",
+          "text": "Follow the road East, towards your village",
           "next": "road-start",
           "time": 15
         }
@@ -186,8 +186,8 @@
     
     {
       "id": "tavern-1",
-      "text": "You find yourself in a small tavern with a brick floor. It's dark. The innkeeper is stacking plates behind the wooden table which serves as a bar. The tavern is empty, apart from three old men in the far corner, hunched around a table, chewing on bread and olives and muttering in low voices.",
-      "text2": "You are in a small tavern. The innkeeper is resting on a stool behind the bar.",
+      "text": "You find yourself in a small tavern with a brick floor. It's dark. The innkeeper is stacking plates behind the wooden table which serves as a bar. The tavern is empty, apart from three old men in the far corner, hunched around a table, chewing on bread and olives and conversing quietly.",
+      "text2": "You are in a small tavern. The innkeeper is resting on a stool behind the bar. Three old men sit in the corner, eating breakfast.",
       "options": [
         {
           "text": "Approach the bar",
@@ -195,7 +195,7 @@
         },
         {
           "text": "Approach the table",
-          "next": "tavern-3"
+          "next": "table-1"
         },
         {
           "text": "Leave the tavern",
@@ -276,12 +276,129 @@
     },
     
     {
+      "id": "table-1",
+      "text": "The three old men have knapsacks under their stools and good boots on their feet. Magnificently sturdy walking sticks are propped against the table. The old men chew bread and talk across each other.",
+      "text2": "The three old men seem happy talking to each other.",
+      "options": [
+        {
+          "text": "Eavesdrop",
+          "next": "table-eavesdrop",
+          "remove": true
+        },
+        {
+          "text": "Greet the old men",
+          "next": "table-greet",
+          "remove": true
+        },
+        {
+          "text": "Leave them be",
+          "next": "tavern-1"
+        }
+      ]
+    },
+    {
+      "id": "table-eavesdrop",
+      "text": "'Hey, what are you doing there, standing about? On your way to Athens too?'",
+      "options": [
+        {
+          "text": "'None of your business, old man.'",
+          "next": "table-ignore",
+          "prefix": "'If you don't want to talk, get away from our table!'"
+        },
+        {
+          "text": "'Yes, indeed. I'm Phylokleon, from Sounion.'",
+          "next": "table-2"
+        }
+      ]
+    },
+    {
+      "id": "table-greet",
+      "text": "'Good morning to you as well - a fellow traveller, it seems! Where have you come from?'",
+      "options": [
+        {
+          "text": "'None of your business.'",
+          "next": "table-ignore",
+          "prefix": "'Harumph, and there we were thinking you wanted to chat.'"
+        },
+        {
+          "text": "'I'm Phylokleon, from Sounion.'",
+          "next": "table-2",
+          "prefix": "'Ah, we're all from the same tribe, then!'"
+        },
+        {
+          "text": "'I am no man from nowhere.'",
+          "next": "table-2",
+          "prefix": "'Hohoho! We have a joker here who knows his Odyssey! I hope we don't look like cyclopses."
+        }
+      ]
+    },
+    {
+      "id": "table-ignore",
+      "text": "All three old men turn their backs on you.",
+      "options": [
+        {
+          "text": "Walk away",
+          "next": "tavern-1"
+        }
+      ]
+    },
+    {
+      "id": "table-2",
+      "text": "'We're from Thorokos. We're heading to Athens, but we stopped for breakfast.",
+      "options": [
+        {
+          "text": "'Why are you going to Athens?'",
+          "next": "table-3"
+        },
+        {
+          "text": "I'm surprised you got this far on those old legs.'",
+          "next": "table-offended"
+        },
+        {
+          "text": "'You've covered a great distance - you must have set out early!'",
+          "next": "table-3",
+          "prefix": "'Oh, we got up at the crack of dawn! You can't keep these old men in bed. We all have important things to do in Athens.'"
+        }
+      ]
+    },
+    {
+      "id": "table-3",
+      "text": "'Conon needs to find his drunken no-good son and drag him back home. Diogiton is in for his monthly fix of fishcakes. I myself just wanted an excuse to get away from my wife! But we're all really interested in is finding out the latest news on Philip of Macedon. How about you?'",
+      "options": []
+    },
+    {
+      "id": "table-offended",
+      "text": "'You're not such a whippersnapper yourself, but you should still have respect for your elders!'",
+      "options": [
+        {
+          "text": "'I apologise for the bad joke...'",
+          "next": "table-offended-2"
+        },
+        {
+          "text": "'Old men can't take a joke these days.'",
+          "next": "table-ignore",
+          "prefix": "'We have no interest in talking to a disrespectful turnip-face.'"
+        }
+      ]
+    },
+    {
+      "id": "table-offended-2",
+      "text": "'Hrmmm...'",
+      "options": [
+        {
+          "text": "'So, why are you heading to Athens?'",
+          "next": "table-3"
+        },
+        {
+          "text": "Excuse yourself and walk away",
+          "next": "tavern-1"
+        }
+      ]
+    },
+    {
       "id": "road-end",
       "text": "You have reached Athens!",
       "options": []
-    }
-    
-    
-    
+    }  
   ]
 }}
