@@ -5,6 +5,7 @@ const Time = (function () {
   "use strict";
   
   let now = 300; //time in minutes since 00:00
+  //TODO: timebands so you can quickly check if game has reached a certain timeframe, e.g. for use in descriptions. May be easier than using laterThan/earlierThan. Add corresponding function to return timezone/check timezone.
   /*const timebands = {
     "predawn": {lower: 0, upper: 299}, //00:00 - 05:00
     "dawn": {lower: 300, upper: 359}, //05:00 - 06:00

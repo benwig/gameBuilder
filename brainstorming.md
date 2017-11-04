@@ -1,5 +1,4 @@
 ### AGORA
-
 trip to agora (buying, selling)
 last bolt of cloth has been sold, have to track the new owner down, haggle
 get distracted by mates hanging out in Perfume Shop, choice to spend 30 mins chatting with them or not
@@ -29,7 +28,6 @@ Sit on a jury to make money (need jury token) - lose time but gain energy and mo
 
 
 ### TRACKING
-
 - inventory
 - time
 - money
@@ -37,7 +35,6 @@ Sit on a jury to make money (need jury token) - lose time but gain energy and mo
 - optional / bonus objectives
 - hunger (if it goes below certain level, you get energy penalty, and ultimately you faint)
 - energy (higher energy = speed bonus, faster journey times) - engaging in public life / religion makes you feel like a good citizen, therefore more energy
-
 
 
 ### STUFF TO PROGRAM
@@ -58,10 +55,3 @@ Sit on a jury to make money (need jury token) - lose time but gain energy and mo
 //TODO: Add time penalties for turning back - DONE
 //TODO: Add shrine branch
 //TODO: Add one-off event on way back from shrine branch
-
-### UI STUFF
-//TODO: If an option has "time" attribute, flag this up somehow on the option
-//TODO: Animation for item appearing in your inventory
-//TODO: Animation for item disappearing from your inventory
-//TODO: Time represented as sun moving across sky, maybe with dashes for hours
-//TODO: Button to click for more info about Frame
