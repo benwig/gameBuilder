@@ -32,6 +32,22 @@ const Time = (function () {
       now = now + minutes;
       View.updateTime();
       return now;
+    },
+    
+    laterThan: function (minutes) {
+      if now > minutes {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    
+    earlierThan: function (minutes) {
+      if now < minutes {
+        return true;
+      } else {
+        return false;
+      }
     }
     
   };
