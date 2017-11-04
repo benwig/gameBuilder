@@ -29,12 +29,12 @@
       "text2": "You are on the road between your village and Athens. Mount Himetus looms to the South. Your beehives are in a field nearby.",
       "options": [
         {
-          "text": "Follow the road towards Athens",
-          "next": "north-2"
-        },
-        {
           "text": "Take a detour to inspect your beehives",
           "next": "honeyfield"
+        },
+        {
+          "text": "Follow the road towards Athens",
+          "next": "north-2"
         },
         {
           "text": "Follow the road back to your house",
@@ -63,13 +63,13 @@
       "text": "Bees buzz softly in the long grass in the field where your beehives are kept. The hives are lined up in a row.",
       "options": [
         {
-          "text": "Head back to the road",
-          "next": "north-1"
-        },
-        {
           "text": "Collect honey",
           "next": "honeyfield-2",
           "next2": "honeyfield-3"
+        },
+        {
+          "text": "Head back to the road",
+          "next": "north-1"
         }
       ]
     },
@@ -103,18 +103,19 @@
       "text2": "The road between your village and Athens winds slowly beneath Mount Himetus' southern slopes.",
       "options": [
         {
+          "text": "What is this shiny thing?",
+          "next": "south-coin",
+          "money": 3,
+          "remove": true,
+          "oneoff": true
+        },
+        {
           "text": "Follow the road towards Athens",
           "next": "south-2"
         },
         {
           "text": "Head home towards your village",
           "next": "road-start"
-        },
-        {
-          "text": "What is this shiny thing?",
-          "next": "south-coin",
-          "money": 1,
-          "remove": true
         }
       ]
     },
@@ -136,16 +137,16 @@
       "text2": "You are on the road outside a tavern in a broad valley.",
       "options": [
         {
+          "text": "Enter the tavern",
+          "next": "tavern-1"
+        },
+        {
           "text": "Follow the road towards Athens",
           "next": "south-3"
         },
         {
           "text": "Head home towards your village",
           "next": "south-1"
-        },
-        {
-          "text": "Enter the tavern",
-          "next": "tavern-1"
         }
       ]
     },
@@ -159,12 +160,12 @@
           "next": "road-end"
         },
         {
-          "text": "Follow the road back towards your village",
-          "next": "south-2"
-        },
-        {
           "text": "Climb the track to the cave",
           "next": "cave-1"
+        },
+        {
+          "text": "Follow the road back towards your village",
+          "next": "south-2"
         }
       ]
     },
@@ -179,12 +180,12 @@
           "next": "tavern-2"
         },
         {
-          "text": "Leave the tavern",
-          "next": "south-2"
-        },
-        {
           "text": "Approach the table",
           "next": "tavern-3"
+        },
+        {
+          "text": "Leave the tavern",
+          "next": "south-2"
         }
       ]
     },
@@ -196,7 +197,7 @@
       "options": [
         {
           "text": "'Don't shame me for my bad decisions. Give me wine!'",
-          "nextif": ["buy-wine", ["hasItem", "Key"]],
+          "nextif": ["buy-wine", ["canAfford", 2]],
           "next": "buy-fail",
           "remove": true,
           "oneoff": true
@@ -232,8 +233,8 @@
     
     {
       "id": "buy-bread",
-      "text": "You're in luck, my daughters just finished baking this morning. Here's a delicious fresh loaf just for you.",
-      "text2": "Here you are, one loaf of fresh bread.",
+      "text": "'You're in luck, my daughters just finished baking this morning. Here's a delicious fresh loaf just for you.",
+      "text2": "Here you are, one loaf of fresh bread.'",
       "options": [
         {
           "text": "'Thank you'",
@@ -254,7 +255,7 @@
       "text2": "'I'm sorry, you can't afford that.'",
       "options": [
         {
-          "text": "Oops",
+          "text": "Never mind.",
           "next": "tavern-2"
         }
       ]

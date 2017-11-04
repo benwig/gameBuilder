@@ -28,19 +28,19 @@ p {
 }
 
 .maintext {
-  max-width: 500px;
+  max-width: 700px;
   min-height: 300px;
   margin: 10px;
   padding: 10px;
 }
 
 .inventory, .wallet {
-  max-width: 400px;
+  max-width: 600px;
   margin: 10px;
   padding: 10px;
   border: 1px dashed black;
 }
 
 .inventory {
-  height: 300px;
+  height: 200px;
 }

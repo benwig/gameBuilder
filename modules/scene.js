@@ -8,14 +8,15 @@ const Scene = (function () {
   
   return {
     
-    frameData: {},
-    frameIndex: null,
+    frameData: {}, //this references (not copies) part of sceneData, so changing frameData changes sceneData
     
     //executes the consequences of choosing a particular option, ends by moving on to the 'next' frame
     processOption(optionId) {
       
-      const option = this.frameData.options[optionId];
-      let next = option.next;
+      //TODO use key-value pairs to map json options to functions. eg. "getItem": function(x){Inventory.add(x)}
+      
+      const option = this.frameData.options[optionId]; //ultimately references part of sceneData
+      let next = option.next; //a string, so, not a reference. Can be temporarily modified.
       
       //[optional] add item to inventory
       if (option.getItem !== undefined) {
@@ -29,8 +30,8 @@ const Scene = (function () {
 
       //[optional] change the future 'next' of the selected option
       if (option.next2 !== undefined) {
-        sceneData.frames[this.frameIndex].options[optionId].next = option.next2;
-        delete sceneData.frames[this.frameIndex].options[optionId].next2;
+        option.next = option.next2;
+        delete option.next2;
       }
       
       //[optional] if conditions are met, send player to a different 'next'
@@ -52,15 +53,15 @@ const Scene = (function () {
         }
       }
       
-      //[optional] remove option from sceneData if remove = true
+      //[optional] remove option permanently if remove = true
       if (option.remove) {
-        sceneData.frames[this.frameIndex].options.splice(optionId, 1);
+        this.frameData.options.splice(optionId, 1);
       }
       
-      //[optional]remove other options from sceneData if oneoff = true
+      //[optional]remove other options permanently if their oneoff = true
       for (let i = 0; i < this.frameData.options.length; i += 1) {
         if (this.frameData.options[i].oneoff) {
-          sceneData.frames[this.frameIndex].options.splice(i, 1);
+          this.frameData.options.splice(i, 1);
         }
       }
       
@@ -76,7 +77,6 @@ const Scene = (function () {
         for (let i = 0, fl = frames.length; i < fl; i += 1) {
           if (frames[i].id === frameId) {
             this.frameData = frames[i];
-            this.frameIndex = i;
             break;
           } 
         }
@@ -90,8 +90,8 @@ const Scene = (function () {
       
       //[optional] change the future text of the current frame
       if (this.frameData.text2 !== undefined) {
-        sceneData.frames[this.frameIndex].text = this.frameData.text2;
-        delete sceneData.frames[this.frameIndex].text2;
+        this.frameData.text = this.frameData.text2;
+        delete this.frameData.text2;
       }
   
     },
@@ -112,7 +112,7 @@ const Scene = (function () {
             const firstFrame = sceneData.first_frame;
             self.proceedTo(firstFrame);
           } catch (SyntaxError) {
-            console.error(`There's something wrong in the JSON syntax of this scene: ${scenePath} Try pasting running it through JSONLint.com`);
+            console.error(`There's something wrong in the JSON syntax of this scene: ${scenePath} Try running it through JSONLint.com`);
           }
         } else {
           console.error(`Retrieved response, but status was not 200. Status text: ${request.statusText}`);
