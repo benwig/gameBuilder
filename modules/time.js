@@ -35,7 +35,7 @@ const Time = (function () {
     },
     
     laterThan: function (minutes) {
-      if now > minutes {
+      if (now > parseInt(minutes)) {
         return true;
       } else {
         return false;
@@ -43,7 +43,7 @@ const Time = (function () {
     },
     
     earlierThan: function (minutes) {
-      if now < minutes {
+      if (now < parseInt(minutes)) {
         return true;
       } else {
         return false;
