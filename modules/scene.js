@@ -5,6 +5,7 @@ const Scene = (function () {
   "use strict";
   
   let sceneData = {};
+  let prefix = false;
   
   return {
     
@@ -12,9 +13,7 @@ const Scene = (function () {
     
     //executes the consequences of choosing a particular option, ends by moving on to the 'next' frame
     processOption(optionId) {
-      
-      //TODO use key-value pairs to map json options to functions. eg. "getItem": function(x){Inventory.add(x)}
-      
+   
       const option = this.frameData.options[optionId]; //ultimately references part of sceneData
       let next = option.next; //a string, so, not a reference. Can be temporarily modified.
       
@@ -32,6 +31,10 @@ const Scene = (function () {
       if (option.next2 !== undefined) {
         option.next = option.next2;
         delete option.next2;
+      }
+      
+      if (option.prefix !== undefined) {
+        prefix = option.prefix;
       }
         
       if (option.time !== undefined) {
@@ -75,6 +78,7 @@ const Scene = (function () {
     //sets frameData to current frame
     proceedTo(frameId) {
       
+      console.log(`Currently at: ${frameId}`);
       const frames = sceneData.frames;
 
       try {
@@ -89,7 +93,14 @@ const Scene = (function () {
         return;
       }
       
-      View.setFrameText();
+      if (prefix) {
+        let temptext = `${prefix}<br>${this.frameData.text}`;
+        prefix = false;
+        View.setFrameText(temptext);
+      } else {
+        View.setFrameText(this.frameData.text);
+      }
+
       View.addOptions();
       
       //[optional] change the future text of the current frame

@@ -278,17 +278,17 @@
     {
       "id": "table-1",
       "text": "The three old men have knapsacks under their stools and good boots on their feet. Magnificently sturdy walking sticks are propped against the table. The old men chew bread and talk across each other.",
-      "text2": "The three old men seem happy talking to each other.",
+      "text2": "The three old men have finished their meal and are having a little snooze. It doesn't look like they want to be disturbed.",
       "options": [
         {
           "text": "Eavesdrop",
           "next": "table-eavesdrop",
-          "remove": true
+          "oneoff": true
         },
         {
           "text": "Greet the old men",
           "next": "table-greet",
-          "remove": true
+          "oneoff": true
         },
         {
           "text": "Leave them be",
@@ -307,7 +307,8 @@
         },
         {
           "text": "'Yes, indeed. I'm Phylokleon, from Sounion.'",
-          "next": "table-2"
+          "next": "table-2",
+          "prefix": "'Ah, we're all from the same tribe, then!'"
         }
       ]
     },
@@ -328,7 +329,7 @@
         {
           "text": "'I am no man from nowhere.'",
           "next": "table-2",
-          "prefix": "'Hohoho! We have a joker here who knows his Odyssey! I hope we don't look like cyclopses."
+          "prefix": "'Hohoho! We have a joker here who knows his Homer! I hope we don't look like cyclopses...'"
         }
       ]
     },

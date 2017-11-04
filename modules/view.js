@@ -17,8 +17,8 @@ const View = (function () {
   
   return {
     
-    setFrameText () {
-      document.querySelector("#frameText").textContent = Scene.frameData.text;
+    setFrameText (text) {
+      document.querySelector("#frameText").innerHTML = text;
     },
     
     addOptions () {
