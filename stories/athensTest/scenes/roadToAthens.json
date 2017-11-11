@@ -364,8 +364,17 @@
     },
     {
       "id": "table-3",
-      "text": "'Conon needs to find his drunken no-good son and drag him back home. Diogiton is in for his monthly fix of fishcakes. I myself just wanted an excuse to get away from my wife! But we're all really interested in is finding out the latest news on Philip of Macedon. How about you?'",
-      "options": []
+      "text": "'Conon needs to find his drunken no-good son and drag him back home. Diogiton is in for his monthly fix of fishcakes. I myself just wanted an excuse to get away from my wife! But we're all really interested in is finding out the latest news on Philip of Macedon.'",
+      "text2": "'What do you want to know, fellow-traveller?'",
+      "options": [
+        {
+          "text": "'It was good to meet you. Good luck on your journey.'",
+          "next": "tavern-1"
+        },
+        {
+          "text": "'I have some questions about Athens.'"
+        }
+      ]
     },
     {
       "id": "table-offended",
