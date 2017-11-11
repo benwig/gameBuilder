@@ -4,7 +4,7 @@ const View = (function () {
   
   "use strict";
   
-  const options = document.querySelector("#options");
+  const optionList = document.querySelector("#options");
   const itemList = document.querySelector('#inventory');
   const wallet = document.querySelector('#wallet');
   const clock = document.querySelector('#clock');
@@ -21,18 +21,16 @@ const View = (function () {
       document.querySelector("#frameText").innerHTML = text;
     },
     
-    addOptions () {
-      
-      clear(options);
-      
+    addOptions (options) {
+      clear(optionList);
       try {
-        for (let i = 0, fol = Scene.frameData.options.length; i < fol; i += 1) {
+        for (let i = 0, fol = options.length; i < fol; i += 1) {
           let li = document.createElement('li');
           let button = document.createElement('button');
           button.dataset.optionId = i;
-          button.textContent = Scene.frameData.options[i].text;
+          button.textContent = options[i].text;
           li.appendChild(button);
-          options.appendChild(li);
+          optionList.appendChild(li);
         }
       } catch(TypeError) {
         console.error('It looks like frameData is currently empty.');

@@ -6,7 +6,7 @@
     
     {
       "id": "road-start",
-      "text": "You are standing on the main road, at the bottom of the track which leads to your house. There are two ways to travel to Athens: go North, around Mount Himetus, or take the Southern road beneath the mountain.",
+      "text": "You are standing on the main road, at the bottom of the track which leads to your house. There are two ways to travel to Athens: go North, around Mount Hymettos, or take the Southern road beneath the mountain.",
       "options": [
         {
           "text": "Take the Northern path",
@@ -27,8 +27,8 @@
     
     {
       "id": "north-1",
-      "text": "You trudge along the dusty road for a while. Now you're passing the fields where you keep some of your beehives. Mount Himetus looms to the South.",
-      "text2": "You are on the road between your village and Athens. Mount Himetus looms to the South. Your beehives are in a field nearby.",
+      "text": "You trudge along the dusty road for a while. Now you're passing the fields where you keep some of your beehives. Mount Hymettos looms to the South.",
+      "text2": "You are on the road between your village and Athens. Mount Hymettos looms to the South. Your beehives are in a field nearby.",
       "options": [
         {
           "text": "Take a detour to inspect your beehives",
@@ -67,7 +67,7 @@
     
     {
       "id": "honeyfield",
-      "text": "Bees buzz softly in the long grass in the field where your beehives are kept. The hives are lined up in a row.",
+      "text": "Bees buzz softly among the flowers in the field where your beehives are kept. The hives are lined up in a row.",
       "options": [
         {
           "text": "Collect honey",
@@ -88,7 +88,7 @@
         {
           "text": "Delicious honey! Wonderful.",
           "next": "honeyfield",
-          "getItem": {"name": "Honey", "value": 1, "edible": true, "nutrition": 5, "description": "Sweet honey from the slopes of Mount Himetus"}
+          "getItem": {"name": "Honey", "value": 1, "edible": true, "nutrition": 5, "description": "Sweet honey from the slopes of Mount Hymettos"}
         }
       ]
     },
@@ -106,8 +106,8 @@
     
     {
       "id": "south-1",
-      "text": "The road between your village and Athens winds slowly beneath Mount Himetus' southern slopes. As you trudge along the stony path towards Athens, a gleam underfoot catches your eye.",
-      "text2": "The road between your village and Athens winds slowly beneath Mount Himetus' southern slopes.",
+      "text": "The road between your village and Athens winds slowly beneath Mount Hymettos' southern slopes. As you trudge along the stony path towards Athens, a gleam underfoot catches your eye.",
+      "text2": "The road between your village and Athens winds slowly beneath Mount Hymettos' southern slopes.",
       "options": [
         {
           "text": "What is this shiny thing?",
