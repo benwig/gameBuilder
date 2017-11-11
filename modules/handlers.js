@@ -6,8 +6,7 @@ const Handlers = (function () {
   
   return {
     
-    //TODO: new function called processOption() - calls corresponding function in Scene module which processes current choice, does things such as removing option, adding items etc. Then calls proceedTo(next)
-    
+    //handle click on an option button
     processOption(event) {
       try {
         let optionId = event.target.dataset.optionId;
@@ -15,7 +14,6 @@ const Handlers = (function () {
       } catch (TypeError) {
         event.stopPropagation();
       }
-      
     }
     
   };

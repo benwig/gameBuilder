@@ -44,7 +44,7 @@ const Inventory = (function () {
     
     //place specified object in items array
     add: function (settings) {
-      var x = new Item(settings);
+      let x = new Item(settings);
       items.push(x);
       View.updateInventory();
     },
@@ -67,7 +67,7 @@ const Inventory = (function () {
       return false;
     },
   
-    //returns the entire items array
+    //returns the entire items array, with all the item attributes and methods
     getAll: function () {
       return items;
     },
