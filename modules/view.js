@@ -51,7 +51,6 @@ const View = (function () {
       wallet.textContent = Wallet.contents();
     },
     
-    //TODO: convert time (mins) to hour:minute format by dividing by 60 and flooring, then putting colon, then modulo of division by 60
     updateTime () {
       let now = Time.get();
       let hour = (Math.floor(now / 60)).toString();
