@@ -135,14 +135,12 @@ const Scene = (function () {
     const self = this;
     const request = new XMLHttpRequest();
 
-    request.open("GET", scenePath, true);
-
     request.onload = function() {
-
       if (request.status == 200) {
         try {
           sceneData = JSON.parse(request.responseText).scene;
           const firstFrame = sceneData.first_frame;
+          View.updateAll();
           self.proceedTo(firstFrame);
         } catch (SyntaxError) {
           console.error(`There's something wrong in the JSON syntax of this scene: ${scenePath} Try running it through JSONLint.com`);
@@ -155,7 +153,8 @@ const Scene = (function () {
     request.onerror = function() {
       console.error("XMLHttpRequest failed, could not reach Scene.");
     };
-
+    
+    request.open("GET", scenePath, true);
     request.send();
     
   };
