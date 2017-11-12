@@ -1,1 +1,10 @@
-{}
+{
+  "objectives": [
+    {
+      "id": "sample",
+      "text": "Buy a sample at the market",
+      "type": "core",
+      "timelimit": false
+    }
+  ]
+}
