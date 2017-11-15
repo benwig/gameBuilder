@@ -17,7 +17,6 @@ const Scene = (function () {
     for (let i = 0, fl = sceneData.frames.length; i < fl; i += 1) {
       if (sceneData.frames[i].id === frameId) {
         return sceneData.frames[i];
-        break;
       } 
     }
     console.error(`Frame with id ${frameId} could not be found.`);
@@ -63,7 +62,7 @@ const Scene = (function () {
     } else {
       return false;
     }
-  }
+  };
   
   //////////////////////
   /// PUBLIC METHODS ///
@@ -81,6 +80,12 @@ const Scene = (function () {
     //[optional] get/lose money
     if (option.money !== undefined) {
       Wallet.changeBy(option.money);
+    }
+    
+    //[optional] give player an objective
+    debugger;
+    if (option.objective !== undefined && !Objectives.getAttribute(option.objective, "assigned")) {
+      Objectives.assign(option.objective);
     }
 
     //[optional] change the future 'next' of the selected option

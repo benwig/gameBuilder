@@ -21,6 +21,12 @@
           "text": "Deliver the letter"
         }
       ]
+    },
+    {
+      "id": "collectHoney",
+      "text": "Collect honey from your hives",
+      "type": "secondary",
+      "timelimit": "false"
     }
   ]
 }

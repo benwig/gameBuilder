@@ -96,7 +96,7 @@ const View = (function () {
       this.updateInventory();
       this.updateTime();
       this.updateWallet();
-      this.updateObjectives();
+      //this.updateObjectives();
     },
     
     // removeItem - only removes item with selected index. includes effect for removal

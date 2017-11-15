@@ -11,7 +11,7 @@ const Objectives = (function () {
   function Objective (settings) {
     this.text = settings.text;
     this.type = settings.type;
-    this.assigned = true;
+    this.assigned = false;
     this.completed = false;
     this.failed = false;
   }
