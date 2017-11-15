@@ -63,10 +63,40 @@ const View = (function () {
       clock.textContent = `${hour}:${minutes}`;
     },
     
+    // adds new objective. includes effect for addition
+    addObjective (id) {
+      this.updateObjectives();
+    },
+    
+    // only removes objective with selected index. includes effect for removal
+    removeObjective (id) {
+      
+    },
+    
+    // adds completed class to objective with selected index
+    markObjectiveCompleted (id) {
+      
+    },
+    
+    /*updateObjectives () {
+      const objectives = Objectives.getAll();
+      objectives.forEach(function(obj) {
+        let txt = "";
+        if (obj.completed) {
+          txt += "(x)";
+        } else {
+          txt += "( )";
+        }
+        txt += obj.text;
+        console.log(txt);
+      });
+    },*/
+    
     updateAll () {
       this.updateInventory();
       this.updateTime();
       this.updateWallet();
+      this.updateObjectives();
     },
     
     // removeItem - only removes item with selected index. includes effect for removal

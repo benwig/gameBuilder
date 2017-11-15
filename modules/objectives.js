@@ -11,7 +11,7 @@ const Objectives = (function () {
   function Objective (settings) {
     this.text = settings.text;
     this.type = settings.type;
-    this.assigned = false;
+    this.assigned = true;
     this.completed = false;
     this.failed = false;
   }
@@ -47,36 +47,60 @@ const Objectives = (function () {
   };
   
   self.complete = function (id) {
-    objectives[id].changeComplete(true);
-    View.updateObjectives();
+    try {
+      objectives[id].changeComplete(true);
+    } catch (TypeError) {
+      console.error(`There's no objective called '${id}'`);
+    }
+    View.markObjectiveCompleted(id);
   };
   
   self.uncomplete = function (id) {
-    objectives[id].changeComplete(false);
-    View.updateObjectives();
+    try {
+      objectives[id].changeComplete(false);
+    } catch (TypeError) {
+      console.error(`There's no objective called '${id}'`);
+    }
   };
   
   self.fail = function (id) {
-    objectives[id].fail();
-    View.updateObjectives();
+    try {
+      objectives[id].fail();
+    } catch (TypeError) {
+      console.error(`There's no objective called '${id}'`);
+    }
+    View.removeObjective(id);
   };
   
   self.assign = function (id) {
     objectives[id].changeAssigned(true);
+    View.addObjective(id);
   };
   
-  self.getStatus = function (id) {
-    return objectives[id].completed;
+  self.getAttribute = function (id, attr) {
+    try {
+      if (objectives[id].hasOwnProperty(attr)) {
+        return objectives[id][attr];
+      } else {
+        console.error(`Objective '${id}' has no attribute '${attr}'`);
+      }
+    } catch (TypeError) {
+      console.error(`There's no objective called '${id}'`);
+    }
   };
   
-  //returns a subset of info about items which have already been assigned
+  //returns an array with a subset of info about all assigned/completed objectives
   self.getAll = function () {
     let minilist = [];
-    for (let x in objectives) {
-      if (objectives[x].assigned && !objectives[x].failed) {
-        minilist.push({"text": objectives[x].text, "type": objectives[x].type, "completed": objectives[x].completed});
+    
+    for (let key in objectives) {
+      if (!objectives.hasOwnProperty(key)) {
+        continue;
+      } else if (objectives[key].assigned && !objectives[key].failed) {
+        minilist.push({"text": objectives[key].text, "type": objectives[key].type, "completed": objectives[key].completed});
       }
     }
+    
     return minilist;
   };
   
