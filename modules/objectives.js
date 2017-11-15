@@ -35,7 +35,7 @@ const Objectives = (function () {
   /// PUBLIC METHODS ///
   //////////////////////
   
-  //TODO: init function, for turning the objectives.JSON into named objective objects and pushing them to the objectives object with key "name"
+  //create objective objects using objectives.JSON
   self.init = function (objectivesJSON) {
     let objList = objectivesJSON.objectives;
     for (let i = 0; i < objList.length; i += 1) {

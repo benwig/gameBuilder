@@ -5,6 +5,22 @@
       "text": "Buy a sample at the market",
       "type": "core",
       "timelimit": false
+    },
+    {
+      "id": "sample2",
+      "text": "Find the missing sample",
+      "type": "secondary",
+      "timelimit": false,
+      "sub": [
+        {
+          "id": "sample2-1",
+          "text": "Talk to the tavern keeper"
+        },
+        {
+          "id": "sample2-1",
+          "text": "Deliver the letter"
+        }
+      ]
     }
   ]
 }
