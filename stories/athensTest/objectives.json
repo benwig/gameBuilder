@@ -26,7 +26,11 @@
       "id": "collectHoney",
       "text": "Collect honey from your hives",
       "type": "secondary",
-      "timelimit": false
+      "timelimit": false,
+      "successCriteria": {
+        "haveItems": ["Honey"],
+        "viewFrames": ["honeyfield-2"]
+      }
     },
     {
       "id": "reachAthens",

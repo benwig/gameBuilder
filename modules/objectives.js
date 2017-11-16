@@ -14,10 +14,12 @@ const Objectives = (function () {
     this.assigned = false;
     this.completed = false;
     this.failed = false;
+    this.successCriteria = settings.successCriteria;
   }
 
   Objective.prototype.changeComplete = function (bool) {
     this.completed = bool;
+    //TODO: Call View.markObjectiveCompleted(id)
   };
   
   Objective.prototype.changeAssigned = function (bool) {
@@ -29,6 +31,19 @@ const Objectives = (function () {
   
   Objective.prototype.fail = function (bool) {
     this.failed = true;
+  };
+  
+  //checks to see if all success criteria have been met. If yes, change complete.
+  Objective.prototype.checkSuccess = function () {
+    const criteria = this.successCriteria;
+    const isSuccessful = true;
+    //TODO: iterate through each attribute, checking if true
+    //TODO: if false, change isSuccessful to false, and break
+    //TODO: if isSuccessful is still true, call changeComplete
+    if (isSuccessful) {
+      this.changeComplete(true);
+    }
+    return isSuccessful;
   };
 
   //////////////////////

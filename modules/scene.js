@@ -86,6 +86,11 @@ const Scene = (function () {
     if (option.objective !== undefined && !Objectives.getAttribute(option.objective, "assigned")) {
       Objectives.assign(option.objective);
     }
+    
+    //[optional] mark an objective as complete
+    if (option.completeObjective !== undefined && !Objectives.getAttribute(option.completeObjective, "completed")) {
+      Objectives.complete(option.completeObjective);
+    }
 
     //[optional] change the future 'next' of the selected option
     if (option.next2 !== undefined) {
@@ -134,6 +139,11 @@ const Scene = (function () {
     //[optional] give the player an objective
     if (frameData.objective !== undefined && !Objectives.getAttribute(frameData.objective, "assigned")) {
       Objectives.assign(frameData.objective);
+    }
+    
+    //[optional] mark an objective as complete
+    if (frameData.completeObjective !== undefined && !Objectives.getAttribute(frameData.completeObjective, "completed")) {
+      Objectives.complete(frameData.completeObjective);
     }
     
     console.log(`Currently at: ${frameData.id}`);

@@ -181,7 +181,8 @@
         {
           "text": "Head down into Athens",
           "next": "road-end",
-          "time": 30
+          "time": 30,
+          "completeObjective": "reachAthens"
         },
         {
           "text": "Climb the track to the cave",
