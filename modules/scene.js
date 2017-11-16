@@ -152,7 +152,7 @@ const Scene = (function () {
           View.updateAll();
           self.proceedTo(firstFrame);
         } catch (SyntaxError) {
-          console.error(`There's something wrong in the JSON syntax of this scene: ${scenePath} Try running it through JSONLint.com`);
+          console.error(`There was an error processing the first frame, or there's something wrong in the JSON syntax of this scene: ${scenePath} Try running it through JSONLint.com`);
         }
       } else {
         console.error(`Retrieved response, but status was not 200. Status text: ${request.statusText}`);
