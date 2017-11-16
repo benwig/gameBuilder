@@ -70,15 +70,15 @@ const View = (function () {
     
     // only removes objective with selected index. includes effect for removal
     removeObjective (id) {
-      
+      this.updateObjectives();
     },
     
     // adds completed class to objective with selected index
     markObjectiveCompleted (id) {
-      
+      this.updateObjectives();
     },
     
-    /*updateObjectives () {
+    updateObjectives () {
       const objectives = Objectives.getAll();
       objectives.forEach(function(obj) {
         let txt = "";
@@ -90,7 +90,7 @@ const View = (function () {
         txt += obj.text;
         console.log(txt);
       });
-    },*/
+    },
     
     updateAll () {
       this.updateInventory();

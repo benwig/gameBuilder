@@ -26,7 +26,13 @@
       "id": "collectHoney",
       "text": "Collect honey from your hives",
       "type": "secondary",
-      "timelimit": "false"
+      "timelimit": false
+    },
+    {
+      "id": "reachAthens",
+      "text": "Get to Athens",
+      "type": "core",
+      "timelimit": false
     }
   ]
 }

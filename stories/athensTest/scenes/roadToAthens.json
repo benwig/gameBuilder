@@ -6,6 +6,7 @@
     {
       "id": "scene-start",
       "text": "Venture out onto the road and start the game?",
+      "objective": "reachAthens",
       "options": [
         {
           "text": "OK",

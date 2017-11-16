@@ -83,7 +83,6 @@ const Scene = (function () {
     }
     
     //[optional] give player an objective
-    debugger;
     if (option.objective !== undefined && !Objectives.getAttribute(option.objective, "assigned")) {
       Objectives.assign(option.objective);
     }
@@ -130,6 +129,11 @@ const Scene = (function () {
     if (frameData.text2 !== undefined) {
       frameData.text = frameData.text2;
       delete frameData.text2;
+    }
+    
+    //[optional] give the player an objective
+    if (frameData.objective !== undefined && !Objectives.getAttribute(frameData.objective, "assigned")) {
+      Objectives.assign(frameData.objective);
     }
     
     console.log(`Currently at: ${frameData.id}`);
