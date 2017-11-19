@@ -5,23 +5,38 @@ const Player = (function () {
   "use strict";
   
   const data = {
-    energy: 0,
-    enthusiasm: 0,
+    energy: {
+      value: 0,
+      limit: 10
+    },
+    enthusiasm: {
+      value: 0,
+      limit: 5
+    },
     choices: {}
   };
   
   return {
     
-    set: function (key, value) {
-      data[key] = value;
+    set: function (newvalue, key, key2="value") {
+      data[key][key2] = newvalue;
+      return data[key][key2];
     },
     
-    get: function (key) {
-      return data[key];
+    get: function (key, key2="value") {
+      return data[key][key2];
     },
     
-    increment: function (key, value) {
-      data[key] += parseInt(value);
+    increment: function (change, key) {
+      let limit = data[key].limit,
+          newvalue = data[key].value + parseInt(change);
+      if (newvalue > limit) {
+        newvalue = limit;
+      } else if (newvalue < 0) {
+        newvalue = 0;
+      }
+      data[key].value = newvalue;
+      return data[key].value;
     }
 
   };
