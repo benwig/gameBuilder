@@ -100,7 +100,8 @@
         {
           "text": "Delicious honey! Wonderful.",
           "next": "honeyfield",
-          "getItem": {"name": "Honey", "value": 1, "edible": true, "nutrition": 5, "description": "Sweet honey from the slopes of Mount Hymettos"}
+          "getItem": {"name": "Honey", "value": 1, "edible": true, "nutrition": 5, "description": "Sweet honey from the slopes of Mount Hymettos"},
+          "completeObjective": "collectHoney"
         }
       ]
     },
@@ -156,6 +157,7 @@
       "id": "south-2",
       "text": "As you walk along the road, you cross a broad valley with olive trees scattered across it. A tiny tavern stands in the middle of the valley, close to the road. A sign outside advertises wine and olive oil for sale.",
       "text2": "You are on the road outside a tavern in a broad valley.",
+      "objective": "visitTavern",
       "options": [
         {
           "text": "Enter the tavern",
@@ -421,6 +423,7 @@
     {
       "id": "road-end",
       "text": "You have reached Athens!",
+      "completeObjective": "reachAthens",
       "options": []
     }  
   ]

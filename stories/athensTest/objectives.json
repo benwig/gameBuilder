@@ -1,41 +1,21 @@
 {
   "objectives": [
     {
-      "id": "sample",
-      "text": "Buy a sample at the market",
-      "type": "core",
-      "timelimit": false
-    },
-    {
-      "id": "sample2",
-      "text": "Find the missing sample",
-      "type": "secondary",
-      "timelimit": false,
-      "sub": [
-        {
-          "id": "sample2-1",
-          "text": "Talk to the tavern keeper"
-        },
-        {
-          "id": "sample2-1",
-          "text": "Deliver the letter"
-        }
-      ]
-    },
-    {
       "id": "collectHoney",
       "text": "Collect honey from your hives",
       "type": "secondary",
-      "timelimit": false,
-      "successCriteria": {
-        "haveItems": ["Honey"],
-        "viewFrames": ["honeyfield-2"]
-      }
+      "timelimit": false
     },
     {
       "id": "reachAthens",
       "text": "Get to Athens",
       "type": "core",
+      "timelimit": false
+    },
+    {
+      "id": "visitTavern",
+      "text": "Stop in at your local tavern",
+      "type": "secondary",
       "timelimit": false
     }
   ]

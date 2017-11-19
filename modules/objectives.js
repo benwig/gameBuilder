@@ -19,7 +19,6 @@ const Objectives = (function () {
 
   Objective.prototype.changeComplete = function (bool) {
     this.completed = bool;
-    //TODO: Call View.markObjectiveCompleted(id)
   };
   
   Objective.prototype.changeAssigned = function (bool) {
@@ -31,19 +30,6 @@ const Objectives = (function () {
   
   Objective.prototype.fail = function (bool) {
     this.failed = true;
-  };
-  
-  //checks to see if all success criteria have been met. If yes, change complete.
-  Objective.prototype.checkSuccess = function () {
-    const criteria = this.successCriteria;
-    const isSuccessful = true;
-    //TODO: iterate through each attribute, checking if true
-    //TODO: if false, change isSuccessful to false, and break
-    //TODO: if isSuccessful is still true, call changeComplete
-    if (isSuccessful) {
-      this.changeComplete(true);
-    }
-    return isSuccessful;
   };
 
   //////////////////////
@@ -89,7 +75,7 @@ const Objectives = (function () {
   
   self.assign = function (id) {
     objectives[id].changeAssigned(true);
-    View.addObjective(id);
+    View.assignObjective(id);
   };
   
   self.getAttribute = function (id, attr) {
@@ -115,7 +101,6 @@ const Objectives = (function () {
         minilist.push({"text": objectives[key].text, "type": objectives[key].type, "completed": objectives[key].completed});
       }
     }
-    
     return minilist;
   };
   

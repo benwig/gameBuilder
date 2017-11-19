@@ -64,8 +64,16 @@ const View = (function () {
     },
     
     // adds new objective. includes effect for addition
-    addObjective (id) {
-      this.updateObjectives();
+    assignObjective (id) {
+      let objLi = document.createElement('li');
+      objLi.textContent = Objectives.getAttribute(id, "text");
+      objLi.dataset.id = id;
+      objLi.classList.add("notcompleted");
+      if (Objectives.getAttribute(id, "type") === "core") {
+        document.getElementById("objectives-core").appendChild(objLi);
+      } else {
+        document.getElementById("objectives-secondary").appendChild(objLi);
+      }
     },
     
     // only removes objective with selected index. includes effect for removal
@@ -78,25 +86,10 @@ const View = (function () {
       this.updateObjectives();
     },
     
-    updateObjectives () {
-      const objectives = Objectives.getAll();
-      objectives.forEach(function(obj) {
-        let txt = "";
-        if (obj.completed) {
-          txt += "(x)";
-        } else {
-          txt += "( )";
-        }
-        txt += obj.text;
-        console.log(txt);
-      });
-    },
-    
     updateAll () {
       this.updateInventory();
       this.updateTime();
       this.updateWallet();
-      //this.updateObjectives();
     },
     
     // removeItem - only removes item with selected index. includes effect for removal

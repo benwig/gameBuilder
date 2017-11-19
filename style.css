@@ -33,17 +33,32 @@ h4 {
   font-size: 1.3em;
 }
 
-.inventory, .wallet, .clock {
+.inventory, .wallet, .clock, .objectives {
   max-width: 700px;
   margin: 10px 10px 0;
   padding: 10px;
   border: 1px dashed black;
 }
 
-.inventory {
+.inventory, .objectives {
   height: 200px;
+  width: 330px;
+  margin: 0;
+  display: inline-block;
+}
+
+.objectives {
+  overflow: scroll;
 }
 
 .clock {
   padding: 0 10px;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 720px;
+  margin: 10px 10px 0;
 }
