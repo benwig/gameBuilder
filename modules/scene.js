@@ -64,6 +64,20 @@ const Scene = (function () {
     }
   };
   
+  //assign an objective
+  const assignObjective = function (objId) {
+    if (objId !== undefined && !Objectives.getAttribute(objId, "assigned")) {
+      Objectives.assign(objId);
+    }
+  };
+  
+  //mark objective as complete
+  const completeObjective = function (objId) {
+    if (objId !== undefined && !Objectives.getAttribute(objId, "completed")) {
+      Objectives.complete(objId);
+    }
+  };
+  
   //////////////////////
   /// PUBLIC METHODS ///
   //////////////////////
@@ -83,14 +97,10 @@ const Scene = (function () {
     }
     
     //[optional] give player an objective
-    if (option.objective !== undefined && !Objectives.getAttribute(option.objective, "assigned")) {
-      Objectives.assign(option.objective);
-    }
+    assignObjective(option.objective);
     
     //[optional] mark an objective as complete
-    if (option.completeObjective !== undefined && !Objectives.getAttribute(option.completeObjective, "completed")) {
-      Objectives.complete(option.completeObjective);
-    }
+    completeObjective(option.completeObjective);
 
     //[optional] change the future 'next' of the selected option
     if (option.next2 !== undefined) {
@@ -118,15 +128,16 @@ const Scene = (function () {
       frameData.options.splice(optionId, 1);
     }
 
+    //remove frame options permanently if their oneoff = true
     removeOneoffs();
+    
     this.proceedTo(next);
   };
   
-  //sets frameData to current frame
   self.proceedTo = function (frameId) {
     
+    //sets frameData to current frame
     frameData = findFrame(frameId);
- 
     View.setFrameText(getFrameText());
     View.addOptions(frameData.options);
 
@@ -137,14 +148,10 @@ const Scene = (function () {
     }
     
     //[optional] give the player an objective
-    if (frameData.objective !== undefined && !Objectives.getAttribute(frameData.objective, "assigned")) {
-      Objectives.assign(frameData.objective);
-    }
+    assignObjective(frameData.objective);
     
     //[optional] mark an objective as complete
-    if (frameData.completeObjective !== undefined && !Objectives.getAttribute(frameData.completeObjective, "completed")) {
-      Objectives.complete(frameData.completeObjective);
-    }
+    completeObjective(frameData.completeObjective);
     
     console.log(`Currently at: ${frameData.id}`);
 
