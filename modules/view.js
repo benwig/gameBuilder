@@ -8,6 +8,8 @@ const View = (function () {
   const itemList = document.querySelector('#inventory');
   const wallet = document.querySelector('#wallet');
   const clock = document.querySelector('#clock');
+  const coreObjectives = document.querySelector('#objectives-core');
+  const secondaryObjectives = document.querySelector('#objectives-secondary');
   
   const clear = function (parent) {
     while (parent.lastChild) {
@@ -16,6 +18,12 @@ const View = (function () {
   };
   
   return {
+    
+    updateAll () {
+      this.updateInventory();
+      this.updateTime();
+      this.updateWallet();
+    },
     
     setFrameText (text) {
       document.querySelector("#frameText").innerHTML = text;
@@ -67,29 +75,23 @@ const View = (function () {
     assignObjective (id) {
       let objLi = document.createElement('li');
       objLi.textContent = Objectives.getAttribute(id, "text");
-      objLi.dataset.id = id;
-      objLi.classList.add("notcompleted");
+      objLi.id = `objective--${id}`;
       if (Objectives.getAttribute(id, "type") === "core") {
-        document.getElementById("objectives-core").appendChild(objLi);
+        coreObjectives.appendChild(objLi);
       } else {
-        document.getElementById("objectives-secondary").appendChild(objLi);
+        secondaryObjectives.appendChild(objLi);
       }
     },
     
     // only removes objective with selected index. includes effect for removal
     removeObjective (id) {
-      this.updateObjectives();
+      let toRemove = document.getElementById(`objective--${id}`);
+      toRemove.parentNode.removeChild(toRemove);
     },
     
     // adds completed class to objective with selected index
     markObjectiveCompleted (id) {
-      this.updateObjectives();
-    },
-    
-    updateAll () {
-      this.updateInventory();
-      this.updateTime();
-      this.updateWallet();
+      document.getElementById(`objective--${id}`).classList.add("objective--completed");
     },
     
     // removeItem - only removes item with selected index. includes effect for removal

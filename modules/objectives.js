@@ -47,6 +47,11 @@ const Objectives = (function () {
     }
   };
   
+  self.assign = function (id) {
+    objectives[id].changeAssigned(true);
+    View.assignObjective(id);
+  };
+  
   self.complete = function (id) {
     try {
       objectives[id].changeComplete(true);
@@ -56,14 +61,6 @@ const Objectives = (function () {
     View.markObjectiveCompleted(id);
   };
   
-  self.uncomplete = function (id) {
-    try {
-      objectives[id].changeComplete(false);
-    } catch (TypeError) {
-      console.error(`There's no objective called '${id}'`);
-    }
-  };
-  
   self.fail = function (id) {
     try {
       objectives[id].fail();
@@ -71,11 +68,6 @@ const Objectives = (function () {
       console.error(`There's no objective called '${id}'`);
     }
     View.removeObjective(id);
-  };
-  
-  self.assign = function (id) {
-    objectives[id].changeAssigned(true);
-    View.assignObjective(id);
   };
   
   self.getAttribute = function (id, attr) {
@@ -90,7 +82,7 @@ const Objectives = (function () {
     }
   };
   
-  //returns an array with a subset of info about all assigned/completed objectives
+  //returns an array with a subset of info about all assigned/completed objectives. Useful if repopulating frontend after reload.
   self.getAll = function () {
     let minilist = [];
     
