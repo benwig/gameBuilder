@@ -12,8 +12,8 @@
           "text": "OK",
           "next": "road-start",
           "prefix": "A gentle breeze blows. You feel refreshed and full of enthusiasm for the day ahead.",
-          "energy": 3,
-          "enthusiasm": 5,
+          "energy": 5,
+          "enthusiasm": 4,
           "objective": "collectHoney",
           "getItem": {"name": "Sandals", "value": 1, "description": "A basic pair of sandals. Rather dusty."}
         }
