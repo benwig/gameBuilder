@@ -66,8 +66,14 @@ const Inventory = (function () {
       }
       return false;
     },
+    
+    //returns a reference to a single item
+    get: function (name) {
+      const i = this.getIndexOf(name);
+      return items[i];
+    },
   
-    //returns the entire items array, with all the item attributes and methods
+    //returns the entire items array as refernce, with all the item attributes and methods
     getAll: function () {
       return items;
     },

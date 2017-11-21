@@ -33,6 +33,17 @@ h4 {
   font-size: 1.3em;
 }
 
+#inventory li {
+  padding: 3px;
+  border: 1px solid black;
+  cursor: pointer;
+  margin: 0 0 5px;
+}
+
+#inventory li:hover {
+  background-color: #eee;
+}
+
 .inventory, .wallet, .clock, .objectives {
   max-width: 700px;
   margin: 10px 10px 0;
