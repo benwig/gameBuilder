@@ -10,6 +10,8 @@ const View = (function () {
   const clock = document.querySelector('#clock');
   const coreObjectives = document.querySelector('#objectives-core');
   const secondaryObjectives = document.querySelector('#objectives-secondary');
+  const energy = document.querySelector('#energy');
+  const enthusiasm = document.querySelector('#enthusiasm');
   
   const clear = function (parent) {
     while (parent.lastChild) {
@@ -69,6 +71,20 @@ const View = (function () {
         minutes = minutes.toString();
       }
       clock.textContent = `${hour}:${minutes}`;
+    },
+    
+    updateStats (name) {
+      debugger;
+      switch(name) {
+        case "energy":
+          energy.textContent = Player.get("energy");
+          break;
+        case "enthusiasm":
+          enthusiasm.textContent = Player.get("enthusiasm");
+          break;
+        default:
+          console.error("Could not update stats, incorrect argument given.")
+      }
     },
     
     // adds new objective. includes effect for addition

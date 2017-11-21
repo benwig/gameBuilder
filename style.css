@@ -11,6 +11,10 @@ li {
   list-style: none;
 }
 
+p {
+  margin: 5px;
+}
+
 button {
   font-size: 1.2em;
   padding: 5px;
@@ -33,10 +37,10 @@ h4 {
   font-size: 1.3em;
 }
 
-.inventory, .wallet, .clock, .objectives {
+.inventory, .wallet, .clock, .objectives, .stats {
   max-width: 700px;
   margin: 10px 10px 0;
-  padding: 10px;
+  padding: 5px 10px;
   border: 1px dashed black;
 }
 
