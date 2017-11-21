@@ -3,9 +3,6 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <dialog id="iteminfo">
-      <button id="iteminfo--exit"></button>
-    </dialog>
     <div class="clock">
       <p>Time: <span id="clock"></span></p>
     </div>
@@ -15,10 +12,15 @@
       </ul>
     </div>
     <div class="container">
-      <div class="inventory">
+      <div class="inventory"  onclick="Handlers.openItemInfo(event)">
         <h4>Inventory</h4>
         <ul id="inventory"></ul>
       </div>
+      <dialog id="iteminfo">
+        <h3 id="iteminfo--name"></h3>
+        <p id="iteminfo--description"></p>
+        <button id="iteminfo--exit" onclick="document.getElementById('iteminfo').close()">Close</button>
+      </dialog>
       <div class="objectives">
         <h4>Core Objectives</h4>
         <ul id="objectives-core"></ul>
@@ -39,16 +41,5 @@
     <script src="modules/view.js"></script>
     <script src="modules/handlers.js"></script>
     <script src="init.js"></script>
-    <script>
-      (function() {  
-        var dialog = document.getElementById('iteminfo');  
-        document.querySelector('#inventory').onclick = function() {  
-            dialog.show();  
-        };  
-        document.getElementById('iteminfo--exit').onclick = function() {  
-            dialog.close();  
-        };  
-      })();
-    </script>
   </body>
 </html>

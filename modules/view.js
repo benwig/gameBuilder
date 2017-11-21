@@ -51,8 +51,26 @@ const View = (function () {
       for (let i = 0, il = items.length; i < il; i +=1) {
         let li = document.createElement('li');
         li.textContent = items[i].name;
+        li.dataset.itemId = items[i].name;
         itemList.appendChild(li);
       }
+    },
+    
+    // removeItem - only removes item with selected index. includes effect for removal
+    // same for getItem
+    
+    openItemInfo (itemId) {
+      const dialog = document.getElementById("iteminfo");
+      const name = document.getElementById("iteminfo--name");
+      const description = document.getElementById("iteminfo--description");
+      const item = Inventory.get(itemId);
+      name.textContent = item.name;
+      description.textContent = item.description;
+      if (item.nutrition > 0) {
+         //TODO: if item is edible, add 'consume' button and appropriate binding
+        console.log('edible');
+      }
+      dialog.showModal();
     },
     
     updateWallet () {
@@ -92,17 +110,7 @@ const View = (function () {
     // adds completed class to objective with selected index
     markObjectiveCompleted (id) {
       document.getElementById(`objective--${id}`).classList.add("objective--completed");
-    },
-    
-    // removeItem - only removes item with selected index. includes effect for removal
-    // same for getItem
-    
-    toggleItemInfo () {
-      //if info box is hidden
-        //show box with text in it
-        //also a dismiss button ("OK")
-      //else hide the info box
-    },
+    }
     
   };
 
