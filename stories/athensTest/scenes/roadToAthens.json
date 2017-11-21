@@ -11,6 +11,9 @@
         {
           "text": "OK",
           "next": "road-start",
+          "prefix": "A gentle breeze blows. You feel refreshed and full of enthusiasm for the day ahead.",
+          "energy": 3,
+          "enthusiasm": 5,
           "objective": "collectHoney",
           "getItem": {"name": "Sandals", "value": 1, "description": "A basic pair of sandals. Rather dusty."}
         }
@@ -255,7 +258,9 @@
         {
           "text": "Glug",
           "next": "tavern-2",
-          "money": -2
+          "money": -2,
+          "enthusiasm": 1,
+          "energy": -1
         }
       ]
     },

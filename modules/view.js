@@ -74,13 +74,12 @@ const View = (function () {
     },
     
     updateStats (name) {
-      debugger;
       switch(name) {
         case "energy":
-          energy.textContent = Player.get("energy");
+          energy.textContent = `${Player.get("energy")}/${Player.get("energy", "limit")}`;
           break;
         case "enthusiasm":
-          enthusiasm.textContent = Player.get("enthusiasm");
+          enthusiasm.textContent = `${Player.get("enthusiasm")}/${Player.get("enthusiasm", "limit")}`;
           break;
         default:
           console.error("Could not update stats, incorrect argument given.")

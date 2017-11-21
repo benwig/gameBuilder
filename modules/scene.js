@@ -78,6 +78,23 @@ const Scene = (function () {
     }
   };
   
+  //increment energy
+  const incrementEnergy = function (delta) {
+    if (delta !== undefined) {
+      Player.increment(delta, "energy");
+    }
+  };
+  
+  //increment enthusiasm
+  const incrementStats = function (energydelta, enthusiasmdelta) {
+    if (energydelta !== undefined) {
+      Player.increment(energydelta, "energy");
+    }
+    if (enthusiasmdelta !== undefined) {
+      Player.increment(enthusiasmdelta, "enthusiasm");
+    }
+  };
+  
   //////////////////////
   /// PUBLIC METHODS ///
   //////////////////////
@@ -101,6 +118,9 @@ const Scene = (function () {
     
     //[optional] mark an objective as complete
     completeObjective(option.completeObjective);
+    
+    //[optional] award/deduct energy and enthusiasm
+    incrementStats(option.energy, option.enthusiasm);
 
     //[optional] change the future 'next' of the selected option
     if (option.next2 !== undefined) {
@@ -152,6 +172,9 @@ const Scene = (function () {
     
     //[optional] mark an objective as complete
     completeObjective(frameData.completeObjective);
+    
+    //[optional] award/deduct energy and enthusiasm
+    incrementStats(frameData.energy, frameData.enthusiasm);
     
     console.log(`Currently at: ${frameData.id}`);
 
