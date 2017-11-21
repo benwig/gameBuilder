@@ -16,10 +16,15 @@
       </ul>
     </div>
     <div class="container">
-      <div class="inventory">
+      <div class="inventory"  onclick="Handlers.openItemInfo(event)">
         <h4>Inventory</h4>
         <ul id="inventory"></ul>
       </div>
+      <dialog id="iteminfo">
+        <h3 id="iteminfo--name"></h3>
+        <p id="iteminfo--description"></p>
+        <button id="iteminfo--exit" onclick="document.getElementById('iteminfo').close()">Close</button>
+      </dialog>
       <div class="objectives">
         <h4>Core Objectives</h4>
         <ul id="objectives-core"></ul>

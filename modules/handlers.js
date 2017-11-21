@@ -14,6 +14,15 @@ const Handlers = (function () {
       } catch (TypeError) {
         event.stopPropagation();
       }
+    },
+    
+    openItemInfo(event) {
+      try {
+        const itemId = event.target.dataset.itemId;
+        View.openItemInfo(itemId);
+      } catch (TypeError) {
+        event.stopPropagation();
+      }
     }
     
   };
