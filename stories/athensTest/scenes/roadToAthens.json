@@ -206,6 +206,7 @@
       "id": "tavern-1",
       "text": "You find yourself in a small tavern with a brick floor. It's dark. The innkeeper is stacking plates behind the wooden table which serves as a bar. The tavern is empty, apart from three old men in the far corner, hunched around a table, chewing on bread and olives and conversing quietly.",
       "text2": "You are in a small tavern. The innkeeper is resting on a stool behind the bar. Three old men sit in the corner, eating breakfast.",
+      "completeObjective": "visitTavern",
       "options": [
         {
           "text": "Approach the bar",
@@ -254,13 +255,13 @@
     {
       "id": "buy-wine",
       "text": "'Wine it is, then! One glass coming right up.'",
+      "enthusiasm": 1,
+      "energy": -1,
       "options": [
         {
           "text": "Glug",
           "next": "tavern-2",
-          "money": -2,
-          "enthusiasm": 1,
-          "energy": -1
+          "money": -2
         }
       ]
     },

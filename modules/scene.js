@@ -12,7 +12,7 @@ const Scene = (function () {
   // HELPER FUNCTIONS //
   //////////////////////
   
-  //return frame
+  //return new frame; if not found, return current frame
   const findFrame = function (frameId) {
     for (let i = 0, fl = sceneData.frames.length; i < fl; i += 1) {
       if (sceneData.frames[i].id === frameId) {
@@ -77,22 +77,46 @@ const Scene = (function () {
       Objectives.complete(objId);
     }
   };
-  
-  //increment energy
-  const incrementEnergy = function (delta) {
-    if (delta !== undefined) {
-      Player.increment(delta, "energy");
+
+  //add or deduct energy/enthusiasm
+  const incrementStats = function (energyDelta, enthusiasmDelta) {
+    if (energyDelta !== undefined) {
+      Player.increment(energyDelta, "energy");
+    }
+    if (enthusiasmDelta !== undefined) {
+      Player.increment(enthusiasmDelta, "enthusiasm");
     }
   };
   
-  //increment enthusiasm
-  const incrementStats = function (energydelta, enthusiasmdelta) {
-    if (energydelta !== undefined) {
-      Player.increment(energydelta, "energy");
+  //move game time onward
+  const incrementTime = function (delta) {
+    if (delta !== undefined) {
+      Time.increment(delta);
     }
-    if (enthusiasmdelta !== undefined) {
-      Player.increment(enthusiasmdelta, "enthusiasm");
+  };
+  
+  //add item to inventory
+  const getItem = function (item) {
+    if (item !== undefined) {
+      Inventory.add(item);
     }
+  };
+  
+  const incrementMoney = function (delta) {
+    if (delta !== undefined) {
+      Wallet.changeBy(delta);
+    }
+  };
+  
+  //processes commonalities for option or frame
+  //focus stands in for either "frameData" or "option"
+  const runHelpers = function (focus) {
+    getItem(focus.getItem);
+    incrementMoney(focus.money);
+    assignObjective(focus.objective);
+    completeObjective(focus.completeObjective);
+    incrementStats(focus.energy, focus.enthusiasm);
+    incrementTime(focus.time);
   };
   
   //////////////////////
@@ -102,26 +126,7 @@ const Scene = (function () {
   self.processOption = function (optionId) {
     const option = frameData.options[optionId]; //ultimately references part of sceneData
     let next = option.next; //a string, so, not a reference. Can be temporarily modified.
-      
-    //[optional] add item to inventory
-    if (option.getItem !== undefined) {
-      Inventory.add(option.getItem);
-    }
-
-    //[optional] get/lose money
-    if (option.money !== undefined) {
-      Wallet.changeBy(option.money);
-    }
     
-    //[optional] give player an objective
-    assignObjective(option.objective);
-    
-    //[optional] mark an objective as complete
-    completeObjective(option.completeObjective);
-    
-    //[optional] award/deduct energy and enthusiasm
-    incrementStats(option.energy, option.enthusiasm);
-
     //[optional] change the future 'next' of the selected option
     if (option.next2 !== undefined) {
       option.next = option.next2;
@@ -131,11 +136,6 @@ const Scene = (function () {
     //[optional] store a prefix for using on the next text
     if (option.prefix !== undefined) {
       prefix = option.prefix;
-    }
-
-    //[optional] move game time onward
-    if (option.time !== undefined) {
-      Time.increment(option.time);
     }
 
     //[optional] if conditions are met, send player to a different 'next'
@@ -148,9 +148,8 @@ const Scene = (function () {
       frameData.options.splice(optionId, 1);
     }
 
-    //remove frame options permanently if their oneoff = true
     removeOneoffs();
-    
+    runHelpers(option);
     this.proceedTo(next);
   };
   
@@ -167,17 +166,8 @@ const Scene = (function () {
       delete frameData.text2;
     }
     
-    //[optional] give the player an objective
-    assignObjective(frameData.objective);
-    
-    //[optional] mark an objective as complete
-    completeObjective(frameData.completeObjective);
-    
-    //[optional] award/deduct energy and enthusiasm
-    incrementStats(frameData.energy, frameData.enthusiasm);
-    
+    runHelpers(frameData);
     console.log(`Currently at: ${frameData.id}`);
-
   };
 
   self.init = function (scenePath) {
