@@ -53,7 +53,7 @@ const View = (function () {
       for (let i = 0, il = items.length; i < il; i +=1) {
         let li = document.createElement('li');
         li.textContent = items[i].name;
-        li.dataset.itemId = items[i].name;
+        li.dataset.itemId = items[i].id;
         itemList.appendChild(li);
       }
     },
@@ -70,6 +70,9 @@ const View = (function () {
       description.textContent = item.description;
       if (item.nutrition > 0) {
          //TODO: if item is edible, add 'consume' button and appropriate binding
+        //const consumeButton = document.createElement('button');
+        //consumeButton.addEventHandler('click', function () {item.consume});
+        //modal.appendChild(consumeButton);
         console.log('edible');
       }
       dialog.showModal();

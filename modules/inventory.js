@@ -5,10 +5,18 @@ const Inventory = (function () {
   "use strict";
   
   const items = [];
+  const newIdMaker = function () {
+    let i = 0;
+    return function() {
+      return i++;
+    }
+  };
+  const newId = newIdMaker();
   
   //Basic item constructor
   function Item(settings) {
     settings = settings || {};
+    this.id = newId();
     this.name = settings.name || "Unnamed Object";
     this.description = settings.description || "An undescribed object";
     this.icon = settings.icon || "unknownObject.png";
@@ -68,8 +76,8 @@ const Inventory = (function () {
     },
     
     //returns a reference to a single item
-    get: function (name) {
-      const i = this.getIndexOf(name);
+    get: function (id) {
+      const i = this.getIndexOf(id);
       return items[i];
     },
   
@@ -78,16 +86,16 @@ const Inventory = (function () {
       return items;
     },
     
-    //returns the index position of the first item in the array which has a name matching the argument
-    getIndexOf: function (name) {
+    //returns the index position of the item in the array with unique id
+    getIndexOf: function (id) {
       let i,
           il;
       for (i = 0, il = items.length; i < il; i += 1) {
-        if (items[i].name === name) {
+        if (items[i].id === parseInt(id)) {
           return i;
         }
       }
-      console.error("No item with that name.");
+      console.error("No item with that id.");
     }
     
   };
