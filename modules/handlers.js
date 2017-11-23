@@ -8,26 +8,29 @@ const Handlers = (function () {
     
     //handle click on an option button
     processOption(event) {
-      try {
-        let optionId = event.target.dataset.optionId;
+      const optionId = event.target.dataset.optionId;
+      if (optionId !== undefined) {
         Scene.processOption(optionId);
-      } catch (TypeError) {
+      } else {
         event.stopPropagation();
       }
     },
     
     openItemInfo(event) {
-      try {
-        const itemId = event.target.dataset.itemId;
+      const itemId = event.target.dataset.itemId;
+      if (itemId !== undefined) {
         View.openItemInfo(itemId);
-      } catch (TypeError) {
+      } else {
         event.stopPropagation();
       }
     },
     
-    consumeItem(event) {
-      const itemId = event.target.dataset.itemId;
-      Inventory.get(itemId).consume();
+    closeItemInfo() {
+      View.closeItemInfo();
+    },
+    
+    consumeItem(id) {
+      Inventory.get(id).consume();
     }
     
   };

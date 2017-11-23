@@ -103,7 +103,7 @@
         {
           "text": "Delicious honey! Wonderful.",
           "next": "honeyfield",
-          "getItem": {"name": "Honey", "value": 1, "edible": true, "nutrition": 5, "description": "Sweet honey from the slopes of Mount Hymettos"},
+          "getItem": {"name": "Honey", "value": 1, "edible": true, "energy": 5, "description": "Sweet honey from the slopes of Mount Hymettos"},
           "completeObjective": "collectHoney"
         }
       ]
@@ -275,7 +275,7 @@
           "text": "'Thank you'",
           "next": "tavern-2",
           "money": -1,
-          "getItem": {"name": "Loaf of bread", "value": 1, "description": "A small loaf of fresh bread from a tavern outside Athens.", "nutrition": 2, "edible": true}
+          "getItem": {"name": "Loaf of bread", "value": 1, "description": "A small loaf of fresh bread from a tavern outside Athens.", "energy": 2, "edible": true}
         },
         {
           "text": "'Looks gross. Take it back.'",

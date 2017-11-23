@@ -22,7 +22,6 @@ const Inventory = (function () {
     this.description = settings.description || "An undescribed object";
     this.icon = settings.icon || "unknownObject.png";
     this.value = settings.value || 0;
-    this.nutrition = settings.nutrition || 0;
     this.energy = settings.energy || 0;
     this.speed = settings.speed || 0;
     this.wearable = settings.wearable || false;
@@ -31,8 +30,8 @@ const Inventory = (function () {
   
   //increment player energy and remove item from inventory
   Item.prototype.consume = function () {
-    if (this.nutrition > 0) {
-      Player.increment(this.nutrition, "energy");
+    if (this.energy > 0) {
+      Player.increment(this.energy, "energy");
       self.remove(self.getIndexOf(this.id));
     } else {
       console.error("This item is not edible");

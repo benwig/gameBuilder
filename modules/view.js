@@ -19,6 +19,23 @@ const View = (function () {
       }
   };
   
+  //return a button
+  const buildButton = function(label, callback) {
+    let button = document.createElement('button');
+    button.textContent = label;
+    button.addEventListener('click', function () {
+      callback();
+    });
+    return button;
+  };
+    
+  //return a paragraph
+  const buildP = function(content) {
+    let p = document.createElement('p');
+    p.textContent = content;
+    return p;
+  };
+  
   return {
     
     updateAll () {
@@ -61,34 +78,32 @@ const View = (function () {
     // removeItem - only removes item with selected index. includes effect for removal
     // same for getItem
     
-    //build an info panel for items, with the correct event listeners
+    closeItemInfo () {
+      document.getElementById('iteminfo').close();
+    },
+    
+    //build an info panel for items, with event listeners on buttons
     openItemInfo (itemId) {
       const dialog = document.getElementById("iteminfo"),
             name = document.getElementById("iteminfo--name"),
             description = document.getElementById("iteminfo--description"),
             buttons = document.getElementById("iteminfo--buttons"),
-            item = Inventory.get(itemId),
-            closeButton = document.createElement('button');
+            item = Inventory.get(itemId);
+      
       // add text
       name.textContent = item.name;
-      description.textContent = item.description;
+      clear(description);
+      description.appendChild(buildP(item.description));
+      
       // add buttons
       clear(buttons);
-      closeButton.textContent = "Close";
-      closeButton.addEventListener('click', function () {
-        document.getElementById('iteminfo').close();
-      });
-      buttons.appendChild(closeButton);
-      if (item.nutrition > 0) {
-        let consumeButton = document.createElement('button');
-        consumeButton.dataset.itemId = item.id;
-        consumeButton.textContent = "Consume";
-        consumeButton.addEventListener('click', function () {
-          document.getElementById('iteminfo').close();
-          Handlers.consumeItem(event);
-        });
-        buttons.appendChild(consumeButton);
-        console.log('edible');
+      buttons.appendChild(buildButton("Close", Handlers.closeItemInfo));
+      if (item.energy > 0) {
+        buttons.appendChild(buildButton("Consume", function(){
+          Handlers.consumeItem(item.id);
+          Handlers.closeItemInfo();
+        }));
+        description.appendChild(buildP(` Energy: ${item.energy}`));
       }
       dialog.showModal();
     },
