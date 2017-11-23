@@ -36,8 +36,7 @@ const Player = (function () {
         newvalue = 0;
       }
       data[key].value = newvalue;
-      View.updateStats(key);
-      return data[key].value;
+      View.updateStats(key, data[key].value, data[key].limit);
     }
 
   };

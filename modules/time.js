@@ -31,8 +31,7 @@ const Time = (function () {
     
     increment: function (minutes) {
       now = now + minutes;
-      View.updateTime();
-      return now;
+      View.updateTime(now);
     },
     
     laterThan: function (minutes) {

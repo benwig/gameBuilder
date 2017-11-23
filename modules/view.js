@@ -38,12 +38,6 @@ const View = (function () {
   
   return {
     
-    updateAll () {
-      this.updateInventory();
-      this.updateTime();
-      this.updateWallet();
-    },
-    
     setFrameText (text) {
       document.querySelector("#frameText").innerHTML = text;
     },
@@ -108,12 +102,11 @@ const View = (function () {
       dialog.showModal();
     },
     
-    updateWallet () {
-      wallet.textContent = Wallet.contents();
+    updateWallet (value) {
+      wallet.textContent = value;
     },
     
-    updateTime () {
-      let now = Time.get();
+    updateTime (now) {
       let hour = (Math.floor(now / 60)).toString();
       let minutes = now % 60;
       if (minutes < 10) {
@@ -124,13 +117,13 @@ const View = (function () {
       clock.textContent = `${hour}:${minutes}`;
     },
     
-    updateStats (name) {
+    updateStats (name, value, limit) {
       switch(name) {
         case "energy":
-          energy.textContent = `${Player.get("energy")}/${Player.get("energy", "limit")}`;
+          energy.textContent = `${value}/${limit}`;
           break;
         case "enthusiasm":
-          enthusiasm.textContent = `${Player.get("enthusiasm")}/${Player.get("enthusiasm", "limit")}`;
+          enthusiasm.textContent = `${value}/${limit}`;
           break;
         default:
           console.error("Could not update stats, incorrect argument given.");
@@ -138,11 +131,11 @@ const View = (function () {
     },
     
     // adds new objective. includes effect for addition
-    assignObjective (id) {
+    assignObjective (id, text, type) {
       let objLi = document.createElement('li');
-      objLi.textContent = Objectives.getAttribute(id, "text");
+      objLi.textContent = text;
       objLi.id = `objective--${id}`;
-      if (Objectives.getAttribute(id, "type") === "core") {
+      if (type === "core") {
         coreObjectives.appendChild(objLi);
       } else {
         secondaryObjectives.appendChild(objLi);

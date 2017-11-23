@@ -14,8 +14,7 @@ const Wallet = (function () {
       } else {
         value = value + parseInt(sum);
       }
-      View.updateWallet();
-      return value;
+      View.updateWallet(value);
     },
     
     contents: function () {

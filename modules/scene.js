@@ -179,7 +179,6 @@ const Scene = (function () {
         try {
           sceneData = JSON.parse(request.responseText).scene;
           const firstFrame = sceneData.first_frame;
-          View.updateAll();
           self.proceedTo(firstFrame);
         } catch (SyntaxError) {
           console.error(`There was an error processing the first frame, or there's something wrong in the JSON syntax of this scene: ${scenePath} Try running it through JSONLint.com`);

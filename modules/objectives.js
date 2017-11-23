@@ -49,7 +49,7 @@ const Objectives = (function () {
   
   self.assign = function (id) {
     objectives[id].changeAssigned(true);
-    View.assignObjective(id);
+    View.assignObjective(id, objectives[id].text, objectives[id].type);
   };
   
   self.complete = function (id) {
