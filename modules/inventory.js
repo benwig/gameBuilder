@@ -4,6 +4,7 @@ const Inventory = (function () {
   
   "use strict";
   
+  const self = {};
   const items = [];
   const newIdMaker = function () {
     let i = 0;
@@ -28,10 +29,14 @@ const Inventory = (function () {
     this.using = false;
   }
   
+  //increment player energy and remove item from inventory
   Item.prototype.consume = function () {
-    // if this.nutrition > 0
-    // add this.nutrition to player.hunger
-    // else log an error
+    if (this.nutrition > 0) {
+      Player.increment(this.nutrition, "energy");
+      self.remove(self.getIndexOf(this.id));
+    } else {
+      console.error("This item is not edible");
+    }
   };
   
   Item.prototype.use = function () {
@@ -47,57 +52,59 @@ const Inventory = (function () {
     // subtract this.energy and this.speed from player.energy and player.speed
     // set this.using to false
   };
-
-  return {
     
-    //place specified object in items array
-    add: function (settings) {
-      let x = new Item(settings);
-      items.push(x);
-      View.updateInventory();
-    },
-    
-    //delete specified object from items array
-    remove: function (index) {
-      items.splice(index, 1);
-      View.updateInventory();
-    },
-    
-    //check whether inventory contains at least one instance of specified object
-    contains: function (name) {
-      let i,
-          il;
-      for (i = 0, il = items.length; i < il; i += 1) {
-        if (items[i].name === name) {
-          return true;
-        }
-      }
-      return false;
-    },
-    
-    //returns a reference to a single item
-    get: function (id) {
-      const i = this.getIndexOf(id);
-      return items[i];
-    },
+  //////////////////////
+  /// PUBLIC METHODS ///
+  //////////////////////
   
-    //returns the entire items array as refernce, with all the item attributes and methods
-    getAll: function () {
-      return items;
-    },
-    
-    //returns the index position of the item in the array with unique id
-    getIndexOf: function (id) {
-      let i,
-          il;
-      for (i = 0, il = items.length; i < il; i += 1) {
-        if (items[i].id === parseInt(id)) {
-          return i;
-        }
+  //place specified object in items array
+  self.add = function (settings) {
+    let x = new Item(settings);
+    items.push(x);
+    View.updateInventory();
+  },
+
+  //delete specified object from items array
+  self.remove = function (index) {
+    items.splice(index, 1);
+    View.updateInventory();
+  },
+
+  //check whether inventory contains at least one instance of specified object
+  self.contains = function (name) {
+    let i,
+        il;
+    for (i = 0, il = items.length; i < il; i += 1) {
+      if (items[i].name === name) {
+        return true;
       }
-      console.error("No item with that id.");
     }
-    
-  };
+    return false;
+  },
+
+  //returns a reference to a single item
+  self.get = function (id) {
+    const i = this.getIndexOf(id);
+    return items[i];
+  },
+
+  //returns the entire items array as refernce, with all the item attributes and methods
+  self.getAll = function () {
+    return items;
+  },
+
+  //returns the index position of the item in the array with unique id
+  self.getIndexOf = function (id) {
+    let i,
+        il;
+    for (i = 0, il = items.length; i < il; i += 1) {
+      if (items[i].id === parseInt(id)) {
+        return i;
+      }
+    }
+    console.error("No item with that id.");
+  }
+
+  return self;
   
 })();

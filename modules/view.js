@@ -61,18 +61,33 @@ const View = (function () {
     // removeItem - only removes item with selected index. includes effect for removal
     // same for getItem
     
+    //build an info panel for items, with the correct event listeners
     openItemInfo (itemId) {
-      const dialog = document.getElementById("iteminfo");
-      const name = document.getElementById("iteminfo--name");
-      const description = document.getElementById("iteminfo--description");
-      const item = Inventory.get(itemId);
+      const dialog = document.getElementById("iteminfo"),
+            name = document.getElementById("iteminfo--name"),
+            description = document.getElementById("iteminfo--description"),
+            buttons = document.getElementById("iteminfo--buttons"),
+            item = Inventory.get(itemId),
+            closeButton = document.createElement('button');
+      // add text
       name.textContent = item.name;
       description.textContent = item.description;
+      // add buttons
+      clear(buttons);
+      closeButton.textContent = "Close";
+      closeButton.addEventListener('click', function () {
+        document.getElementById('iteminfo').close();
+      });
+      buttons.appendChild(closeButton);
       if (item.nutrition > 0) {
-         //TODO: if item is edible, add 'consume' button and appropriate binding
-        //const consumeButton = document.createElement('button');
-        //consumeButton.addEventHandler('click', function () {item.consume});
-        //modal.appendChild(consumeButton);
+        let consumeButton = document.createElement('button');
+        consumeButton.dataset.itemId = item.id;
+        consumeButton.textContent = "Consume";
+        consumeButton.addEventListener('click', function () {
+          document.getElementById('iteminfo').close();
+          Handlers.consumeItem(event);
+        });
+        buttons.appendChild(consumeButton);
         console.log('edible');
       }
       dialog.showModal();
@@ -103,7 +118,7 @@ const View = (function () {
           enthusiasm.textContent = `${Player.get("enthusiasm")}/${Player.get("enthusiasm", "limit")}`;
           break;
         default:
-          console.error("Could not update stats, incorrect argument given.")
+          console.error("Could not update stats, incorrect argument given.");
       }
     },
     

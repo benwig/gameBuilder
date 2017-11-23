@@ -23,6 +23,11 @@ const Handlers = (function () {
       } catch (TypeError) {
         event.stopPropagation();
       }
+    },
+    
+    consumeItem(event) {
+      const itemId = event.target.dataset.itemId;
+      Inventory.get(itemId).consume();
     }
     
   };
