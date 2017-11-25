@@ -58,19 +58,24 @@ const View = (function () {
       }
     },
     
-    updateInventory () {
-      clear(itemList);
-      const items = Inventory.getAll();
-      for (let i = 0, il = items.length; i < il; i +=1) {
-        let li = document.createElement('li');
-        li.textContent = items[i].name;
-        li.dataset.itemId = items[i].id;
-        itemList.appendChild(li);
-      }
+    addItem (item) {
+      const li = document.createElement('li');
+      li.textContent = item.name;
+      li.dataset.itemId = item.id;
+      itemList.appendChild(li);
     },
     
-    // removeItem - only removes item with selected index. includes effect for removal
-    // same for getItem
+    removeItem (id) {
+      const items = itemList.children;
+      let itemToRemove;
+      for (let i = 0; i < items.length; i += 1) {
+        if (parseInt(items[i].dataset.itemId) === id) {
+          itemToRemove = items[i];
+          break;
+        }
+      }
+      itemList.removeChild(itemToRemove);
+    },
     
     closeItemInfo () {
       document.getElementById('iteminfo').close();

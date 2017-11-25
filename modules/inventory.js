@@ -60,13 +60,13 @@ const Inventory = (function () {
   self.add = function (settings) {
     let x = new Item(settings);
     items.push(x);
-    View.updateInventory();
+    View.addItem(x);
   },
 
   //delete specified object from items array
   self.remove = function (index) {
+    View.removeItem(items[index].id);
     items.splice(index, 1);
-    View.updateInventory();
   },
 
   //check whether inventory contains at least one instance of specified object
