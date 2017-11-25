@@ -19,7 +19,8 @@ const Handlers = (function () {
     openItemInfo(event) {
       const itemId = event.target.dataset.itemId;
       if (itemId !== undefined) {
-        View.openItemInfo(itemId);
+        let item = Inventory.get(itemId);
+        View.openItemInfo(item);
       } else {
         event.stopPropagation();
       }

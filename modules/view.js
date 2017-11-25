@@ -82,12 +82,11 @@ const View = (function () {
     },
     
     //build an info panel for items, with event listeners on buttons
-    openItemInfo (itemId) {
+    openItemInfo (item) {
       const dialog = document.getElementById("iteminfo"),
             name = document.getElementById("iteminfo--name"),
             description = document.getElementById("iteminfo--description"),
-            buttons = document.getElementById("iteminfo--buttons"),
-            item = Inventory.get(itemId);
+            buttons = document.getElementById("iteminfo--buttons");
       
       // add text
       name.textContent = item.name;
