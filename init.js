@@ -13,7 +13,7 @@
   
   const loadStory = function (metadataJSON) {
     const metadata = JSON.parse(metadataJSON);
-    const firstScene = metadata.story.first_scene;
+    const firstScene = metadata.metadata.first_scene;
     Scene.init(currentOrigin, storyName, firstScene);
   };
   
