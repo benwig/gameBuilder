@@ -18,7 +18,7 @@ Follow these steps to write branching narratives which can be run by the gameBui
  - **Story**:  A self-contained game narrative, comprised of one or more Scenes. 
  - **Scene**: Represents a section of the game narrative, such as a conversation, a location, or a discrete series of events. Composed of several interconnected Frames.
  - **Frame**: The smallest narrative unit. Will be represented in-game as a block of text followed by one or more Options.
- - **Option**: Each Frame must have at least one Option, which move the player on to a new frame when selected. Represented in-game as buttons.
+ - **Option**: Each Frame must have at least one Option, which moves the player on to a new frame when selected. Represented in-game as buttons.
 
 ##Setting up
 
