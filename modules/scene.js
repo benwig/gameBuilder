@@ -3,6 +3,8 @@
 const Scene = (function () {
   
   "use strict";
+  let __currentOrigin = "";
+  let __storyName = "";
   const self = {};
   let sceneData = {};
   let frameData = {};
@@ -150,7 +152,15 @@ const Scene = (function () {
 
     removeOneoffs();
     runHelpers(option);
-    this.proceedTo(next);
+    //check if "next" is referring to a Scene
+    if (next.substr(0, 6).toLowerCase() === "scene ") {
+      const args = next.split(" ", 3);
+      const sceneName = args[1];
+      const startFrame = args[2] || false;
+      this.init(__currentOrigin, __storyName, sceneName, startFrame);
+    } else {
+      this.proceedTo(next);
+    }
   };
   
   self.proceedTo = function (frameId) {
@@ -170,15 +180,21 @@ const Scene = (function () {
     console.log(`Currently at: ${frameData.id}`);
   };
 
-  self.init = function (scenePath) {
+  self.init = function (currentOrigin, storyName, sceneName, startFrame) {
     const self = this;
     const request = new XMLHttpRequest();
+    //construct a path to the desired scene
+    const scenePath = `${currentOrigin}/stories/${storyName}/scenes/${sceneName}.json`;
+    
+    //save a private reference to the story path for later
+    __currentOrigin = currentOrigin;
+    __storyName = storyName;
 
     request.onload = function() {
       if (request.status == 200) {
         try {
           sceneData = JSON.parse(request.responseText).scene;
-          const firstFrame = sceneData.first_frame;
+          const firstFrame = startFrame || sceneData.first_frame;
           self.proceedTo(firstFrame);
         } catch (SyntaxError) {
           console.error(`There was an error processing the first frame, or there's something wrong in the JSON syntax of this scene: ${scenePath} Try running it through JSONLint.com`);
