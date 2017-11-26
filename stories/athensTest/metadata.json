@@ -2,6 +2,6 @@
   "story": {
     "name": "Athens Test",
     "author": "Rob & Gwen",
-    "first_scene": "roadToAthens.json"
+    "first_scene": "roadToAthens"
   }
 }
