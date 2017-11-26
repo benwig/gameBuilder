@@ -10,6 +10,17 @@ const Scene = (function () {
   let frameData = {};
   let prefix = false;
   
+  //TODO: Add Story object which will hold the Scene objects as they're parsed - has the added benefit of ensuring all Scene changes are saved, even when you move between Scenes
+  //TODO: Create a Scene object (with "first_frame" as its only attribute) and add as an attribute of Story object
+  //TODO: Constructor function for Frames, to be run in Scene.init
+  //TODO: Constructor function should take every possible attribute of a Scene (text, text2, money, getItem etc.) as attributes, defaulting to false if there isn't a value for them in the frameData
+  //TODO: Constructor function should contain, on its prototype, all the methods currently run in Scene.proceedTo
+  //TODO: Add frames to Scene object as they're created. Story["scenename"]["framename"] = new Scene(....);
+  //TODO: Frame object should have a method "render" which takes the place of Scene.proceedTo. To be called in Scene.init as story["scenename"]["framename"].render()
+  
+  //TODO: If Scene already exists in Story object, use this instead of loading it again in Scene.init
+  
+  
   //////////////////////
   // HELPER FUNCTIONS //
   //////////////////////
