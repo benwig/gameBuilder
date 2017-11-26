@@ -3,62 +3,123 @@
 const Scene = (function () {
   
   "use strict";
+  
+  //object to return
+  const self = {};
+  
+  ///////////////////////
+  // PRIVATE VARIABLES //
+  ///////////////////////
+  
+  //holds the Scene objects as they're parsed by Scene.init
+  const story = {};
+  //hold private references to current origin, current story name, and current Scene, as passed in via Scene.init
   let __currentOrigin = "";
   let __storyName = "";
-  const self = {};
-  let sceneData = {};
-  let frameData = {};
-  let prefix = false;
+  let __currentScene = "";
+  let __currentFrame = "";
+  //holds on to optional prefix value for gluing at the start of the next Frame's text
+  let __prefix = false;
   
-  //TODO: Add Story object which will hold the Scene objects as they're parsed - has the added benefit of ensuring all Scene changes are saved, even when you move between Scenes
-  //TODO: Create a Scene object (with "first_frame" as its only attribute) and add as an attribute of Story object
-  //TODO: Constructor function for Frames, to be run in Scene.init
-  //TODO: Constructor function should take every possible attribute of a Scene (text, text2, money, getItem etc.) as attributes, defaulting to false if there isn't a value for them in the frameData
-  //TODO: Constructor function should contain, on its prototype, all the methods currently run in Scene.proceedTo
-  //TODO: Add frames to Scene object as they're created. Story["scenename"]["framename"] = new Scene(....);
-  //TODO: Frame object should have a method "render" which takes the place of Scene.proceedTo. To be called in Scene.init as story["scenename"]["framename"].render()
+  //TODO: options should also be objects inside Frames with their own methods etc.
   
-  //TODO: If Scene already exists in Story object, use this instead of loading it again in Scene.init
-  
-  
-  //////////////////////
-  // HELPER FUNCTIONS //
-  //////////////////////
-  
-  //return new frame; if not found, return current frame
-  const findFrame = function (frameId) {
-    for (let i = 0, fl = sceneData.frames.length; i < fl; i += 1) {
-      if (sceneData.frames[i].id === frameId) {
-        return sceneData.frames[i];
-      } 
-    }
-    console.error(`Frame with id ${frameId} could not be found.`);
-    return frameData;
+  //Constructor for Frames, to be run in Scene.init
+  const Frame = function(settings) {
+    this.id = settings.id;
+    this.text = settings.text;
+    this.text2 = settings.text2 || false;
+    this.options = settings.options || [];
+    this.objective = settings.objective || false;
+    this.completeObjective = settings.completeObjective || false;
+    this.failObjective = settings.failObjective;
+    this.getItem = settings.getItem || false;
+    this.energy = settings.energy || false;
+    this.enthusiasm = settings.enthusiasm || false;
+    this.time = settings.time || false;
+    this.money = settings.money || false; 
   };
   
-  //return frame text (with prefix, if one is stored)   
-  const getFrameText = function () {
-    if (prefix) {
-      let temptext = `${prefix}<br>${frameData.text}`;
-      prefix = false;
+  /////////////////////////////
+  // FRAME PROTOTYPE METHODS //
+  /////////////////////////////
+  
+  //return frame text (with prefix, if one is stored)  
+  Frame.prototype.assembleText = function () {
+    if (__prefix) {
+      let temptext = `${__prefix}<br>${this.text}`;
+      __prefix = false;
       return temptext;
     } else {
-      return frameData.text;
+      return this.text;
     }
   };
   
-  //remove frame options permanently if their oneoff = true
-  const removeOneoffs = function () {
-    let i = frameData.options.length;
+  //remove frame options permanently if their oneoff is set to true
+  Frame.prototype.removeOneoffs = function () {
+    let i = this.options.length;
     while (i--) {
-      if (frameData.options[i].oneoff) {
-        frameData.options.splice(i, 1);
+      if (this.options[i].oneoff) {
+        this.options.splice(i, 1);
       }
     }
   };
   
+  //load up the current frame and execute any necessary tasks
+  Frame.prototype.render = function () {
+    View.setFrameText(this.assembleText());
+    View.addOptions(this.options);
+
+    //[optional] change the future text of the current frame
+    if (this.text2) {
+      this.text = this.text2;
+      delete this.text2;
+    }
+    
+    this.runHelpers(this);
+    console.log(`Currently at: ${this.id}`);
+    __currentFrame = this.id;
+    
+  };
+  
+  //processes commonalities for option or frame. 'focus' stands in for either "Frame" or "option"
+  Frame.prototype.runHelpers = function (focus) {
+    //assign an objective if not already assigned
+    if (focus.objective && !Objectives.getAttribute(focus.objective, "assigned")) {
+      Objectives.assign(focus.objective);
+    }
+    //mark objective as complete
+    if (focus.completeObjective && !Objectives.getAttribute(focus.completeObjective, "completed")) {
+      Objectives.complete(focus.completeObjective);
+    }
+    //fail an objective if it's assigned and not already completed
+    if (focus.failObjective && Objectives.getAttribute(focus.failObjective, "assigned") && !Objectives.getAttribute(focus.failObjective, "completed")) {
+      Objectives.fail(focus.failObjective);
+    }
+    //add or deduct energy
+    if (focus.energy) {
+      Player.increment(focus.energy, "energy");
+    } 
+    //add or deduct enthusiasm
+    if (focus.enthusiasm) {
+      Player.increment(focus.enthusiasm, "enthusiasm");
+    }
+    //increment game time
+    if (focus.time) {
+      Time.increment(focus.time);
+    }
+    //add item to inventory
+    if (focus.getItem) {
+      Inventory.add(focus.getItem);
+    }
+    //add/deduct player money
+    if (focus.money) {
+      Wallet.changeBy(focus.money);
+    }
+  };
+    
+  //TODO: Make this better
   //return new 'next' value if all conditions are met; else return false
-  const validateNextif = function (nextif) {
+  Frame.prototype.validateNextif = function (nextif) {
     let outcome;
     for (let i = 1, nl = nextif.length; i < nl; i += 1) {
       switch (nextif[i][0]) {
@@ -77,75 +138,8 @@ const Scene = (function () {
     }
   };
   
-  //assign an objective
-  const assignObjective = function (objId) {
-    if (objId !== undefined && !Objectives.getAttribute(objId, "assigned")) {
-      Objectives.assign(objId);
-    }
-  };
-  
-  //mark objective as complete
-  const completeObjective = function (objId) {
-    if (objId !== undefined && !Objectives.getAttribute(objId, "completed")) {
-      Objectives.complete(objId);
-    }
-  };
-  
-  //fail an objective if it's assigned and not already completed
-  const failObjective = function (objId) {
-    if (objId !== undefined  && Objectives.getAttribute(objId, "assigned") && !Objectives.getAttribute(objId, "completed")) {
-      Objectives.fail(objId);
-    }
-  };
-
-  //add or deduct energy/enthusiasm
-  const incrementStats = function (energyDelta, enthusiasmDelta) {
-    if (energyDelta !== undefined) {
-      Player.increment(energyDelta, "energy");
-    }
-    if (enthusiasmDelta !== undefined) {
-      Player.increment(enthusiasmDelta, "enthusiasm");
-    }
-  };
-  
-  //move game time onward
-  const incrementTime = function (delta) {
-    if (delta !== undefined) {
-      Time.increment(delta);
-    }
-  };
-  
-  //add item to inventory
-  const getItem = function (item) {
-    if (item !== undefined) {
-      Inventory.add(item);
-    }
-  };
-  
-  const incrementMoney = function (delta) {
-    if (delta !== undefined) {
-      Wallet.changeBy(delta);
-    }
-  };
-  
-  //processes commonalities for option or frame
-  //focus stands in for either "frameData" or "option"
-  const runHelpers = function (focus) {
-    getItem(focus.getItem);
-    incrementMoney(focus.money);
-    assignObjective(focus.objective);
-    completeObjective(focus.completeObjective);
-    failObjective(focus.failObjective);
-    incrementStats(focus.energy, focus.enthusiasm);
-    incrementTime(focus.time);
-  };
-  
-  //////////////////////
-  /// PUBLIC METHODS ///
-  //////////////////////
-
-  self.processOption = function (optionId) {
-    const option = frameData.options[optionId]; //ultimately references part of sceneData
+  Frame.prototype.processOption = function (optionId) {
+    const option = this.options[optionId];
     let next = option.next; //a string, so, not a reference. Can be temporarily modified.
     
     //[optional] change the future 'next' of the selected option
@@ -156,50 +150,42 @@ const Scene = (function () {
 
     //[optional] store a prefix for using on the next text
     if (option.prefix !== undefined) {
-      prefix = option.prefix;
+      __prefix = option.prefix;
     }
 
     //[optional] if conditions are met, send player to a different 'next'
     if (option.nextif !== undefined) {
-      next = validateNextif(option.nextif) || next;
+      next = this.validateNextif(option.nextif) || next;
     }
 
     //[optional] remove option permanently if remove = true
     if (option.remove) {
-      frameData.options.splice(optionId, 1);
+      this.options.splice(optionId, 1);
     }
 
-    removeOneoffs();
-    runHelpers(option);
+    this.removeOneoffs();
+    this.runHelpers(option);
     
     //check if "next" is referring to a Scene
     if (next.substr(0, 6).toLowerCase() === "scene ") {
       const args = next.split(" ", 3);
       const sceneName = args[1];
       const startFrame = args[2] || false;
-      this.init(__currentOrigin, __storyName, sceneName, startFrame);
+      Scene.init(__currentOrigin, __storyName, sceneName, startFrame);
     } else {
-      this.proceedTo(next);
+      story[__currentScene][next].render();
     }
   };
   
-  self.proceedTo = function (frameId) {
-    
-    //sets frameData to current frame
-    frameData = findFrame(frameId);
-    View.setFrameText(getFrameText());
-    View.addOptions(frameData.options);
+  //////////////////////
+  /// PUBLIC METHODS ///
+  //////////////////////
 
-    //[optional] change the future text of the current frame
-    if (frameData.text2 !== undefined) {
-      frameData.text = frameData.text2;
-      delete frameData.text2;
-    }
-    
-    runHelpers(frameData);
-    console.log(`Currently at: ${frameData.id}`);
+  self.processOption = function (optionId) {
+    story[__currentScene][__currentFrame].processOption(optionId);
   };
 
+  //parse or  a scene
   self.init = function (currentOrigin, storyName, sceneName, startFrame) {
     const self = this;
     const request = new XMLHttpRequest();
@@ -209,13 +195,25 @@ const Scene = (function () {
     //save a private reference to the story path for later
     __currentOrigin = currentOrigin;
     __storyName = storyName;
+    __currentScene = sceneName;
 
     request.onload = function() {
       if (request.status == 200) {
         try {
-          sceneData = JSON.parse(request.responseText).scene;
-          const firstFrame = startFrame || sceneData.first_frame;
-          self.proceedTo(firstFrame);
+          //check to see if scene has already been parsed; if not, create scene object with one attribute (first_frame), and add to story object
+          if (story[sceneName] === undefined) {
+            let scene = JSON.parse(request.responseText).scene;
+            let frames = scene.frames;
+            story[sceneName] = {};
+            story[sceneName].first_frame = scene.first_frame;
+            //create Frame objects and add them to Scene object as they're created. Story["scenename"]["framename"] = new Scene(....);
+            for (let i = 0; i < frames.length; i += 1) {
+              let frameid = frames[i].id;
+              story[sceneName][frameid] = new Frame(frames[i]);
+            }
+          }
+          let firstFrame = startFrame || story[sceneName].first_frame;
+          story[sceneName][firstFrame].render();
         } catch (SyntaxError) {
           console.error(`There was an error processing the first frame, or there's something wrong in the JSON syntax of this scene: ${scenePath} Try running it through JSONLint.com`);
         }
