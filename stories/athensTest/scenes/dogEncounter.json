@@ -1,0 +1,17 @@
+{"scene": {
+  "name": "dogEncounter",
+  "map": "",
+  "first_frame": "dog-1",
+  "frames": [
+    {
+      "id": "dog-1",
+      "text": "Suddenly, a dog runs up to you! It's small and scruffy.",
+      "options": [
+        {
+          "text": "Flee!",
+          "next": "scene roadToAthens north-2"
+        }
+      ]
+    }
+  ]
+}

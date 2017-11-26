@@ -69,7 +69,8 @@
       "options": [
         {
           "text": "Head down into Athens",
-          "next": "road-end",
+          "next": "scene dogEncounter",
+          "next2": "road-end",
           "time": 20
         },
         {
