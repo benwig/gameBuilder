@@ -155,6 +155,11 @@ const View = (function () {
     // adds completed class to objective with selected index
     markObjectiveCompleted (id) {
       document.getElementById(`objective--${id}`).classList.add("objective--completed");
+    },
+    
+    failObjective (id, text) {
+      alert(`You have failed an objective: ${text}`);
+      this.removeObjective(id);
     }
     
   };

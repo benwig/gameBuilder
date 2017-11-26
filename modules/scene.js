@@ -79,6 +79,13 @@ const Scene = (function () {
       Objectives.complete(objId);
     }
   };
+  
+  //fail an objective if it's assigned and not already completed
+  const failObjective = function (objId) {
+    if (objId !== undefined  && Objectives.getAttribute(objId, "assigned") && !Objectives.getAttribute(objId, "completed")) {
+      Objectives.fail(objId);
+    }
+  };
 
   //add or deduct energy/enthusiasm
   const incrementStats = function (energyDelta, enthusiasmDelta) {
@@ -117,6 +124,7 @@ const Scene = (function () {
     incrementMoney(focus.money);
     assignObjective(focus.objective);
     completeObjective(focus.completeObjective);
+    failObjective(focus.failObjective);
     incrementStats(focus.energy, focus.enthusiasm);
     incrementTime(focus.time);
   };
@@ -152,6 +160,7 @@ const Scene = (function () {
 
     removeOneoffs();
     runHelpers(option);
+    
     //check if "next" is referring to a Scene
     if (next.substr(0, 6).toLowerCase() === "scene ") {
       const args = next.split(" ", 3);

@@ -64,10 +64,10 @@ const Objectives = (function () {
   self.fail = function (id) {
     try {
       objectives[id].fail();
+      View.failObjective(id, objectives[id].text);
     } catch (TypeError) {
       console.error(`There's no objective called '${id}'`);
     }
-    View.removeObjective(id);
   };
   
   self.getAttribute = function (id, attr) {

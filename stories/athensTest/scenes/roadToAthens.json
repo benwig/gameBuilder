@@ -188,7 +188,8 @@
           "text": "Head down into Athens",
           "next": "road-end",
           "time": 30,
-          "completeObjective": "reachAthens"
+          "completeObjective": "reachAthens",
+          "failObjective": "collectHoney"
         },
         {
           "text": "Climb the track to the cave",
@@ -431,6 +432,7 @@
       "id": "road-end",
       "text": "You have reached Athens!",
       "completeObjective": "reachAthens",
+      "failObjective": "visitTavern",
       "options": []
     }  
   ]
