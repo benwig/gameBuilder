@@ -231,19 +231,19 @@
       "options": [
         {
           "text": "'Don't shame me for my bad decisions. Give me wine!'",
-          "nextif": ["buy-wine", ["canAfford", 2]],
+          "nextif": ["buy-wine", ["money", 2]],
           "next": "buy-fail",
           "remove": true,
           "oneoff": true
         },
         {
           "text": "Buy wine (2 obols)",
-          "nextif": ["buy-wine", ["canAfford", 2]],
+          "nextif": ["buy-wine", ["money", 2]],
           "next": "buy-fail"
         },
         {
           "text": "Buy bread (1 obol)",
-          "nextif": ["buy-bread", ["canAfford", 1]],
+          "nextif": ["buy-bread", ["money", 1]],
           "next": "buy-fail"
         },
         {
