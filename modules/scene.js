@@ -84,15 +84,15 @@ const Scene = (function () {
   //processes commonalities for option or frame. 'focus' stands in for either "Frame" or "option"
   Frame.prototype.runHelpers = function (focus) {
     //assign an objective if not already assigned
-    if (focus.objective && !Objectives.getAttribute(focus.objective, "assigned")) {
+    if (focus.objective) {
       Objectives.assign(focus.objective);
     }
     //mark objective as complete
-    if (focus.completeObjective && !Objectives.getAttribute(focus.completeObjective, "completed")) {
+    if (focus.completeObjective) {
       Objectives.complete(focus.completeObjective);
     }
     //fail an objective if it's assigned and not already completed
-    if (focus.failObjective && Objectives.getAttribute(focus.failObjective, "assigned") && !Objectives.getAttribute(focus.failObjective, "completed")) {
+    if (focus.failObjective) {
       Objectives.fail(focus.failObjective);
     }
     //add or deduct energy

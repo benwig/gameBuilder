@@ -48,23 +48,33 @@ const Objectives = (function () {
   };
   
   self.assign = function (id) {
-    objectives[id].changeAssigned(true);
-    View.assignObjective(id, objectives[id].text, objectives[id].type);
+    try {
+      if (!objectives[id].assigned) {
+        objectives[id].changeAssigned(true);
+        View.assignObjective(id, objectives[id].text, objectives[id].type);
+      }
+    } catch (TypeError) {
+      console.error(`There's no objective called '${id}'`);
+    }
   };
   
   self.complete = function (id) {
     try {
-      objectives[id].changeComplete(true);
+      if (!objectives[id].completed) {
+        objectives[id].changeComplete(true);
+        View.markObjectiveCompleted(id);
+      }
     } catch (TypeError) {
       console.error(`There's no objective called '${id}'`);
     }
-    View.markObjectiveCompleted(id);
   };
   
   self.fail = function (id) {
     try {
-      objectives[id].fail();
-      View.failObjective(id, objectives[id].text);
+      if (objectives[id].assigned && !objectives[id].failed && !objectives[id].completed) {
+        objectives[id].fail();
+        View.failObjective(id, objectives[id].text);
+      }
     } catch (TypeError) {
       console.error(`There's no objective called '${id}'`);
     }
