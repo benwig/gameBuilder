@@ -117,19 +117,34 @@ const Scene = (function () {
     }
   };
     
-  //TODO: Make this better
   //return new 'next' value if all conditions are met; else return false
   Frame.prototype.validateNextif = function (nextif) {
-    let outcome;
-    for (let i = 1, nl = nextif.length; i < nl; i += 1) {
-      switch (nextif[i][0]) {
-        case "hasItem":
-          outcome = Inventory.contains(nextif[i][1]);
-          break;
-        case "canAfford":
-          outcome = Wallet.canAfford(nextif[i][1]);
-          break;
+    const conditions = {
+      item: function (itemId) {
+        return Inventory.contains(itemId);
+      },
+      money: function (value) {
+        return Wallet.canAfford(value);
+      },
+      objectiveCompleted: function (id) {
+        return Objectives.getAttribute(id, "complete");
+      },
+      objectiveAssigned: function (id) {
+        return Objectives.getAttribute(id, "assigned");
+      },
+      objectiveFailed: function (id) {
+        return Objectives.getAttribute(id, "failed");
+      },
+      energy: function (value) {
+        return Player.get("energy") >= value;
+      },
+      enthusiasm: function (value) {
+        return Player.get("enthusiasm") >= value;
       }
+    };
+    let outcome;
+    for (let i = 1; i < nextif.length; i += 1) {
+      outcome = conditions[nextif[i][0]](nextif[i][1]);
     }
     if (outcome) {
       return nextif[0];
