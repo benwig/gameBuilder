@@ -11,7 +11,7 @@ In addition, Frames may have any combination of these optional attributes:
 
 - **text2**: *string* - text which will be displayed to the player when they revisit the frame.
 
-See also the [list of attributes](#shared-attributes-for-frames-&-options) which can be applied to Frame or Option.
+See also the [list of attributes](#shared-attributes-for-frames--options) which can be applied to Frame or Option.
 
 ## Options
 Options are objects, contained within a Frame's "options" array. Each Option will be transformed into a button which the player can select. Options have the following mandatory attributes:
