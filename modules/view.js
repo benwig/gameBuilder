@@ -66,7 +66,6 @@ const View = (function () {
     },
     
     removeItem (uid) {
-      debugger;
       const items = itemList.children;
       let itemToRemove;
       for (let i = 0; i < items.length; i += 1) {

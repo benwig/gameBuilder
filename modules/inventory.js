@@ -31,7 +31,6 @@ const Inventory = (function () {
   
   //increment player energy and remove item from inventory
   Item.prototype.consume = function (uid) {
-    debugger;
     if (this.energy > 0) {
       Player.increment(this.energy, "energy");
       self.remove(uid);
