@@ -14,7 +14,7 @@
           "energy": 5,
           "enthusiasm": 4,
           "objective": "collectHoney",
-          "getItem": {"name": "Sandals", "value": 1, "description": "A basic pair of sandals. Rather dusty."}
+          "getItem": "sandals"
         }
       ]
     },
@@ -103,8 +103,7 @@
         {
           "text": "Delicious honey! Wonderful.",
           "next": "honeyfield",
-          "getItem": {"name": "Honey", "value": 1, "edible": true, "energy": 5, "description": "Sweet honey from the slopes of Mount Hymettos"},
-          "completeObjective": "collectHoney"
+          "getItem": "honey"
         }
       ]
     },
@@ -276,7 +275,7 @@
           "text": "'Thank you'",
           "next": "tavern-2",
           "money": -1,
-          "getItem": {"name": "Loaf of bread", "value": 1, "description": "A small loaf of fresh bread from a tavern outside Athens.", "energy": 2, "edible": true}
+          "getItem": "loaf"
         },
         {
           "text": "'Looks gross. Take it back.'",

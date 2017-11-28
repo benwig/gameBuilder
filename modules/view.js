@@ -58,18 +58,19 @@ const View = (function () {
       }
     },
     
-    addItem (item) {
+    addItem (uid, item) {
       const li = document.createElement('li');
       li.textContent = item.name;
-      li.dataset.itemId = item.id;
+      li.dataset.itemUid = uid;
       itemList.appendChild(li);
     },
     
-    removeItem (id) {
+    removeItem (uid) {
+      debugger;
       const items = itemList.children;
       let itemToRemove;
       for (let i = 0; i < items.length; i += 1) {
-        if (parseInt(items[i].dataset.itemId) === id) {
+        if (items[i].dataset.itemUid === uid) {
           itemToRemove = items[i];
           break;
         }
@@ -82,7 +83,7 @@ const View = (function () {
     },
     
     //build an info panel for items, with event listeners on buttons
-    openItemInfo (item) {
+    openItemInfo (uid, item) {
       const dialog = document.getElementById("iteminfo"),
             name = document.getElementById("iteminfo--name"),
             description = document.getElementById("iteminfo--description"),
@@ -98,7 +99,7 @@ const View = (function () {
       buttons.appendChild(buildButton("Close", Handlers.closeItemInfo));
       if (item.energy > 0) {
         buttons.appendChild(buildButton("Consume", function(){
-          Handlers.consumeItem(item.id);
+          Handlers.consumeItem(uid);
           Handlers.closeItemInfo();
         }));
         description.appendChild(buildP(` Energy: ${item.energy}`));

@@ -17,10 +17,10 @@ const Handlers = (function () {
     },
     
     openItemInfo(event) {
-      const itemId = event.target.dataset.itemId;
-      if (itemId !== undefined) {
-        let item = Inventory.get(itemId);
-        View.openItemInfo(item);
+      const itemUid = event.target.dataset.itemUid;
+      if (itemUid !== undefined) {
+        let item = Inventory.get(itemUid);
+        View.openItemInfo(itemUid, item);
       } else {
         event.stopPropagation();
       }
@@ -30,8 +30,8 @@ const Handlers = (function () {
       View.closeItemInfo();
     },
     
-    consumeItem(id) {
-      Inventory.get(id).consume();
+    consumeItem(uid) {
+      Inventory.get(uid).consume(uid);
     }
     
   };

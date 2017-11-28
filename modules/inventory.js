@@ -5,19 +5,20 @@ const Inventory = (function () {
   "use strict";
   
   const self = {};
-  const items = [];
+  let __items = [];
+  const playerItems = {};
   const newIdMaker = function () {
     let i = 0;
     return function() {
       return i++;
-    }
+    };
   };
   const newId = newIdMaker();
   
   //Basic item constructor
   function Item(settings) {
     settings = settings || {};
-    this.id = newId();
+    this.id = settings.id; //short id for use by the author
     this.name = settings.name || "Unnamed Object";
     this.description = settings.description || "An undescribed object";
     this.icon = settings.icon || "unknownObject.png";
@@ -29,10 +30,11 @@ const Inventory = (function () {
   }
   
   //increment player energy and remove item from inventory
-  Item.prototype.consume = function () {
+  Item.prototype.consume = function (uid) {
+    debugger;
     if (this.energy > 0) {
       Player.increment(this.energy, "energy");
-      self.remove(self.getIndexOf(this.id));
+      self.remove(uid);
     } else {
       console.error("This item is not edible");
     }
@@ -57,52 +59,47 @@ const Inventory = (function () {
   //////////////////////
   
   //place specified object in items array
-  self.add = function (settings) {
-    let x = new Item(settings);
-    items.push(x);
-    View.addItem(x);
-  },
+  self.add = function (id) {
+    let uid = newId();
+    let settings = {};
+    for (let i = 0; i < __items.length; i += 1) {
+      if (__items[i].id === id) {
+        settings = __items[i];
+        break;
+      }
+    }
+    try {
+      playerItems[uid] = new Item(settings);
+      View.addItem(uid, playerItems[uid]);
+    } catch(err) {
+      console.error(`No item with id ${id} found in items.JSON.`);
+    }
+  };
 
-  //delete specified object from items array
-  self.remove = function (index) {
-    View.removeItem(items[index].id);
-    items.splice(index, 1);
-  },
+  //delete specified object from player items array
+  self.remove = function (uid) {
+    View.removeItem(uid);
+    delete playerItems[uid];
+  };
 
   //check whether inventory contains at least one instance of specified object
-  self.contains = function (name) {
-    let i,
-        il;
-    for (i = 0, il = items.length; i < il; i += 1) {
-      if (items[i].name === name) {
+  self.contains = function (id) {
+    for (const item in playerItems) {
+      if (item.id === id) {
         return true;
       }
     }
     return false;
-  },
+  };
 
-  //returns a reference to a single item
-  self.get = function (id) {
-    const i = this.getIndexOf(id);
-    return items[i];
-  },
-
-  //returns the entire items array as refernce, with all the item attributes and methods
-  self.getAll = function () {
-    return items;
-  },
-
-  //returns the index position of the item in the array with unique id
-  self.getIndexOf = function (id) {
-    let i,
-        il;
-    for (i = 0, il = items.length; i < il; i += 1) {
-      if (items[i].id === parseInt(id)) {
-        return i;
-      }
-    }
-    console.error("No item with that id.");
-  }
+  //returns a reference to a single item with unique id
+  self.get = function (uid) {
+    return playerItems[uid];
+  };
+  
+  self.init = function (itemsJSON) {
+    __items = itemsJSON.items;
+  };
 
   return self;
   

@@ -4,11 +4,16 @@
 
   const storyName = "athensTest";
   const currentOrigin = window.location.origin;
-  const request1 = new XMLHttpRequest();
-  const request2 = new XMLHttpRequest();
+  const objectivesRequest = new XMLHttpRequest();
+  const itemsRequest = new XMLHttpRequest();
+  const storyRequest = new XMLHttpRequest();
   
   const loadObjectives = function (objectivesJSON) {
     Objectives.init(JSON.parse(objectivesJSON));
+  };
+  
+  const loadItems = function (itemsJSON) {
+    Inventory.init(JSON.parse(itemsJSON));
   };
   
   const loadStory = function (metadataJSON) {
@@ -17,7 +22,7 @@
     Scene.init(currentOrigin, storyName, firstScene);
   };
   
-  request1.onload = function() {
+  objectivesRequest.onload = function() {
     if (this.status == 200) {
       loadObjectives(this.responseText);
     } else {
@@ -25,11 +30,23 @@
     }
   };
   
-  request1.onerror = function() {
+  objectivesRequest.onerror = function() {
     console.error("XMLHttpRequest failed, could not reach Objectives.");
   };
+  
+  itemsRequest.onload = function() {
+    if (this.status == 200) {
+      loadItems(this.responseText);
+    } else {
+      console.log("No items found for this Story.");
+    }
+  };
+  
+  itemsRequest.onerror = function() {
+    console.error("XMLHttpRequest failed, could not reach Items.");
+  };
 
-  request2.onload = function() {
+  storyRequest.onload = function() {
     if (this.status == 200) {
       loadStory(this.responseText);
     } else {
@@ -37,14 +54,17 @@
     }
   };
   
-  request2.onerror = function() {
+  storyRequest.onerror = function() {
     console.error("XMLHttpRequest failed, could not reach Story.");
   };
 
-  request1.open("GET", `${currentOrigin}/stories/${storyName}/objectives.json`, true);
-  request1.send();
+  objectivesRequest.open("GET", `${currentOrigin}/stories/${storyName}/objectives.json`, true);
+  objectivesRequest.send();
   
-  request2.open("GET", `${currentOrigin}/stories/${storyName}/metadata.json`, true);
-  request2.send();
+  itemsRequest.open("GET", `${currentOrigin}/stories/${storyName}/items.json`, true);
+  itemsRequest.send();
+  
+  storyRequest.open("GET", `${currentOrigin}/stories/${storyName}/metadata.json`, true);
+  storyRequest.send();
 
 }
