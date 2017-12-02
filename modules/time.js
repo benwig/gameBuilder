@@ -22,6 +22,7 @@ const Time = (function () {
     "dusk" //21:00 - 22:00
     "night" //22:00 - 24:00
   }*/
+  let timeSinceEnergyDeduction = 0;
   
   return {
     
@@ -31,6 +32,13 @@ const Time = (function () {
     
     increment: function (minutes) {
       now = now + minutes;
+      //check if the clock has passed a half-hour, if so, deduct 1 energy
+      timeSinceEnergyDeduction += minutes;
+      if (timeSinceEnergyDeduction >= 30) {
+        let decreaseBy = Math.floor(timeSinceEnergyDeduction/30);
+        Player.increment(-decreaseBy, "energy");
+        timeSinceEnergyDeduction = timeSinceEnergyDeduction%30;
+      }
       View.updateTime(now);
     },
     
