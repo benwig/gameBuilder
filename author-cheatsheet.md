@@ -23,8 +23,10 @@ Options can have any combination of these optional attributes:
 
 - **remove**: *bool* - if true, the option will be removed after selection.
 - **oneoff**: *bool* - if true, the option will be removed after viewing, even if it's not selected
-- **nextif**: *array* (??) - if these all evalute to *true*, selecting the Option will take you to the nextif Frame. Otherwise, you'll proceed to *next* as usual.
+- **nextif**: *array* - an array which follows this pattern: `"nextif": ["road-3", ["choices", "took-detour"], ["item", "map"]]`.
+The first string is the id of a Frame. This is followed by one or more arrays. Each states first the area to evaluate (e.g. item, money, objectiveCompleted, choices), secondly the thing in that area which should be checked to be true. If all the conditions evalute to *true*, selecting the Option will take you to the nextif Frame. Otherwise, you'll proceed to *next* as usual.
 - **prefix**: *string* - text which will be displayed at the start of the next Frame visited.
+- **text2**: *string* - text which will be displayed on the option the next time it's shown to the player.
 
 ## Shared Attributes for Frames & Options
 Both Frames and Options can have any combination of these optional attributes. They will be processed and applied to the game state as soon as the Frame is viewed, or as soon as the Option is selected:
