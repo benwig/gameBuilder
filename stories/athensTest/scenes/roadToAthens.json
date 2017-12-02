@@ -5,7 +5,6 @@
     {
       "id": "scene-start",
       "text": "Venture out onto the road and start the game?",
-      "objective": "reachAthens",
       "options": [
         {
           "text": "OK",
@@ -13,7 +12,7 @@
           "prefix": "A gentle breeze blows. You feel refreshed and full of enthusiasm for the day ahead.",
           "energy": 5,
           "enthusiasm": 4,
-          "objective": "collectHoney",
+          "objective": "collectHoney reachAthens",
           "getItem": "sandals"
         }
       ]
@@ -103,7 +102,8 @@
         {
           "text": "Delicious honey! Wonderful.",
           "next": "honeyfield",
-          "getItem": "honey"
+          "getItem": "honey",
+          "completeObjective": "collectHoney"
         }
       ]
     },
@@ -186,8 +186,7 @@
           "text": "Head down into Athens",
           "next": "road-end",
           "time": 30,
-          "completeObjective": "reachAthens",
-          "failObjective": "collectHoney"
+          "completeObjective": "reachAthens"
         },
         {
           "text": "Climb the track to the cave",
@@ -430,7 +429,7 @@
       "id": "road-end",
       "text": "You have reached Athens!",
       "completeObjective": "reachAthens",
-      "failObjective": "visitTavern",
+      "failObjective": "visitTavern collectHoney",
       "options": []
     }  
   ]
