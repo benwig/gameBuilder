@@ -7,6 +7,16 @@ const Objectives = (function () {
   const self = {};
   const objectives = {};
   
+  //splits a string into an array of arguments (objective ids)
+  //then loops through each item and executes a callback on it
+  const __loopThroughArgs = function (ids, callback) {
+    ids = ids.split(" ");
+    for (let i = 0; i < ids.length; i += 1) {
+      let id = ids[i];
+      callback(id);
+    }
+  };
+  
   //constructor function for objectives
   function Objective (settings) {
     this.text = settings.text;
@@ -47,37 +57,43 @@ const Objectives = (function () {
     }
   };
   
-  self.assign = function (id) {
-    try {
-      if (!objectives[id].assigned) {
-        objectives[id].changeAssigned(true);
-        View.assignObjective(id, objectives[id].text, objectives[id].type);
+  self.assign = function (ids) {
+    __loopThroughArgs(ids, function (id) {
+      try {
+        if (!objectives[id].assigned) {
+          objectives[id].changeAssigned(true);
+          View.assignObjective(id, objectives[id].text, objectives[id].type);
+        }
+      } catch (TypeError) {
+        console.error(`There's no objective called '${id}'`);
       }
-    } catch (TypeError) {
-      console.error(`There's no objective called '${id}'`);
-    }
+    });
   };
   
-  self.complete = function (id) {
-    try {
-      if (!objectives[id].completed) {
-        objectives[id].changeComplete(true);
-        View.markObjectiveCompleted(id);
+  self.complete = function (ids) {
+    __loopThroughArgs(ids, function (id) {
+      try {
+        if (!objectives[id].completed) {
+          objectives[id].changeComplete(true);
+          View.markObjectiveCompleted(id);
+        }
+      } catch (TypeError) {
+        console.error(`There's no objective called '${id}'`);
       }
-    } catch (TypeError) {
-      console.error(`There's no objective called '${id}'`);
-    }
+    });
   };
   
-  self.fail = function (id) {
-    try {
-      if (objectives[id].assigned && !objectives[id].failed && !objectives[id].completed) {
-        objectives[id].fail();
-        View.failObjective(id, objectives[id].text);
+  self.fail = function (ids) {
+    __loopThroughArgs(ids, function (id) {
+      try {
+        if (objectives[id].assigned && !objectives[id].failed && !objectives[id].completed) {
+          objectives[id].fail();
+          View.failObjective(id, objectives[id].text);
+        }
+      } catch (TypeError) {
+        console.error(`There's no objective called '${id}'`);
       }
-    } catch (TypeError) {
-      console.error(`There's no objective called '${id}'`);
-    }
+    });
   };
   
   self.getAttribute = function (id, attr) {
