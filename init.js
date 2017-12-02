@@ -6,6 +6,7 @@
   const currentOrigin = window.location.origin;
   const objectivesRequest = new XMLHttpRequest();
   const itemsRequest = new XMLHttpRequest();
+  const choicesRequest = new XMLHttpRequest();
   const storyRequest = new XMLHttpRequest();
   
   const loadObjectives = function (objectivesJSON) {
@@ -14,6 +15,10 @@
   
   const loadItems = function (itemsJSON) {
     Inventory.init(JSON.parse(itemsJSON));
+  };
+  
+  const loadChoices = function (choicesJSON) {
+    Player.setupChoices(JSON.parse(choicesJSON));
   };
   
   const loadStory = function (metadataJSON) {
@@ -45,6 +50,18 @@
   itemsRequest.onerror = function() {
     console.error("XMLHttpRequest failed, could not reach Items.");
   };
+  
+  choicesRequest.onload = function() {
+    if (this.status == 200) {
+      loadChoices(this.responseText);
+    } else {
+      console.log("No choices found for this Story.");
+    }
+  };
+  
+  choicesRequest.onerror = function() {
+    console.error("XMLHttpRequest failed, could not reach Choices.");
+  };
 
   storyRequest.onload = function() {
     if (this.status == 200) {
@@ -63,6 +80,9 @@
   
   itemsRequest.open("GET", `${currentOrigin}/stories/${storyName}/items.json`, true);
   itemsRequest.send();
+  
+  choicesRequest.open("GET", `${currentOrigin}/stories/${storyName}/choices.json`, true);
+  choicesRequest.send();
   
   storyRequest.open("GET", `${currentOrigin}/stories/${storyName}/metadata.json`, true);
   storyRequest.send();

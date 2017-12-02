@@ -36,7 +36,8 @@ const Scene = (function () {
     this.energy = settings.energy || false;
     this.enthusiasm = settings.enthusiasm || false;
     this.time = settings.time || false;
-    this.money = settings.money || false; 
+    this.money = settings.money || false;
+    this.choice = settings.choice || false;
   };
   
   /////////////////////////////
@@ -68,12 +69,6 @@ const Scene = (function () {
   Frame.prototype.render = function () {
     View.setFrameText(this.assembleText());
     View.addOptions(this.options);
-
-    //[optional] change the future text of the current frame
-    if (this.text2) {
-      this.text = this.text2;
-      delete this.text2;
-    }
     
     this.runHelpers(this);
     console.log(`Currently at: ${this.id}`);
@@ -83,6 +78,11 @@ const Scene = (function () {
   
   //processes commonalities for option or frame. 'focus' stands in for either "Frame" or "option"
   Frame.prototype.runHelpers = function (focus) {
+    //[optional] change the future text of the current frame / option
+    if (focus.text2) {
+      focus.text = focus.text2;
+      delete focus.text2;
+    }
     //assign an objective if not already assigned
     if (focus.objective) {
       Objectives.assign(focus.objective);
@@ -115,6 +115,11 @@ const Scene = (function () {
     if (focus.money) {
       Wallet.changeBy(focus.money);
     }
+    //set a choice to true
+    if (focus.choice) {
+      Player.set(true, "choices", focus.choice);
+      console.log(focus.choice, Player.get("choices", focus.choice));
+    }
   };
     
   //return new 'next' value if all conditions are met; else return false
@@ -140,11 +145,16 @@ const Scene = (function () {
       },
       enthusiasm: function (value) {
         return Player.get("enthusiasm") >= value;
+      },
+      choices: function (choice) {
+        return Player.get("choices", choice);
       }
     };
     let outcome;
     for (let i = 1; i < nextif.length; i += 1) {
-      outcome = conditions[nextif[i][0]](nextif[i][1]);
+      let setting = nextif[i][0];
+      let hasValue = nextif[i][1];
+      outcome = conditions[setting](hasValue);
     }
     if (outcome) {
       return nextif[0];

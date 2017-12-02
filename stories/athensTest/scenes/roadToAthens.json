@@ -213,7 +213,8 @@
         },
         {
           "text": "Approach the table",
-          "next": "table-1"
+          "next": "table-1",
+          "nextif": ["table-ignoring", ["choices", "insulted-tavern-group"]]
         },
         {
           "text": "Leave the tavern",
@@ -298,17 +299,19 @@
     {
       "id": "table-1",
       "text": "The three old men have knapsacks under their stools and good boots on their feet. Magnificently sturdy walking sticks are propped against the table. The old men chew bread and talk across each other.",
-      "text2": "The three old men have finished their meal and are having a little snooze. It doesn't look like they want to be disturbed.",
+      "text2": "The three old men are still eating breakfast.",
       "options": [
         {
           "text": "Eavesdrop",
           "next": "table-eavesdrop",
-          "oneoff": true
+          "oneoff": true,
+          "choice": "eavesdropped-on-tavern-group"
         },
         {
           "text": "Greet the old men",
           "next": "table-greet",
-          "oneoff": true
+          "nextif": ["table-3", ["choices", "talked-to-tavern-group"]],
+          "choice": "talked-to-tavern-group"
         },
         {
           "text": "Leave them be",
@@ -316,6 +319,18 @@
         }
       ]
     },
+    
+    {
+      "id": "table-ignoring",
+      "text": "The three old men are talking quietly together. They turn their backs on you. It doesn't look like they want to be disturbed.",
+      "options": [
+        {
+          "text": "Leave them be",
+          "next": "tavern-1"
+        }
+      ]
+    },
+    
     {
       "id": "table-eavesdrop",
       "text": "'Hey, what are you doing there, standing about? On your way to Athens too?'",
@@ -328,7 +343,8 @@
         {
           "text": "'Yes, indeed. I'm Phylokleon, from Sounion.'",
           "next": "table-2",
-          "prefix": "'Ah, we're all from the same tribe, then!'"
+          "prefix": "'Ah, we're all from the same tribe, then!'",
+          "choice": "talked-to-tavern-group"
         }
       ]
     },
@@ -356,6 +372,7 @@
     {
       "id": "table-ignore",
       "text": "All three old men turn their backs on you.",
+      "choice": "insulted-tavern-group",
       "options": [
         {
           "text": "Walk away",
@@ -389,6 +406,7 @@
       "options": [
         {
           "text": "'It was good to meet you. Good luck on your journey.'",
+          "text2": "'Nothing right now - good day to you.'",
           "next": "tavern-1"
         },
         {
