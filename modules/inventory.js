@@ -10,7 +10,7 @@ const Inventory = (function () {
   const newIdMaker = function () {
     let i = 0;
     return function() {
-      return i++;
+      return `item-${i++}`;
     };
   };
   const newId = newIdMaker();
@@ -83,8 +83,9 @@ const Inventory = (function () {
 
   //check whether inventory contains at least one instance of specified object
   self.contains = function (id) {
-    for (const item in playerItems) {
-      if (item.id === id) {
+    debugger;
+    for (let item in playerItems) {
+      if (playerItems[item].id === id) {
         return true;
       }
     }
