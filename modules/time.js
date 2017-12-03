@@ -32,7 +32,7 @@ const Time = (function () {
     
     increment: function (minutes) {
       now = now + minutes;
-      //check if the clock has passed a half-hour, if so, deduct 1 energy
+      //check if the clock has passed a half-hour, if so, deduct 1 energy for each half hour passed
       timeSinceEnergyDeduction += minutes;
       if (timeSinceEnergyDeduction >= 30) {
         let decreaseBy = Math.floor(timeSinceEnergyDeduction/30);
