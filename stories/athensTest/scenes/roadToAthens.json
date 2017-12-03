@@ -246,8 +246,25 @@
           "next": "buy-fail"
         },
         {
+          "text": "'Would you like to buy some honey?'",
+          "next": "sell-honey",
+          "showif": ["inventory honey true"],
+          "remove": true
+        },
+        {
           "text": "Walk away",
           "next": "tavern-1"
+        }
+      ]
+    },
+    
+    {
+      "id": "sell-honey",
+      "text": "'That honey looks delicious, but I've just got a shipment in and I've no more space in the larder!'",
+      "options": [
+        {
+          "text": "Oh well",
+          "next": "tavern-2"
         }
       ]
     },

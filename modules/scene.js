@@ -20,6 +20,14 @@ const Scene = (function () {
   let __currentFrame = "";
   //holds on to optional prefix value for gluing at the start of the next Frame's text
   let __prefix = false;
+  //function for creating unique ids for options
+  const __uidMaker = function () {
+    let i = 0;
+    return function() {
+      return i++;
+    };
+  };
+  const __newUid = __uidMaker();
   
   //TODO: options should also be objects inside Frames with their own methods etc.
   
@@ -29,6 +37,10 @@ const Scene = (function () {
     this.text = settings.text;
     this.text2 = settings.text2 || false;
     this.options = settings.options || [];
+    //add a unique id to each option
+    for (let i = 0; i < this.options.length; i += 1) {
+      this.options[i].uid = __newUid();
+    }
     this.objective = settings.objective || false;
     this.completeObjective = settings.completeObjective || false;
     this.failObjective = settings.failObjective;
@@ -69,13 +81,23 @@ const Scene = (function () {
   Frame.prototype.render = function () {
     View.setFrameText(this.assembleText());
     
-    //TODO: create subset of options
-    //TODO: check options to see if they're conditional.
-    //TODO: if they are, check the conditions
-    //TODO: only push options where the conditions are met
-    //TODO: call View.addOptions on the subset of options
-    
-    View.addOptions(this.options);
+    //filter out options where showif conditions evaluate to false
+    let filteredOptions = this.options.filter(function(opt) {
+      if (opt.showif !== undefined) {
+        //split showif strings into subarrays
+        let conditions = [];
+        for (let i = 0; i < opt.showif.length; i += 1) {
+          conditions.push(opt.showif[i].split(" "));
+        }
+        //validate all the conditions
+        let outcome = this.validateConditions(conditions);
+        return outcome;
+      } else {
+        return true;
+      }
+    }, this);
+
+    View.addOptions(filteredOptions);
     
     this.runHelpers(this);
     console.log(`Currently at: ${this.id}`);
@@ -132,7 +154,7 @@ const Scene = (function () {
   //loop through nested array and return true if all conditions are met; else return false
   Frame.prototype.validateConditions = function (arr) {
     const conditions = {
-      item: function (itemId) {
+      inventory: function (itemId) {
         return Inventory.contains(itemId);
       },
       money: function (value) {
@@ -161,7 +183,14 @@ const Scene = (function () {
     for (let i = 0; i < arr.length; i += 1) {
       let setting = arr[i][0];
       let hasValue = arr[i][1];
-      outcome = conditions[setting](hasValue);
+      let boolWanted = arr[i][2] || true;
+      //convert boolWanted from string to bool
+      if (boolWanted === "true") {
+        boolWanted = true;
+      } else if (boolWanted === "false") {
+        boolWanted = false;
+      }
+      outcome = conditions[setting](hasValue) === boolWanted;
     }
     if (outcome) {
       return true;
@@ -170,8 +199,17 @@ const Scene = (function () {
     }
   };
   
-  Frame.prototype.processOption = function (optionId) {
-    const option = this.options[optionId];
+  Frame.prototype.processOption = function (optionUid) {
+    //look up the option on this frame with the supplied uid
+    let option;
+    let optionIndex;
+    for (let i = 0; i < this.options.length; i += 1) {
+      if (this.options[i].uid === parseInt(optionUid)) {
+        option = this.options[i];
+        optionIndex = i;
+      }
+    }
+
     let next = option.next; //a string, so, not a reference. Can be temporarily modified.
     
     //[optional] change the future 'next' of the selected option
@@ -186,15 +224,16 @@ const Scene = (function () {
     }
 
     //[optional] if conditions are met, send player to a different 'next'
+    //TODO: let nextif use strings, then .split() these into array before passing to validateConditions
     if (option.nextif !== undefined) {
-      if (this.validateConditions(option.nextif.slice(1,))) {
+      if (this.validateConditions(option.nextif.slice(1))) {
         next = option.nextif[0];
       }
     }
 
     //[optional] remove option permanently if remove = true
     if (option.remove) {
-      this.options.splice(optionId, 1);
+      this.options.splice(optionIndex, 1);
     }
 
     this.removeOneoffs();
@@ -215,8 +254,8 @@ const Scene = (function () {
   /// PUBLIC METHODS ///
   //////////////////////
 
-  self.processOption = function (optionId) {
-    story[__currentScene][__currentFrame].processOption(optionId);
+  self.processOption = function (optionUid) {
+    story[__currentScene][__currentFrame].processOption(optionUid);
   };
 
   //parse or  a scene

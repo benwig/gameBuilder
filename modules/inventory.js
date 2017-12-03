@@ -83,7 +83,6 @@ const Inventory = (function () {
 
   //check whether inventory contains at least one instance of specified object
   self.contains = function (id) {
-    debugger;
     for (let item in playerItems) {
       if (playerItems[item].id === id) {
         return true;
