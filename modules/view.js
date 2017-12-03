@@ -48,7 +48,7 @@ const View = (function () {
         for (let i = 0, fol = options.length; i < fol; i += 1) {
           let li = document.createElement('li');
           let button = document.createElement('button');
-          button.dataset.optionId = i;
+          button.dataset.optionId = options[i].uid;
           button.textContent = options[i].text;
           li.appendChild(button);
           optionList.appendChild(li);
