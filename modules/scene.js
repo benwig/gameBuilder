@@ -263,7 +263,7 @@ const Scene = (function () {
     story[__currentScene][__currentFrame].processOption(optionUid);
   };
 
-  //parse or  a scene
+  //parse a scene
   self.init = function (currentOrigin, storyName, sceneName, startFrame) {
     const self = this;
     const request = new XMLHttpRequest();
@@ -283,6 +283,7 @@ const Scene = (function () {
             let scene = JSON.parse(request.responseText).scene;
             let frames = scene.frames;
             story[sceneName] = {};
+            story[sceneName].map = scene.map;
             story[sceneName].first_frame = scene.first_frame;
             //create Frame objects and add them to Scene object as they're created. Story["scenename"]["framename"] = new Scene(....);
             for (let i = 0; i < frames.length; i += 1) {
@@ -291,6 +292,9 @@ const Scene = (function () {
             }
           }
           let firstFrame = startFrame || story[sceneName].first_frame;
+          if (story[sceneName].map !== undefined) {
+            Scenemap.set(story[sceneName].map);
+          }
           story[sceneName][firstFrame].render();
         } catch (SyntaxError) {
           console.error(`There was an error processing the first frame, or there's something wrong in the JSON syntax of this scene: ${scenePath} Try running it through JSONLint.com`);

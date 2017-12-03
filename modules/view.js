@@ -12,6 +12,7 @@ const View = (function () {
   const secondaryObjectives = document.querySelector('#objectives-secondary');
   const energy = document.querySelector('#energy');
   const enthusiasm = document.querySelector('#enthusiasm');
+  const mapSpace = document.querySelector('#map');
   
   const clear = function (parent) {
     while (parent.lastChild) {
@@ -56,6 +57,10 @@ const View = (function () {
       } catch(TypeError) {
         console.error('It looks like frameData is currently empty.');
       }
+    },
+    
+    setMap (filename) {
+      mapSpace.style.backgroundImage = `url("media/maps/${filename}")`;
     },
     
     addItem (uid, item) {

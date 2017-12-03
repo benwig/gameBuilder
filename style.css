@@ -37,6 +37,14 @@ h4 {
   font-size: 1.3em;
 }
 
+#map {
+  width: 150px;
+  height: 300px;
+  margin-left: 10px;
+  float: right;
+  background-repeat: no-repeat;
+}
+
 #inventory li {
   padding: 3px;
   border: 1px solid black;

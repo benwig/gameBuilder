@@ -27,7 +27,7 @@
     Scene.init(currentOrigin, storyName, firstScene);
   };
   
-  objectivesRequest.onload = function() {
+  objectivesRequest.onload = function () {
     if (this.status == 200) {
       loadObjectives(this.responseText);
     } else {
@@ -35,11 +35,11 @@
     }
   };
   
-  objectivesRequest.onerror = function() {
+  objectivesRequest.onerror = function () {
     console.error("XMLHttpRequest failed, could not reach Objectives.");
   };
   
-  itemsRequest.onload = function() {
+  itemsRequest.onload = function () {
     if (this.status == 200) {
       loadItems(this.responseText);
     } else {
@@ -47,11 +47,11 @@
     }
   };
   
-  itemsRequest.onerror = function() {
+  itemsRequest.onerror = function () {
     console.error("XMLHttpRequest failed, could not reach Items.");
   };
   
-  choicesRequest.onload = function() {
+  choicesRequest.onload = function () {
     if (this.status == 200) {
       loadChoices(this.responseText);
     } else {
@@ -63,7 +63,7 @@
     console.error("XMLHttpRequest failed, could not reach Choices.");
   };
 
-  storyRequest.onload = function() {
+  storyRequest.onload = function () {
     if (this.status == 200) {
       loadStory(this.responseText);
     } else {
@@ -71,7 +71,7 @@
     }
   };
   
-  storyRequest.onerror = function() {
+  storyRequest.onerror = function () {
     console.error("XMLHttpRequest failed, could not reach Story.");
   };
 
