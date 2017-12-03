@@ -68,6 +68,13 @@ const Scene = (function () {
   //load up the current frame and execute any necessary tasks
   Frame.prototype.render = function () {
     View.setFrameText(this.assembleText());
+    
+    //TODO: create subset of options
+    //TODO: check options to see if they're conditional.
+    //TODO: if they are, check the conditions
+    //TODO: only push options where the conditions are met
+    //TODO: call View.addOptions on the subset of options
+    
     View.addOptions(this.options);
     
     this.runHelpers(this);
@@ -122,8 +129,8 @@ const Scene = (function () {
     }
   };
     
-  //return new 'next' value if all conditions are met; else return false
-  Frame.prototype.validateNextif = function (nextif) {
+  //loop through nested array and return true if all conditions are met; else return false
+  Frame.prototype.validateConditions = function (arr) {
     const conditions = {
       item: function (itemId) {
         return Inventory.contains(itemId);
@@ -151,13 +158,13 @@ const Scene = (function () {
       }
     };
     let outcome;
-    for (let i = 1; i < nextif.length; i += 1) {
-      let setting = nextif[i][0];
-      let hasValue = nextif[i][1];
+    for (let i = 0; i < arr.length; i += 1) {
+      let setting = arr[i][0];
+      let hasValue = arr[i][1];
       outcome = conditions[setting](hasValue);
     }
     if (outcome) {
-      return nextif[0];
+      return true;
     } else {
       return false;
     }
@@ -180,7 +187,9 @@ const Scene = (function () {
 
     //[optional] if conditions are met, send player to a different 'next'
     if (option.nextif !== undefined) {
-      next = this.validateNextif(option.nextif) || next;
+      if (this.validateConditions(option.nextif.slice(1,))) {
+        next = option.nextif[0];
+      }
     }
 
     //[optional] remove option permanently if remove = true
