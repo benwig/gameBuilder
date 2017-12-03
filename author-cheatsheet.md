@@ -21,6 +21,7 @@ Options are objects, contained within a Frame's "options" array. Each Option wil
 
 Options can have any combination of these optional attributes:
 
+- **showif**: *array* - this option will only be displayed if all conditions are met. Conditions should be expressed as strings of three parts, e.g. `["item honey true"]` where the 1st word is the area to check, 2nd is the value to be evaluated, and 3rd is whether the value should be true or false for the option to display.
 - **remove**: *bool* - if true, the option will be removed after selection.
 - **oneoff**: *bool* - if true, the option will be removed after viewing, even if it's not selected
 - **nextif**: *array* - an array which follows this pattern: `"nextif": ["road-3", ["choices", "took-detour"], ["item", "map"]]`.
