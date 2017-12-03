@@ -224,9 +224,14 @@ const Scene = (function () {
     }
 
     //[optional] if conditions are met, send player to a different 'next'
-    //TODO: let nextif use strings, then .split() these into array before passing to validateConditions
     if (option.nextif !== undefined) {
-      if (this.validateConditions(option.nextif.slice(1))) {
+      
+      //split nextif strings into arrays
+      let conditions = option.nextif.slice(1);
+      for (let i = 0; i < conditions.length; i += 1) {
+        conditions[i] = conditions[i].split(" ");
+      }
+      if (this.validateConditions(conditions)) {
         next = option.nextif[0];
       }
     }

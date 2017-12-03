@@ -214,7 +214,7 @@
         {
           "text": "Approach the table",
           "next": "table-1",
-          "nextif": ["table-ignoring", ["choices", "insulted-tavern-group"]]
+          "nextif": ["table-ignoring", "choices insulted-tavern-group"]
         },
         {
           "text": "Leave the tavern",
@@ -230,19 +230,19 @@
       "options": [
         {
           "text": "'Don't shame me for my bad decisions. Give me wine!'",
-          "nextif": ["buy-wine", ["money", 2]],
+          "nextif": ["buy-wine", "money 2"],
           "next": "buy-fail",
           "remove": true,
           "oneoff": true
         },
         {
           "text": "Buy wine (2 obols)",
-          "nextif": ["buy-wine", ["money", 2]],
+          "nextif": ["buy-wine", "money 2"],
           "next": "buy-fail"
         },
         {
           "text": "Buy bread (1 obol)",
-          "nextif": ["buy-bread", ["money", 1]],
+          "nextif": ["buy-bread", "money 1"],
           "next": "buy-fail"
         },
         {
@@ -327,7 +327,7 @@
         {
           "text": "Greet the old men",
           "next": "table-greet",
-          "nextif": ["table-3", ["choices", "talked-to-tavern-group"]],
+          "nextif": ["table-3", "choices talked-to-tavern-group"],
           "choice": "talked-to-tavern-group"
         },
         {
