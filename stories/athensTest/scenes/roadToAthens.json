@@ -102,7 +102,7 @@
         {
           "text": "Delicious honey! Wonderful.",
           "next": "honeyfield",
-          "getItem": "honey",
+          "getItem": "honey honey",
           "completeObjective": "collectHoney"
         }
       ]

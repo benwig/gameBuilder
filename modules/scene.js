@@ -136,9 +136,12 @@ const Scene = (function () {
     if (focus.time) {
       Time.increment(focus.time);
     }
-    //add item to inventory
+    //add item(s) to inventory
     if (focus.getItem) {
-      Inventory.add(focus.getItem);
+      let args = focus.getItem.split(" ");
+      for (let i = 0; i < args.length; i += 1) {
+        Inventory.add(args[i]);
+      }
     }
     //add/deduct player money
     if (focus.money) {
