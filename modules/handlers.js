@@ -6,8 +6,12 @@ const Handlers = (function () {
   
   return {
     
+    toggleReveal (selector) {
+      document.querySelector(selector).classList.toggle('js-hidden');
+    },
+    
     //handle click on an option button
-    processOption(event) {
+    processOption (event) {
       const optionId = event.target.dataset.optionId;
       if (optionId !== undefined) {
         Scene.processOption(optionId);
@@ -16,7 +20,7 @@ const Handlers = (function () {
       }
     },
     
-    openItemInfo(event) {
+    openItemInfo (event) {
       const itemUid = event.target.dataset.itemUid;
       if (itemUid !== undefined) {
         let item = Inventory.get(itemUid);
@@ -26,11 +30,11 @@ const Handlers = (function () {
       }
     },
     
-    closeItemInfo() {
+    closeItemInfo () {
       View.closeItemInfo();
     },
     
-    consumeItem(uid) {
+    consumeItem (uid) {
       Inventory.get(uid).consume(uid);
     }
     

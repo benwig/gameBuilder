@@ -15,9 +15,11 @@
       <p id="frameText"></p>
       <ul id="options" onclick="Handlers.processOption(event)">
       </ul>
+      <button id="infobutton" onclick="Handlers.toggleReveal('#infobox')">i</button>
+      <div id="infobox" class="js-hidden"></div>
     </div>
     <div class="container">
-      <div class="inventory"  onclick="Handlers.openItemInfo(event)">
+      <div class="inventory" onclick="Handlers.openItemInfo(event)">
         <h4>Inventory</h4>
         <ul id="inventory"></ul>
       </div>

@@ -213,7 +213,7 @@ const Scene = (function () {
       }
     }
 
-    let next = option.next; //a string, so, not a reference. Can be temporarily modified.
+    let next = option.next; //a string, so, not a reference.
     
     //[optional] change the future 'next' of the selected option
     if (option.next2 !== undefined) {

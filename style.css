@@ -37,12 +37,29 @@ h4 {
   font-size: 1.3em;
 }
 
+.maintext button {
+  cursor: pointer;
+}
+
 #map {
   width: 150px;
   height: 300px;
   margin-left: 10px;
   float: right;
   background-repeat: no-repeat;
+}
+
+#infobutton {
+  width: 30px;
+  height: 30px;
+  line-height: 0;
+  border: 1px solid black;
+  border-radius: 50%;
+}
+
+#infobox {
+  width: 100%;
+  min-height: 100px;
 }
 
 #inventory li {
@@ -88,4 +105,12 @@ h4 {
   justify-content: space-between;
   max-width: 720px;
   margin: 10px 10px 0;
+}
+
+.js-hidden {
+  display: none;
+}
+
+.js-invisible {
+  visibility: hidden;
 }
