@@ -36,6 +36,7 @@ const Scene = (function () {
     this.id = settings.id;
     this.text = settings.text;
     this.text2 = settings.text2 || false;
+    this.info = settings.info || false;
     this.options = settings.options || [];
     //add a unique id to each option
     for (let i = 0; i < this.options.length; i += 1) {
@@ -98,6 +99,14 @@ const Scene = (function () {
     }, this);
 
     View.addOptions(filteredOptions);
+    
+    if (this.info) {
+      View.addInfo(this.info);
+    } else {
+      View.hideInfo();
+    }
+    
+    //TODO: update position on map
     
     this.runHelpers(this);
     console.log(`Currently at: ${this.id}`);
@@ -213,7 +222,8 @@ const Scene = (function () {
       }
     }
 
-    let next = option.next; //a string, so, not a reference.
+    //store next as string (not reference) so it can be temporarily altered
+    let next = option.next;
     
     //[optional] change the future 'next' of the selected option
     if (option.next2 !== undefined) {

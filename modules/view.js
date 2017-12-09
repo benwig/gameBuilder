@@ -13,6 +13,8 @@ const View = (function () {
   const energy = document.querySelector('#energy');
   const enthusiasm = document.querySelector('#enthusiasm');
   const mapSpace = document.querySelector('#map');
+  const infobutton = document.querySelector('#infobutton');
+  const infobox = document.querySelector('#infobox');
   
   const clear = function (parent) {
     while (parent.lastChild) {
@@ -49,13 +51,13 @@ const View = (function () {
     },
     
     //removes css for visibility: hidden
-    makeVisible (selector) {
-      document.querySelector(selector).classList.remove('js-invisible');
+    makeVisible (element) {
+      element.classList.remove('js-invisible');
     },
     
     //adds css for visibility: hidden
-    makeInvisible (selector) {
-      document.querySelector(selector).classList.add('js-invisible');
+    makeInvisible (element) {
+      element.classList.add('js-invisible');
     },
     
     setFrameText (text) {
@@ -76,6 +78,20 @@ const View = (function () {
       } catch(TypeError) {
         console.error('It looks like frameData is currently empty.');
       }
+    },
+    
+    addInfo (infotext) {
+      clear(infobox);
+      let p = buildP(infotext);
+      infobox.appendChild(p);
+      this.makeVisible(infobutton);
+    },
+    
+    hideInfo () {
+      if (!infobox.classList.contains('js-hidden')) {
+        infobox.classList.add('js-hidden');
+      }
+      this.makeInvisible(infobutton);
     },
     
     setMap (filename) {
