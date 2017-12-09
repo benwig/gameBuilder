@@ -6,9 +6,9 @@ const Handlers = (function () {
   
   return {
     
-    //sets css to display: none / removes display: none
-    toggleReveal (selector) {
-      View.toggleReveal(selector);
+    //shows / hides frame info
+    toggleInfo () {
+      View.toggleInfo('#infobox');
       Scene.markInfoAsRead();
     },
     

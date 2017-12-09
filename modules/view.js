@@ -46,8 +46,8 @@ const View = (function () {
   return {
     
     //sets css to display: none / removes display: none
-    toggleReveal (selector) {
-      document.querySelector(selector).classList.toggle('js-hidden');
+    toggleReveal (element) {
+      element.classList.toggle('js-hidden');
     },
     
     //removes css for visibility: hidden
@@ -92,6 +92,12 @@ const View = (function () {
         infobutton.classList.add("infobutton--unread");
         infobutton.classList.remove("infobutton--read");
       }
+    },
+    
+    toggleInfo () {
+      this.toggleReveal(infobox);
+      infobutton.classList.remove("infobutton--unread");
+      infobutton.classList.add("infobutton--read");
     },
     
     hideInfo () {
