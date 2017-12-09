@@ -21,6 +21,7 @@
       "id": "road-start",
       "text": "You are standing on the main road, at the bottom of the track which leads to your house. There are two ways to travel to Athens: go North, around Mount Hymettos, or take the Southern road beneath the mountain.",
       "info": "Mount Hymettos is a mountain range in the Athens area of Attica, East Central Greece. It is noted for its thyme honey and the marble which is quarried from its ten-mile-long slopes.",
+      "coordinates": "road-start",
       "options": [
         {
           "text": "Take the Northern path",
@@ -43,6 +44,7 @@
       "id": "north-1",
       "text": "You trudge along the dusty road for a while. Now you're passing the fields where you keep some of your beehives. Mount Hymettos looms to the South.",
       "text2": "You are on the road between your village and Athens. Mount Hymettos looms to the South. Your beehives are in a field nearby.",
+      "coordinates": "20 20",
       "options": [
         {
           "text": "Take a detour to inspect your beehives",
