@@ -11,12 +11,14 @@
       <p>Enthusiasm: <span id="enthusiasm"></span></p>
     </div>
     <div class="maintext">
-      <div id="map"></div>
+      <div id="map">
+        <div id="image" class="js-hidden"></div>
+      </div>
       <p id="frameText"></p>
       <ul id="options" onclick="Handlers.processOption(event)">
       </ul>
       <button id="infobutton" class="js-invisible" onclick="Handlers.toggleInfo()">i</button>
-      <div id="infobox" class="js-hidden"></div>
+      <div id="infobox"></div>
     </div>
     <div class="container">
       <div class="inventory" onclick="Handlers.openItemInfo(event)">

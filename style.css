@@ -28,7 +28,7 @@ h4 {
 }
 
 .maintext {
-  max-width: 700px;
+  max-width: 720px;
   min-height: 300px;
   margin: 10px;
 }
@@ -47,6 +47,16 @@ h4 {
   margin-left: 10px;
   float: right;
   background-repeat: no-repeat;
+}
+
+#image {
+  width: 100%;
+  height: 100%;
+  border: 1px solid grey;
+  z-index: 999;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 #infobutton {

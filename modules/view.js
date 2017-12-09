@@ -13,6 +13,7 @@ const View = (function () {
   const energy = document.querySelector('#energy');
   const enthusiasm = document.querySelector('#enthusiasm');
   const mapSpace = document.querySelector('#map');
+  const imageSpace = document.querySelector('#image');
   const infobutton = document.querySelector('#infobutton');
   const infobox = document.querySelector('#infobox');
   
@@ -109,6 +110,17 @@ const View = (function () {
     
     setMap (filename) {
       mapSpace.style.backgroundImage = `url("media/maps/${filename}")`;
+    },
+    
+    displayImage (filename) {
+      imageSpace.style.backgroundImage = `url("media/images/${filename}")`;
+      imageSpace.classList.remove('js-hidden');
+    },
+    
+    hideImage () {
+      if (!imageSpace.classList.contains('js-hidden')) {
+        imageSpace.classList.add('js-hidden');
+      }
     },
     
     addItem (uid, item) {

@@ -38,6 +38,7 @@ const Scene = (function () {
     this.text2 = settings.text2 || false;
     this.info = settings.info || false;
     this.infoRead = false;
+    this.image = settings.image || false;
     this.options = settings.options || [];
     //add a unique id to each option
     for (let i = 0; i < this.options.length; i += 1) {
@@ -105,6 +106,12 @@ const Scene = (function () {
       View.addInfo(this.info, this.infoRead);
     } else {
       View.hideInfo();
+    }
+    
+    if (this.image) {
+      View.displayImage(this.image);
+    } else {
+      View.hideImage();
     }
     
     //TODO: update position on map
