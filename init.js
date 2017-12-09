@@ -7,6 +7,7 @@
   const objectivesRequest = new XMLHttpRequest();
   const itemsRequest = new XMLHttpRequest();
   const choicesRequest = new XMLHttpRequest();
+  const coordinatesRequest = new XMLHttpRequest();
   const storyRequest = new XMLHttpRequest();
   
   const loadObjectives = function (objectivesJSON) {
@@ -19,6 +20,10 @@
   
   const loadChoices = function (choicesJSON) {
     Player.setupChoices(JSON.parse(choicesJSON));
+  };
+  
+  const loadCoordinates = function (coordinatesJSON) {
+    Scenemap.init(JSON.parse(coordinatesJSON));
   };
   
   const loadStory = function (metadataJSON) {
@@ -62,6 +67,18 @@
   choicesRequest.onerror = function() {
     console.error("XMLHttpRequest failed, could not reach Choices.");
   };
+  
+  coordinatesRequest.onload = function () {
+    if (this.status == 200) {
+      loadCoordinates(this.responseText);
+    } else {
+      console.log("No coordinates found for this Story.");
+    }
+  };
+  
+  coordinatesRequest.onerror = function() {
+    console.error("XMLHttpRequest failed, could not reach Coordinates.");
+  };
 
   storyRequest.onload = function () {
     if (this.status == 200) {
@@ -80,9 +97,12 @@
   
   itemsRequest.open("GET", `${currentOrigin}/stories/${storyName}/items.json`, true);
   itemsRequest.send();
-  
+    
   choicesRequest.open("GET", `${currentOrigin}/stories/${storyName}/choices.json`, true);
   choicesRequest.send();
+  
+  coordinatesRequest.open("GET", `${currentOrigin}/stories/${storyName}/coordinates.json`, true);
+  coordinatesRequest.send();
   
   storyRequest.open("GET", `${currentOrigin}/stories/${storyName}/metadata.json`, true);
   storyRequest.send();
