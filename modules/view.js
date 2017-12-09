@@ -20,6 +20,10 @@ const View = (function () {
       }
   };
   
+  ///////////////////
+  //PRIVATE HELPERS//
+  ///////////////////
+  
   //return a button
   const buildButton = function(label, callback) {
     let button = document.createElement('button');
@@ -38,6 +42,21 @@ const View = (function () {
   };
   
   return {
+    
+    //sets css to display: none / removes display: none
+    toggleReveal (selector) {
+      document.querySelector(selector).classList.toggle('js-hidden');
+    },
+    
+    //removes css for visibility: hidden
+    makeVisible (selector) {
+      document.querySelector(selector).classList.remove('js-invisible');
+    },
+    
+    //adds css for visibility: hidden
+    makeInvisible (selector) {
+      document.querySelector(selector).classList.add('js-invisible');
+    },
     
     setFrameText (text) {
       document.querySelector("#frameText").innerHTML = text;

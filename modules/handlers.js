@@ -6,8 +6,9 @@ const Handlers = (function () {
   
   return {
     
+    //sets css to display: none / removes display: none
     toggleReveal (selector) {
-      document.querySelector(selector).classList.toggle('js-hidden');
+      View.toggleReveal(selector);
     },
     
     //handle click on an option button
