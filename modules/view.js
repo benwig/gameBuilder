@@ -80,11 +80,18 @@ const View = (function () {
       }
     },
     
-    addInfo (infotext) {
+    addInfo (infotext, read) {
       clear(infobox);
       let p = buildP(infotext);
       infobox.appendChild(p);
       this.makeVisible(infobutton);
+      if (read) {
+        infobutton.classList.remove("infobutton--unread");
+        infobutton.classList.add("infobutton--read");
+      } else {
+        infobutton.classList.add("infobutton--unread");
+        infobutton.classList.remove("infobutton--read");
+      }
     },
     
     hideInfo () {

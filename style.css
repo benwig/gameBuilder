@@ -62,6 +62,14 @@ h4 {
   min-height: 100px;
 }
 
+.infobutton--unread {
+  background-color: skyblue;
+}
+
+.infobutton--read {
+  background-color: lightgray;
+}
+
 #inventory li {
   padding: 3px;
   border: 1px solid black;

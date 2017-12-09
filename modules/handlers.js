@@ -9,6 +9,7 @@ const Handlers = (function () {
     //sets css to display: none / removes display: none
     toggleReveal (selector) {
       View.toggleReveal(selector);
+      Scene.markInfoAsRead();
     },
     
     //handle click on an option button

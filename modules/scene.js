@@ -37,6 +37,7 @@ const Scene = (function () {
     this.text = settings.text;
     this.text2 = settings.text2 || false;
     this.info = settings.info || false;
+    this.infoRead = false;
     this.options = settings.options || [];
     //add a unique id to each option
     for (let i = 0; i < this.options.length; i += 1) {
@@ -101,7 +102,7 @@ const Scene = (function () {
     View.addOptions(filteredOptions);
     
     if (this.info) {
-      View.addInfo(this.info);
+      View.addInfo(this.info, this.infoRead);
     } else {
       View.hideInfo();
     }
@@ -271,6 +272,13 @@ const Scene = (function () {
   //////////////////////
   /// PUBLIC METHODS ///
   //////////////////////
+  
+  self.markInfoAsRead = function () {
+    let frame = story[__currentScene][__currentFrame];
+    if (!frame.infoRead) {
+      frame.infoRead = true;
+    }
+  }
 
   self.processOption = function (optionUid) {
     story[__currentScene][__currentFrame].processOption(optionUid);
