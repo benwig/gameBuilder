@@ -84,6 +84,7 @@
       "id": "honeyfield",
       "text": "Bees buzz softly among the flowers in the field where your beehives are kept. The hives are lined up in a row.",
       "info": "Bees have the power to predict rain, according to Aristotle. These ones also produce the famous thyme honey of Mount Hymettos.",
+      "image": "greekbee.jpg",
       "options": [
         {
           "text": "Collect honey",
@@ -99,7 +100,8 @@
     
     {
       "id": "honeyfield-2",
-      "text": "You open up each hive in turn. The bees haven't produced much honey lately, but there's enough to fill a clay pot.",
+      "text": "You open up each hive in turn. The bees haven't produced much honey lately, but there's enough to fill two clay pots.",
+      "image": "greekbee.jpg",
       "options": [
         {
           "text": "Delicious honey! Wonderful.",
@@ -113,6 +115,7 @@
     {
       "id": "honeyfield-3",
       "text": "You already took all the honey that was ready. The bees need time to make some more.",
+      "image": "greekbee.jpg",
       "options": [
         {
           "text": "Oh well.",
