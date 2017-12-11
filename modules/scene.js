@@ -39,6 +39,7 @@ const Scene = (function () {
     this.info = settings.info || false;
     this.infoRead = false;
     this.image = settings.image || false;
+    this.coordinates = settings.coordinates || false;
     this.options = settings.options || [];
     //add a unique id to each option
     for (let i = 0; i < this.options.length; i += 1) {
@@ -112,6 +113,10 @@ const Scene = (function () {
       View.displayImage(this.image);
     } else {
       View.hideImage();
+    }
+    
+    if (this.coordinates) {
+      Scenemap.updateLocation(this.coordinates);
     }
     
     //TODO: update position on map
