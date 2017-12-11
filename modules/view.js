@@ -112,6 +112,26 @@ const View = (function () {
       mapSpace.style.backgroundImage = `url("media/maps/${filename}")`;
     },
     
+    setLocation (x, y) {
+      let playerIcon = document.createElement('img');
+      playerIcon.src = "media/icons/player.png";
+      playerIcon.id = ("playerIcon");
+      playerIcon.classList.add("playerIcon");
+      playerIcon.style.left = x;
+      playerIcon.style.bottom = y;
+      mapSpace.appendChild(playerIcon);
+    },
+    
+    updateLocation (x, y) {
+      let playerIcon = document.querySelector("#playerIcon");
+      playerIcon.style.left = x;
+      playerIcon.style.bottom = y;
+    },
+    
+    destroyLocation () {
+      mapSpace.removeChild(document.querySelector("#playerIcon"));
+    },
+    
     displayImage (filename) {
       imageSpace.style.backgroundImage = `url("media/images/${filename}")`;
       imageSpace.classList.remove('js-hidden');

@@ -5,6 +5,7 @@ const Scenemap = (function () {
   "use strict";
   
   let __coordinates = {};
+  let __startingPointSet = false;
   
   return {
     
@@ -15,11 +16,21 @@ const Scenemap = (function () {
       xy = xy.split(" ", 2);
       x = parseInt(xy[0]);
       y = parseInt(xy[1]);
-      console.log(x, y);
+      
+      if (__startingPointSet) {
+        View.updateLocation(x, y);
+      } else {
+        View.setLocation(x, y);
+        __startingPointSet = true;
+      }
     },
     
     set: function (filename) {
       View.setMap(filename);
+      if (__startingPointSet) {
+        View.destroyLocation();
+        __startingPointSet = false;
+      }
     },
     
     init: function (coordinatesJSON) {
