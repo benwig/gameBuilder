@@ -67,6 +67,7 @@
     {
       "id": "north-2",
       "text": "The road winds out of the mountains from the East. Athens can be seen in the distance, to the West.",
+      "coordinates": "50 90",
       "options": [
         {
           "text": "Head down into Athens",
@@ -86,6 +87,7 @@
       "id": "honeyfield",
       "text": "Bees buzz softly among the flowers in the field where your beehives are kept. The hives are lined up in a row.",
       "info": "Bees have the power to predict rain, according to Aristotle. These ones also produce the famous thyme honey of Mount Hymettos.",
+      "coordinates": "honeyfield",
       "image": "greekbee.jpg",
       "options": [
         {
