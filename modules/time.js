@@ -4,7 +4,7 @@ const Time = (function () {
   
   "use strict";
   
-  let now = 300; //time in minutes since 00:00
+  let __now = 300; //time in minutes since 00:00
   //TODO: timebands so you can quickly check if game has reached a certain timeframe, e.g. for use in descriptions. May be easier than using laterThan/earlierThan. Add corresponding function to return timezone/check timezone.
   /*const timebands = {
     "predawn": {lower: 0, upper: 299}, //00:00 - 05:00
@@ -22,30 +22,40 @@ const Time = (function () {
     "dusk" //21:00 - 22:00
     "night" //22:00 - 24:00
   }*/
-  let timeSinceEnergyDeduction = 0;
+  let __timeSinceEnergyDeduction = 0;
   
-  //TODO: helper function which gets the player's enthusiasm, and uses a formula to deduct minutes from travel time as appropriate. Then returns the total travel time.
+  //increase / reduce travel time based on variables
+  const __modifyIncrement = function (minutes) {
+    const eValue = Player.get("enthusiasm", "value");
+    const eLimit = Player.get("enthusiasm", "limit");
+    const eRatio = eValue/eLimit; //produces decimal from 0 to 1
+    let eDiff = eRatio - 0.5; //distance from midpoint of enthusiasm scale
+    //anything above (below) baseline reduces (increases) base travel time.
+    minutes = minutes - (minutes * eDiff);
+    return Math.ceil(minutes); //Math.ceil ensures minutes is never 0
+  };
   
   return {
     
     get: function () {
-      return now;
+      return __now;
     },
     
     increment: function (minutes) {
-      now = now + minutes;
+      minutes = __modifyIncrement(minutes);
+      __now = __now + minutes;
       //check if the clock has passed a half-hour, if so, deduct 1 energy for each half hour passed
-      timeSinceEnergyDeduction += minutes;
-      if (timeSinceEnergyDeduction >= 30) {
-        let decreaseBy = Math.floor(timeSinceEnergyDeduction/30);
+      __timeSinceEnergyDeduction += minutes;
+      if (__timeSinceEnergyDeduction >= 30) {
+        let decreaseBy = Math.floor(__timeSinceEnergyDeduction/30);
         Player.increment(-decreaseBy, "energy");
-        timeSinceEnergyDeduction = timeSinceEnergyDeduction%30;
+        __timeSinceEnergyDeduction = __timeSinceEnergyDeduction%30;
       }
-      View.updateTime(now);
+      View.updateTime(__now);
     },
     
     laterThan: function (minutes) {
-      if (now > parseInt(minutes)) {
+      if (__now > parseInt(minutes)) {
         return true;
       } else {
         return false;
@@ -53,7 +63,7 @@ const Time = (function () {
     },
     
     earlierThan: function (minutes) {
-      if (now < parseInt(minutes)) {
+      if (__now < parseInt(minutes)) {
         return true;
       } else {
         return false;
