@@ -13,6 +13,10 @@ const Player = (function () {
       value: 0,
       limit: 5
     },
+    speed: {
+      value: 0,
+      limit: 10
+    }
     choices: {}
   };
   
