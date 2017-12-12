@@ -24,6 +24,8 @@ const Time = (function () {
   }*/
   let timeSinceEnergyDeduction = 0;
   
+  //TODO: helper function which gets the player's enthusiasm, and uses a formula to deduct minutes from travel time as appropriate. Then returns the total travel time.
+  
   return {
     
     get: function () {
