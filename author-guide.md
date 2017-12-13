@@ -2,27 +2,30 @@
 
 Follow these steps to write branching narratives which can be run by the gameBuilder app.
 
+## Contents
 **Setting Up**
-[Directory Structure](#example-directory-structure)
-[Story Metadata](#story-metadata)
-[Scene Metadata](#scene-metadata)
+- [Directory Structure](#example-directory-structure)
+- [Story Metadata](#story-metadata)
+- [Scene Metadata](#scene-metadata)
+
 **Creating a basic narrative**
-[Frame Basics](#frame-basics)
-[Option Basics](#option-basics)
-[Example Scene](#example-scene)
+- [Frame Basics](#frame-basics)
+- [Option Basics](#option-basics)
+- [Example Scene](#example-scene)
+
 **Changing Frame text**
+
 **Removing and changing options**
 
-**Glossary**
-
+## Glossary
  - **Story**:  A self-contained game narrative, comprised of one or more Scenes. 
  - **Scene**: Represents a section of the game narrative, such as a conversation, a location, or a discrete series of events. Composed of several interconnected Frames.
  - **Frame**: The smallest narrative unit. Will be represented in-game as a block of text followed by one or more Options.
  - **Option**: Each Frame must have at least one Option, which moves the player on to a new frame when selected. Represented in-game as buttons.
 
-##Setting up
+## Setting up
 
-###Example Directory Structure
+### Example Directory Structure
 At its most basic, the game should be structured like this, with at least one JSON file in the *scenes* directory:
 ```
 Project
@@ -46,7 +49,7 @@ Project
  +-- init.js (launches the story)
 ```
 
-###Story Metadata
+### Story Metadata
 There must be a file called **metadata.json** at the top level of your Story file, as shown in the [example file directory](#example-directory-structure).
 The metadata.json file should follow this template:
 ```
@@ -62,7 +65,7 @@ The metadata.json file should follow this template:
 *author* is your name - it will appear in game credits.
 *first _scene* will be used to identify the Scene on which your Story should begin. This should be the file name of the Scene you want to select (minus the *.JSON* suffix).
 
-###Scene Metadata
+### Scene Metadata
 Each Scene has its own JSON file which defines what Frames are available in this Scene. Each Scene JSON should have a unique file name. It's best to avoid using spaces in your file name.
 
 The Scene file should begin with some Scene metadata, following this pattern:
@@ -80,8 +83,8 @@ The Scene file should begin with some Scene metadata, following this pattern:
  - *first_frame* is mandatory, and should contain the id of a Frame which you want to display first to the player.
  -  *frames* is an array which will hold all of the Frames for this Scene.
 
-##Creating a basic branching narrative
-###Frame Basics
+## Creating a basic branching narrative
+### Frame Basics
 At its simplest, each Frame is an object which looks like this:
 ```
 {
@@ -95,7 +98,7 @@ At its simplest, each Frame is an object which looks like this:
  - *text* will be displayed to the Player as plain text. It could be a description, a prompt, or a line of dialogue from an NPC, for example.
  - *options* is an array which will contain one or more Options, each of which is its own object.
 
-###Option Basics
+### Option Basics
 An Option is an object with this basic structure:
 ```
 {
@@ -125,7 +128,7 @@ Putting the Frame and Options together, we get something like this:
   ]
 }
 ```
-###Example Scene
+### Example Scene
 This example contains everything you need to build a perfectly formed Scene, albeit one with a rather short and circular narrative:
 ```
 {
@@ -172,8 +175,8 @@ This example contains everything you need to build a perfectly formed Scene, alb
 ```
 The rest of this guide will deal with the extra attributes which you can add to your Frames and Options to flesh out the game and enable changes to player stats, objectives, inventory etc.
 
-##Changing Frame Text
-###Prefix
+## Changing Frame Text
+### Prefix
 To change the display text of a Frame depending on which Option led to it, include the *prefix* attribute on an Option. The prefix will be added at the start of the *next* Frame's text.
 This is useful if you want to make small changes to the story text to reflect the player's responses, but without creating a whole new set of Frames.
 ```
@@ -210,7 +213,7 @@ If you choose the second option, however, he next Frame will read:
 Prefixes are temporary, so if you visited the "oldman-response" Frame via another, unprefixed Option later on, you'd just see the basic *text* of this Frame:
 > 'How can I help you?' he says.
 
-###Text2
+### Text2
 The *text2* attribute lets you display a different text when a Frame is viewed for the second time.
 This can be used to provide some variety. It's also useful if you want to include a long description the first time the player encounters something, then default to a short description for future visits.
 ```javascript
@@ -220,8 +223,8 @@ This can be used to provide some variety. It's also useful if you want to includ
   "text2": "You are in a small tavern. The innkeeper is resting on a stool behind the bar."
 }
 ```
-##Removing and Changing Options
-###Remove
+## Removing and Changing Options
+### Remove
 If you want an option to disappear once it has been selected, give it the *remove: true* attribute.
 For example, adding *remove: true* to this option ensures you can only pick up the coin once:
 ```
@@ -232,7 +235,7 @@ For example, adding *remove: true* to this option ensures you can only pick up t
 }
 ```
 
-###Oneoff
+### Oneoff
 If you want an option to only appear once, regardless of whether or not the player selected it, use the *oneoff: true* attribute. If the player doesn't click the option the first time it's presented, they won't get the chance again. This can be combined with a Frame's *text2* attribute to good effect, as seen below:
 ```
 {
@@ -261,7 +264,7 @@ In every other encounter, however, there will only be one option:
 > The old woman looks you up and down. 'Welcome back.'
 > ['What can you tell me about this town?']
 
-###Next2
+### Next2
 You may want an Option to lead to one Frame when clicked for the first time, then default to a different Frame thereafter. Use the *next2* attribute on the Option to specify where it should lead every time except on the first click.
 
 ```
@@ -283,23 +286,23 @@ You may want an Option to lead to one Frame when clicked for the first time, the
 ```
 In this example, if you return and try to collect more honey, you'll be taken to a different Frame (*honey-gone*) which informs you that there's no more honey left.
 
-##Conditional Navigation
-###nextif
+## Conditional Navigation
+### nextif
 
-##Inventory
-###getItem
+## Inventory
+### getItem
 
-##Progressing Time
-###time
+## Progressing Time
+### time
 
-##Updating Player Stats
-###energy
-###enthusiasm
-###money
+## Updating Player Stats
+### energy
+### enthusiasm
+### money
 
-##Objectives
-###assignObjective
-###completeObjective
-###failObjective
+## Objectives
+### assignObjective
+### completeObjective
+### failObjective
 
-##Linking Scenes together
+## Linking Scenes together
