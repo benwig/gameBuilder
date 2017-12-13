@@ -10,6 +10,9 @@ Frames are objects with the following mandatory attributes:
 In addition, Frames may have any combination of these optional attributes:
 
 - **text2**: *string* - text which will be displayed to the player when they revisit the frame.
+- **image**: *string* - filename (including file extension) of an image from the media/images/ directory. Image will be displayed to the user while the Frame is being viewed.
+- **coordinates**: *string* - either a two numbers separated by a space ("10 20"), representing x+y coordinates, or a reference to named coordinates from the coordinates.JSON file. Will be used to update the player's location on the map.
+- **info**: *string* - text which will appear, initially hidden behind an 'info' button, giving players contextual information related to the Frame.
 
 See also the [list of attributes](#shared-attributes-for-frames--options) which can be applied to Frame or Option.
 
@@ -32,11 +35,11 @@ The first string is the id of a Frame. This is followed by one or more arrays. E
 ## Shared Attributes for Frames & Options
 Both Frames and Options can have any combination of these optional attributes. They will be processed and applied to the game state as soon as the Frame is viewed, or as soon as the Option is selected:
 
-- **objective**: *string* - id of an objective to be assigned to the player.
-- **completeObjective**: *string* - id of an objective to be marked as completed.
-- **failObjective**: *string* - id of an objective to be marked as completed.
-- **getItem**: *string* - id of an item to be added to the player's inventory.
+- **objective**: *string* - id of an objective to be assigned to the player. Multiple objectives can be assigned at once, if ids are separated by a space (e.g. "readLetter findAFriend").
+- **completeObjective**: *string* - id of an objective to be marked as completed. Multiple objectives can be completed at once, if ids are separated by a space (e.g. "readLetter findAFriend").
+- **failObjective**: *string* - id of an objective to be marked as failed. Objectives will only be failed if already assigned. Multiple objectives can be failed at once, if ids are separated by a space (e.g. "readLetter findAFriend").
+- **getItem**: *string* - id of an item to be added to the player's inventory. Multiple items can be added, if separated by a space (e.g. "sword shield").
 - **energy**: *integer* - the amount of energy to be added/deducted from stats (can be positive or negative).
 - **enthusiasm**: *integer* - the amount of enthusiasm to be added/deducted from stats (can be positive or negative).
-- **time**: *integer* - the number of minutes by which game time should move forwards.
+- **time**: *integer* - the number of minutes by which game time should move forwards. Will be modified up/down by as much as 50% depending on player stats (i.e. speed, enthusiasm).
 - **money**: *integer* - the amount of money to be added/deducted from the user's wallet (can be positive or negative).
