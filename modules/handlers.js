@@ -38,6 +38,15 @@ const Handlers = (function () {
     
     consumeItem (uid) {
       Inventory.get(uid).consume(uid);
+    },
+    
+    useItem (uid) {
+      let outcome = Inventory.get(uid).use(uid);
+      console.log(outcome);
+    },
+    
+    unuseItem (uid) {
+      console.log("Placeholder - item will be unused");
     }
     
   };

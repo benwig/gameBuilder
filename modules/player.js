@@ -16,7 +16,7 @@ const Player = (function () {
     speed: {
       value: 0,
       limit: 10
-    }
+    },
     choices: {}
   };
   
@@ -40,7 +40,10 @@ const Player = (function () {
         newvalue = 0;
       }
       __data[key].value = newvalue;
-      View.updateStats(key, __data[key].value, __data[key].limit);
+      //update UI display
+      if (key === "energy" || key === "enthusiasm") {
+        View.updateStats(key, __data[key].value, __data[key].limit);
+      }
     },
     
     setupChoices: function (choicesJSON) {

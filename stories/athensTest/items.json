@@ -20,7 +20,9 @@
       "id": "sandals",
       "name": "Sandals",
       "value": 1,
-      "description": "A basic pair of sandals. Rather dusty."
+      "description": "A basic pair of sandals. Rather dusty.",
+      "usable": true,
+      "speed": 2
     }
   ]
 }

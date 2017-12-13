@@ -181,12 +181,29 @@ const View = (function () {
       // add buttons
       clear(buttons);
       buttons.appendChild(buildButton("Close", Handlers.closeItemInfo));
-      if (item.energy > 0) {
+      // add consume button if item is edible
+      if (item.edible) {
         buttons.appendChild(buildButton("Consume", function(){
           Handlers.consumeItem(uid);
           Handlers.closeItemInfo();
         }));
         description.appendChild(buildP(` Energy: ${item.energy}`));
+      }
+      //add use button if item is usable
+      if (item.usable && !item.using) {
+        buttons.appendChild(buildButton("Use", function(){
+          Handlers.useItem(uid);
+          Handlers.closeItemInfo();
+        }));
+        description.appendChild(buildP(` Speed bonus: ${item.speed}`));
+      }
+      //add unuse button if item's already in use
+      if (item.using) {
+        buttons.appendChild(buildButton("Stop using", function(){
+          Handlers.unuseItem(uid);
+          Handlers.closeItemInfo();
+        }));
+        description.appendChild(buildP(` Speed bonus: ${item.speed}`));
       }
       dialog.showModal();
     },
@@ -215,7 +232,7 @@ const View = (function () {
           enthusiasm.textContent = `${value}/${limit}`;
           break;
         default:
-          console.error("Could not update stats, incorrect argument given.");
+          console.error(`Could not update stats for ${name} in UI.`);
       }
     },
     

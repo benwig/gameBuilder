@@ -24,32 +24,54 @@ const Inventory = (function () {
     this.icon = settings.icon || "unknownObject.png";
     this.value = settings.value || 0;
     this.energy = settings.energy || 0;
+    this.enthusiasm = settings.enthusiasm || 0;
     this.speed = settings.speed || 0;
-    this.wearable = settings.wearable || false;
+    this.edible = settings.edible || false;
+    this.usable = settings.usable || false;
     this.using = false;
-  }
+  };
   
-  //increment player energy and remove item from inventory
-  Item.prototype.consume = function (uid) {
-    if (this.energy > 0) {
-      Player.increment(this.energy, "energy");
-      self.remove(uid);
+  Item.prototype.changePlayerStat = function (delta, statname) {
+    if (!delta || typeof delta !== 'number') {
+      console.log(`Item value for ${statname} was ${delta} - player stat wasn't affected.`);
+      return;
     } else {
-      console.error("This item is not edible");
+      Player.increment(delta, statname);
     }
   };
   
-  Item.prototype.use = function () {
-    // if !this.wearable, log error
-    // else
-    // if this.using === false
-    // add this.energy and this.speed to player.energy and player.speed
-    // set this.using to true
+  //increment player energy and remove item from inventory
+  Item.prototype.consume = function (uid) {
+    if (this.edible) {
+      this.changePlayerStat(this.energy, "energy");
+      self.remove(uid);
+    } else {
+      console.error("That item is not edible");
+    }
+  };
+  
+  Item.prototype.use = function (uid) {
+    if (this.usable) {
+      if (!this.using) {
+        // add this.energy, this.enthusiasm and this.speed to player
+        this.changePlayerStat(this.energy, "energy");
+        this.changePlayerStat(this.enthusiasm, "enthusiasm");
+        this.changePlayerStat(this.speed, "speed");
+        this.using = true;
+        return true;
+      } else {
+        console.error("That item is already being used.");
+        return false;
+      }
+    } else {
+      console.error("That item cannot be used");
+      return false;
+    }
   };
   
   Item.prototype.unuse = function () {
     // if this.using === true
-    // subtract this.energy and this.speed from player.energy and player.speed
+    // subtract this.energy, this.enthusiasm and this.speed from player
     // set this.using to false
   };
     
