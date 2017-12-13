@@ -26,10 +26,9 @@ const Time = (function () {
   
   //increase / reduce travel time based on variables
   const __modifyIncrement = function (minutes) {
-    const eValue = Player.get("enthusiasm", "value");
-    const eLimit = Player.get("enthusiasm", "limit");
-    const eRatio = eValue/eLimit; //produces decimal from 0 to 1
-    let eDiff = eRatio - 0.5; //distance from midpoint of enthusiasm scale
+    const eRatio = Player.get("enthusiasm", "value") / Player.get("enthusiasm", "limit");
+    const sRatio = Player.get("speed", "value") / Player.get("speed", "limit");
+    let eDiff = ((eRatio * 0.75) + (sRatio * 0.25)) - 0.5;
     //anything above (below) baseline reduces (increases) base travel time.
     minutes = minutes - (minutes * eDiff);
     return Math.ceil(minutes); //Math.ceil ensures minutes is never 0
