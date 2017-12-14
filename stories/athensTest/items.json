@@ -23,6 +23,14 @@
       "description": "A basic pair of sandals. Rather dusty.",
       "usable": true,
       "speed": 2
+    },
+    {
+      "id": "stick",
+      "name": "Walking Stick",
+      "value": 1,
+      "description": "Your trusty walking stick.",
+      "usable": true,
+      "speed": 3
     }
   ]
 }
