@@ -36,7 +36,6 @@ const Scenemap = (function () {
     init: function (coordinatesJSON) {
       let co = coordinatesJSON.coordinates;
       __coordinates = co;
-      console.log(__coordinates);
     }
     
   };
