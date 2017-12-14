@@ -41,13 +41,22 @@ const Handlers = (function () {
     },
     
     useItem (uid) {
-      let outcome = Inventory.get(uid).use(uid);
-      if (outcome) {
-        console.log(`Started using ${Inventory.get(uid).name}`);
+      
+      //TODO - check if any other item is in use
+      let inUse = Inventory.itemInUse();
+      if (inUse) {
+        //If another item is being used, give alert
+        console.log(inUse);
+        //If confirm, trigger 'unuse' on that item then 'use' again on this one
+      } else {
+        let outcome = Inventory.get(uid).use(uid);
+        if (outcome) {
+          console.log(`Started using ${Inventory.get(uid).name}`);
+        }
       }
     },
     
-    unuseItem (uid) {
+    unuseItem (uid) {      
       let outcome = Inventory.get(uid).unuse(uid);
       if (outcome) {
         console.log(`Stopped using ${Inventory.get(uid).name}`);

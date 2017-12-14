@@ -6,7 +6,7 @@ const Inventory = (function () {
   
   const self = {};
   let __items = [];
-  const playerItems = {};
+  const __playerItems = {};
   const newIdMaker = function () {
     let i = 0;
     return function() {
@@ -54,7 +54,6 @@ const Inventory = (function () {
   Item.prototype.use = function (uid) {
     if (this.usable) {
       if (!this.using) {
-        // add this.energy, this.enthusiasm and this.speed to player
         this.changePlayerStat(this.energy, "energy");
         this.changePlayerStat(this.enthusiasm, "enthusiasm");
         this.changePlayerStat(this.speed, "speed");
@@ -85,6 +84,16 @@ const Inventory = (function () {
   /// PUBLIC METHODS ///
   //////////////////////
   
+  //return the uid of any item which is being used
+  self.itemInUse = function () {
+    for (let item in __playerItems) {
+      if (__playerItems[item].using) {
+        return item;
+      }
+    }
+    return false;
+  };
+  
   //place specified object in items array
   self.add = function (id) {
     let uid = newId();
@@ -96,8 +105,8 @@ const Inventory = (function () {
       }
     }
     try {
-      playerItems[uid] = new Item(settings);
-      View.addItem(uid, playerItems[uid]);
+      __playerItems[uid] = new Item(settings);
+      View.addItem(uid, __playerItems[uid]);
     } catch(err) {
       console.error(`No item with id ${id} found in items.JSON.`);
     }
@@ -106,13 +115,13 @@ const Inventory = (function () {
   //delete specified object from player items array
   self.remove = function (uid) {
     View.removeItem(uid);
-    delete playerItems[uid];
+    delete __playerItems[uid];
   };
 
   //check whether inventory contains at least one instance of specified object
   self.contains = function (id) {
-    for (let item in playerItems) {
-      if (playerItems[item].id === id) {
+    for (let item in __playerItems) {
+      if (__playerItems[item].id === id) {
         return true;
       }
     }
@@ -121,7 +130,7 @@ const Inventory = (function () {
 
   //returns a reference to a single item with unique id
   self.get = function (uid) {
-    return playerItems[uid];
+    return __playerItems[uid];
   };
   
   self.init = function (itemsJSON) {
