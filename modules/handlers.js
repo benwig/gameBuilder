@@ -41,17 +41,18 @@ const Handlers = (function () {
     },
     
     useItem (uid) {
-      
-      //TODO - check if any other item is in use
+      //Check if any other item is in use
       let inUse = Inventory.itemInUse();
+      let nameToUse = Inventory.get(uid).name;
       if (inUse) {
-        //If another item is being used, give alert
-        console.log(inUse);
-        //If confirm, trigger 'unuse' on that item then 'use' again on this one
+        //If another item is being used, give alert and ask to unuse
+        let nameInUse = Inventory.get(inUse).name;
+        View.switchItemAlert(inUse, nameInUse, uid, nameToUse);
       } else {
+        // make sure that item is usable
         let outcome = Inventory.get(uid).use(uid);
         if (outcome) {
-          console.log(`Started using ${Inventory.get(uid).name}`);
+          console.log(`Started using ${nameToUse}`);
         }
       }
     },

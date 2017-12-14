@@ -208,6 +208,15 @@ const View = (function () {
       dialog.showModal();
     },
     
+    switchItemAlert (uidInUse, nameInUse, uidToUse, nameToUse) {
+      let msg = `You're already using ${nameInUse}. Use ${nameToUse} instead?`;
+      let response = confirm(msg);
+      if (response) {
+        Handlers.unuseItem(uidInUse);
+        Handlers.useItem(uidToUse);
+      }
+    },
+    
     updateWallet (value) {
       wallet.textContent = value;
     },

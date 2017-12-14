@@ -33,7 +33,6 @@ const Inventory = (function () {
   
   Item.prototype.changePlayerStat = function (delta, statname) {
     if (!delta || typeof delta !== 'number') {
-      console.log(`${statname} was ${delta} - player stat not changed.`);
       return;
     } else {
       Player.increment(delta, statname);
@@ -75,8 +74,10 @@ const Inventory = (function () {
       this.changePlayerStat(-this.enthusiasm, "enthusiasm");
       this.changePlayerStat(-this.speed, "speed");
       this.using = false;
+      return true;
     } else {
-      console.error("You weren't using that item anyway.")
+      console.error("You weren't using that item anyway.");
+      return false;
     }
   };
     
