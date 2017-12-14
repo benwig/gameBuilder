@@ -33,10 +33,11 @@ const Inventory = (function () {
   
   Item.prototype.changePlayerStat = function (delta, statname) {
     if (!delta || typeof delta !== 'number') {
-      console.log(`Item value for ${statname} was ${delta} - player stat wasn't affected.`);
+      console.log(`${statname} was ${delta} - player stat not changed.`);
       return;
     } else {
       Player.increment(delta, statname);
+      console.log(`${statname} changed by ${delta}`);
     }
   };
   
@@ -70,9 +71,14 @@ const Inventory = (function () {
   };
   
   Item.prototype.unuse = function () {
-    // if this.using === true
-    // subtract this.energy, this.enthusiasm and this.speed from player
-    // set this.using to false
+    if (this.using) {
+      this.changePlayerStat(-this.energy, "energy");
+      this.changePlayerStat(-this.enthusiasm, "enthusiasm");
+      this.changePlayerStat(-this.speed, "speed");
+      this.using = false;
+    } else {
+      console.error("You weren't using that item anyway.")
+    }
   };
     
   //////////////////////

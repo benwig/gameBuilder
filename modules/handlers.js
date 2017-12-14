@@ -42,11 +42,16 @@ const Handlers = (function () {
     
     useItem (uid) {
       let outcome = Inventory.get(uid).use(uid);
-      console.log(outcome);
+      if (outcome) {
+        console.log(`Started using ${Inventory.get(uid).name}`);
+      }
     },
     
     unuseItem (uid) {
-      console.log("Placeholder - item will be unused");
+      let outcome = Inventory.get(uid).unuse(uid);
+      if (outcome) {
+        console.log(`Stopped using ${Inventory.get(uid).name}`);
+      }
     }
     
   };

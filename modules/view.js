@@ -198,7 +198,7 @@ const View = (function () {
         description.appendChild(buildP(` Speed bonus: ${item.speed}`));
       }
       //add unuse button if item's already in use
-      if (item.using) {
+      if (item.usable && item.using) {
         buttons.appendChild(buildButton("Stop using", function(){
           Handlers.unuseItem(uid);
           Handlers.closeItemInfo();
