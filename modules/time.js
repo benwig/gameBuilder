@@ -43,10 +43,12 @@ const Time = (function () {
     increment: function (minutes) {
       minutes = __modifyIncrement(minutes);
       __now = __now + minutes;
-      //check if the clock has passed a half-hour, if so, deduct 1 energy for each half hour passed
+      //check if the clock has passed a half-hour, if so, deduct 10% energy for each half hour passed
       __timeSinceEnergyDeduction += minutes;
       if (__timeSinceEnergyDeduction >= 30) {
-        let decreaseBy = Math.floor(__timeSinceEnergyDeduction/30);
+        let decreaseBy = __timeSinceEnergyDeduction/30;
+        let energyUnit = (Player.get("energy", "limit") / 100) * 10;
+        decreaseBy = Math.floor(decreaseBy * energyUnit);
         Player.increment(-decreaseBy, "energy");
         __timeSinceEnergyDeduction = __timeSinceEnergyDeduction%30;
       }
