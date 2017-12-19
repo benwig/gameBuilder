@@ -1,0 +1,21 @@
+{"scene": {
+  "map": "",
+  "first_frame": "generic-lose",
+  "frames": [
+    {
+      "id": "generic-lose",
+      "text": "Oh no! The game ended. Refresh the page to start the game again."
+    },
+    
+    {
+      "id": "energy-lose",
+      "text": "Your feet slip out from under you. Overcome by hunger and thirst, you fall into a stupor.",
+      "options": [
+        {
+          "text": "...",
+          "next": "generic-lose"
+        }
+      ]
+    }
+  ]
+}}
