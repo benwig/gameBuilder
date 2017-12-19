@@ -33,7 +33,7 @@ const Player = (function () {
     
     increment: function (change, key) {
       let limit = __data[key].limit,
-          newvalue = __data[key].value + parseInt(change);
+        newvalue = __data[key].value + parseInt(change);
       if (newvalue > limit) {
         newvalue = limit;
       } else if (newvalue < 0) {

@@ -20,6 +20,7 @@ const Scene = (function () {
   let __currentFrame = "";
   //holds on to optional prefix value for gluing at the start of the next Frame's text
   let __prefix = false;
+  
   //function for creating unique ids for options
   const __uidMaker = function () {
     let i = 0;
@@ -28,6 +29,22 @@ const Scene = (function () {
     };
   };
   const __newUid = __uidMaker();
+  
+  //check energy levels and give warnings / end game as appropriate
+  const __checkEnergy = function () {
+    let energyRatio = Player.get("energy")/Player.get("energy", "limit");
+    if (energyRatio <= 0.2 && energyRatio > 0.1) {
+      //give mild alerts when energy is < 20%
+      console.log("Hunger...");
+    } else if (energyRatio <= 0.1 && energyRatio !== 0) {
+      //give serious alerts when energy is < 10%
+      console.log("U almost ded buddy");
+    } else if (energyRatio <= 0) {
+      //end the game when energy is 0
+      console.log("U ded now");
+      return true;
+    }
+  };
   
   //TODO: options should also be objects inside Frames with their own methods etc.
   
@@ -154,10 +171,6 @@ const Scene = (function () {
     if (focus.enthusiasm) {
       Player.increment(focus.enthusiasm, "enthusiasm");
     }
-    //increment game time
-    if (focus.time) {
-      Time.increment(focus.time);
-    }
     //add item(s) to inventory
     if (focus.getItem) {
       let args = focus.getItem.split(" ");
@@ -173,6 +186,15 @@ const Scene = (function () {
     if (focus.choice) {
       Player.set(true, "choices", focus.choice);
       console.log(focus.choice, Player.get("choices", focus.choice));
+    }
+    //increment game time
+    if (focus.time) {
+      Time.increment(focus.time);
+      //check if energy is low / 0
+      let isDead = __checkEnergy();
+      if (isDead) {
+        Scene.init(__currentOrigin, __storyName, "endgame", "energy-lose");
+      }
     }
   };
     
@@ -268,9 +290,8 @@ const Scene = (function () {
     }
 
     this.removeOneoffs();
-    this.runHelpers(option);
     
-    //check if "next" is referring to a Scene
+    //check if "next" is referring to a Scene - if so, start it
     if (next.substr(0, 6).toLowerCase() === "scene ") {
       const args = next.split(" ", 3);
       const sceneName = args[1];
@@ -279,6 +300,9 @@ const Scene = (function () {
     } else {
       story[__currentScene][next].render();
     }
+    
+    this.runHelpers(option);
+    
   };
   
   //////////////////////
@@ -290,7 +314,7 @@ const Scene = (function () {
     if (!frame.infoRead) {
       frame.infoRead = true;
     }
-  }
+  };
 
   self.processOption = function (optionUid) {
     story[__currentScene][__currentFrame].processOption(optionUid);

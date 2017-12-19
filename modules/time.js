@@ -29,7 +29,7 @@ const Time = (function () {
     const eRatio = Player.get("enthusiasm", "value") / Player.get("enthusiasm", "limit");
     const sRatio = Player.get("speed", "value") / Player.get("speed", "limit");
     let eDiff = ((eRatio * 0.75) + (sRatio * 0.25)) - 0.5;
-    //anything above (below) baseline reduces (increases) base travel time.
+    //anything above (below) baseline reduces (increases) base travel time up to 50%.
     minutes = minutes - (minutes * eDiff);
     return Math.ceil(minutes); //Math.ceil ensures minutes is never 0
   };
