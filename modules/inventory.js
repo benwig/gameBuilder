@@ -76,7 +76,7 @@ const Inventory = (function () {
       this.using = false;
       return true;
     } else {
-      console.error("You weren't using that item anyway.");
+      console.log("You weren't using that item anyway.");
       return false;
     }
   };
@@ -115,6 +115,7 @@ const Inventory = (function () {
 
   //delete specified object from player items array
   self.remove = function (uid) {
+    __playerItems[uid].unuse();
     View.removeItem(uid);
     delete __playerItems[uid];
   };
