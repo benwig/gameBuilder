@@ -8,15 +8,15 @@ const View = (function () {
   const __optionList = document.querySelector("#options");
   const __itemList = document.querySelector('#inventory');
   const __wallet = document.querySelector('#wallet');
-  const clock = document.querySelector('#clock');
-  const coreObjectives = document.querySelector('#objectives-core');
-  const secondaryObjectives = document.querySelector('#objectives-secondary');
-  const energy = document.querySelector('#energy');
-  const enthusiasm = document.querySelector('#enthusiasm');
-  const mapSpace = document.querySelector('#map');
-  const imageSpace = document.querySelector('#image');
-  const infobutton = document.querySelector('#infobutton');
-  const infobox = document.querySelector('#infobox');
+  const __clock = document.querySelector('#clock');
+  const __coreObjectives = document.querySelector('#objectives-core');
+  const __secondaryObjectives = document.querySelector('#objectives-secondary');
+  const __energy = document.querySelector('#energy');
+  const __enthusiasm = document.querySelector('#enthusiasm');
+  const __mapSpace = document.querySelector('#map');
+  const __imageSpace = document.querySelector('#image');
+  const __infobutton = document.querySelector('#infobutton');
+  const __infobox = document.querySelector('#infobox');
   
   const clear = function (parent) {
     while (parent.lastChild) {
@@ -90,34 +90,34 @@ const View = (function () {
     },
     
     addInfo (infotext, read) {
-      clear(infobox);
+      clear(__infobox);
       let p = buildP(infotext);
-      infobox.appendChild(p);
-      this.makeVisible(infobutton);
+      __infobox.appendChild(p);
+      this.makeVisible(__infobutton);
       if (read) {
-        infobutton.classList.remove("infobutton--unread");
-        infobutton.classList.add("infobutton--read");
+        __infobutton.classList.remove("infobutton--unread");
+        __infobutton.classList.add("infobutton--read");
       } else {
-        infobutton.classList.add("infobutton--unread");
-        infobutton.classList.remove("infobutton--read");
+        __infobutton.classList.add("infobutton--unread");
+        __infobutton.classList.remove("infobutton--read");
       }
     },
     
     toggleInfo () {
-      this.toggleReveal(infobox);
-      infobutton.classList.remove("infobutton--unread");
-      infobutton.classList.add("infobutton--read");
+      this.toggleReveal(__infobox);
+      __infobutton.classList.remove("infobutton--unread");
+      __infobutton.classList.add("infobutton--read");
     },
     
     hideInfo () {
-      if (!infobox.classList.contains('js-hidden')) {
-        infobox.classList.add('js-hidden');
+      if (!__infobox.classList.contains('js-hidden')) {
+        __infobox.classList.add('js-hidden');
       }
-      this.makeInvisible(infobutton);
+      this.makeInvisible(__infobutton);
     },
     
     setMap (filename) {
-      mapSpace.style.backgroundImage = `url("media/maps/${filename}")`;
+      __mapSpace.style.backgroundImage = `url("media/maps/${filename}")`;
     },
     
     setLocation (x, y) {
@@ -127,7 +127,7 @@ const View = (function () {
       playerIcon.classList.add("playerIcon");
       playerIcon.style.left = x;
       playerIcon.style.bottom = y;
-      mapSpace.appendChild(playerIcon);
+      __mapSpace.appendChild(playerIcon);
     },
     
     updateLocation (x, y) {
@@ -137,17 +137,17 @@ const View = (function () {
     },
     
     destroyLocation () {
-      mapSpace.removeChild(document.querySelector("#playerIcon"));
+      __mapSpace.removeChild(document.querySelector("#playerIcon"));
     },
     
     displayImage (filename) {
-      imageSpace.style.backgroundImage = `url("media/images/${filename}")`;
-      imageSpace.classList.remove('js-hidden');
+      __imageSpace.style.backgroundImage = `url("media/images/${filename}")`;
+      __imageSpace.classList.remove('js-hidden');
     },
     
     hideImage () {
-      if (!imageSpace.classList.contains('js-hidden')) {
-        imageSpace.classList.add('js-hidden');
+      if (!__imageSpace.classList.contains('js-hidden')) {
+        __imageSpace.classList.add('js-hidden');
       }
     },
     
@@ -237,16 +237,16 @@ const View = (function () {
       } else {
         minutes = minutes.toString();
       }
-      clock.textContent = `${hour}:${minutes}`;
+      __clock.textContent = `${hour}:${minutes}`;
     },
     
     updateStats (name, value, limit) {
       switch(name) {
         case "energy":
-          energy.textContent = `${value}/${limit}`;
+          __energy.textContent = `${value}/${limit}`;
           break;
         case "enthusiasm":
-          enthusiasm.textContent = `${value}/${limit}`;
+          __enthusiasm.textContent = `${value}/${limit}`;
           break;
         default:
           console.error(`Could not update stats for ${name} in UI.`);
@@ -259,9 +259,9 @@ const View = (function () {
       objLi.textContent = text;
       objLi.id = `objective--${id}`;
       if (type === "core") {
-        coreObjectives.appendChild(objLi);
+        __coreObjectives.appendChild(objLi);
       } else {
-        secondaryObjectives.appendChild(objLi);
+        __secondaryObjectives.appendChild(objLi);
       }
     },
     
