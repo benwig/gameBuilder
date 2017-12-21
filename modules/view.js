@@ -18,18 +18,18 @@ const View = (function () {
   const __infobutton = document.querySelector('#infobutton');
   const __infobox = document.querySelector('#infobox');
   
-  const clear = function (parent) {
+  ///////////////////
+  //PRIVATE HELPERS//
+  ///////////////////
+  
+  const __clear = function (parent) {
     while (parent.lastChild) {
         parent.removeChild(parent.lastChild);
       }
   };
   
-  ///////////////////
-  //PRIVATE HELPERS//
-  ///////////////////
-  
   //return a button
-  const buildButton = function(label, callback) {
+  const __buildButton = function(label, callback) {
     let button = document.createElement('button');
     button.textContent = label;
     button.addEventListener('click', function () {
@@ -39,7 +39,7 @@ const View = (function () {
   };
     
   //return a paragraph
-  const buildP = function(content) {
+  const __buildP = function(content) {
     let p = document.createElement('p');
     p.textContent = content;
     return p;
@@ -74,7 +74,7 @@ const View = (function () {
     },
     
     addOptions (options) {
-      clear(__optionList);
+      __clear(__optionList);
       try {
         for (let i = 0, fol = options.length; i < fol; i += 1) {
           let li = document.createElement('li');
@@ -90,8 +90,8 @@ const View = (function () {
     },
     
     addInfo (infotext, read) {
-      clear(__infobox);
-      let p = buildP(infotext);
+      __clear(__infobox);
+      let p = __buildP(infotext);
       __infobox.appendChild(p);
       this.makeVisible(__infobutton);
       if (read) {
@@ -183,35 +183,35 @@ const View = (function () {
       
       // add text
       name.textContent = item.name;
-      clear(description);
-      description.appendChild(buildP(item.description));
+      __clear(description);
+      description.appendChild(__buildP(item.description));
       
       // add buttons
-      clear(buttons);
-      buttons.appendChild(buildButton("Close", Handlers.closeItemInfo));
+      __clear(buttons);
+      buttons.appendChild(__buildButton("Close", Handlers.closeItemInfo));
       // add consume button if item is edible
       if (item.edible) {
-        buttons.appendChild(buildButton("Consume", function(){
+        buttons.appendChild(__buildButton("Consume", function(){
           Handlers.consumeItem(uid);
           Handlers.closeItemInfo();
         }));
-        description.appendChild(buildP(` Energy: ${item.energy}`));
+        description.appendChild(__buildP(` Energy: ${item.energy}`));
       }
       //add use button if item is usable
       if (item.usable && !item.using) {
-        buttons.appendChild(buildButton("Use", function(){
+        buttons.appendChild(__buildButton("Use", function(){
           Handlers.useItem(uid);
           Handlers.closeItemInfo();
         }));
-        description.appendChild(buildP(` Speed bonus: ${item.speed}`));
+        description.appendChild(__buildP(` Speed bonus: ${item.speed}`));
       }
       //add unuse button if item's already in use
       if (item.usable && item.using) {
-        buttons.appendChild(buildButton("Stop using", function(){
+        buttons.appendChild(__buildButton("Stop using", function(){
           Handlers.unuseItem(uid);
           Handlers.closeItemInfo();
         }));
-        description.appendChild(buildP(` Speed bonus: ${item.speed}`));
+        description.appendChild(__buildP(` Speed bonus: ${item.speed}`));
       }
       dialog.showModal();
     },
