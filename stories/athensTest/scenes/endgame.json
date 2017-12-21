@@ -16,6 +16,17 @@
           "next": "generic-lose"
         }
       ]
+    },
+    
+    {
+      "id": "timeout-lose",
+      "text": "Night has well and truly fallen. It's going to be hard to find your way home from now on.",
+      "options": [
+        {
+          "text": "Let's consider my options.",
+          "next": "generic-lose"
+        }
+      ]
     }
   ]
 }}
