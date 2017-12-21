@@ -3,6 +3,6 @@
     "name": "Athens Test",
     "author": "Rob & Gwen",
     "first_scene": "roadToAthens",
-    "timelimit": 450
+    "timelimit": 450 //the point, X mins after midnight, when the 'time out' endgame should run
   }
 }
