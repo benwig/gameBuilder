@@ -18,8 +18,21 @@ const Scene = (function () {
   let __storyName = "";
   let __currentScene = "";
   let __currentFrame = "";
-  //holds on to optional prefix value for gluing at the start of the next Frame's text
+  //holds on to optional text value for gluing at the start/end of the next Frame's text
   let __prefix = false;
+  let __suffix = false;
+  const __suffixOptions = {
+    mild: ["Hunger is making it hard to concentrate.",
+          "You're feeling a bit peckish.",
+          "You feel rather faint. Maybe you should eat something.",
+          "You feel light-headed.",
+          "Your energy is ebbing. Some food would really help."],
+    serious: ["Your legs wobble. You desparately need a bite to eat and some water.",
+             "The world begins to spin...",
+             "You can barely make sense of the world around you.",
+             "A haze is descending. You should really eat something.",
+             "Your legs buckle. If you don't rest and eat soon, who knows what will happen."]
+  };
   
   //function for creating unique ids for options
   const __uidMaker = function () {
@@ -30,20 +43,19 @@ const Scene = (function () {
   };
   const __newUid = __uidMaker();
   
-  //check energy levels and give warnings / end game as appropriate
-  const __checkEnergy = function () {
-    let energyRatio = Player.get("energy")/Player.get("energy", "limit");
+  //create a random suffix
+  const __changeSuffix = function () {
+    const energyRatio = Player.get("energy")/Player.get("energy", "limit");
+    let suffixes;
     if (energyRatio <= 0.2 && energyRatio > 0.1) {
-      //give mild alerts when energy is < 20%
-      console.log("Hunger...");
+      suffixes = __suffixOptions.mild;
     } else if (energyRatio <= 0.1 && energyRatio !== 0) {
-      //give serious alerts when energy is < 10%
-      console.log("U almost ded buddy");
-    } else if (energyRatio <= 0) {
-      //end the game when energy is 0
-      console.log("U ded now");
-      return true;
+      suffixes = __suffixOptions.serious;
+    } else {
+      __suffix = false;
+      return;
     }
+    __suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
   };
   
   //TODO: options should also be objects inside Frames with their own methods etc.
@@ -68,7 +80,6 @@ const Scene = (function () {
     this.getItem = settings.getItem || false;
     this.energy = settings.energy || false;
     this.enthusiasm = settings.enthusiasm || false;
-    this.time = settings.time || false;
     this.money = settings.money || false;
     this.choice = settings.choice || false;
   };
@@ -77,15 +88,17 @@ const Scene = (function () {
   // FRAME PROTOTYPE METHODS //
   /////////////////////////////
   
-  //return frame text (with prefix, if one is stored)  
+  //return frame text (with suffix, if one is stored)  
   Frame.prototype.assembleText = function () {
+    let fulltext = this.text;
     if (__prefix) {
-      let temptext = `${__prefix}<br>${this.text}`;
+      fulltext = `${__prefix}<br><br>${this.text}`;
       __prefix = false;
-      return temptext;
-    } else {
-      return this.text;
     }
+    if (__suffix) {
+      fulltext += `<br><br>${__suffix}`;
+    }
+    return fulltext;
   };
   
   //remove frame options permanently if their oneoff is set to true
@@ -96,52 +109,6 @@ const Scene = (function () {
         this.options.splice(i, 1);
       }
     }
-  };
-  
-  //load up the current frame and execute any necessary tasks
-  Frame.prototype.render = function () {
-    View.setFrameText(this.assembleText());
-    
-    //filter out options where showif conditions evaluate to false
-    let filteredOptions = this.options.filter(function(opt) {
-      if (opt.showif !== undefined) {
-        //split showif strings into subarrays
-        let conditions = [];
-        for (let i = 0; i < opt.showif.length; i += 1) {
-          conditions.push(opt.showif[i].split(" "));
-        }
-        //validate all the conditions
-        let outcome = this.validateConditions(conditions);
-        return outcome;
-      } else {
-        return true;
-      }
-    }, this);
-
-    View.addOptions(filteredOptions);
-    
-    if (this.info) {
-      View.addInfo(this.info, this.infoRead);
-    } else {
-      View.hideInfo();
-    }
-    
-    if (this.image) {
-      View.displayImage(this.image);
-    } else {
-      View.hideImage();
-    }
-    
-    if (this.coordinates) {
-      Scenemap.updateLocation(this.coordinates);
-    }
-    
-    //TODO: update position on map
-    
-    this.runHelpers(this);
-    console.log(`Currently at: ${this.id}`);
-    __currentFrame = this.id;
-    
   };
   
   //processes commonalities for option or frame. 'focus' stands in for either "Frame" or "option"
@@ -186,15 +153,6 @@ const Scene = (function () {
     if (focus.choice) {
       Player.set(true, "choices", focus.choice);
       console.log(focus.choice, Player.get("choices", focus.choice));
-    }
-    //increment game time
-    if (focus.time) {
-      Time.increment(focus.time);
-      //check if energy is low / 0
-      let isDead = __checkEnergy();
-      if (isDead) {
-        Scene.init(__currentOrigin, __storyName, "endgame", "energy-lose");
-      }
     }
   };
     
@@ -256,24 +214,32 @@ const Scene = (function () {
         optionIndex = i;
       }
     }
+    
+    //increment game time & load endgame if energy runs out as a result
+    if (option.time) {
+      Time.increment(option.time);
+      if (Player.get("energy") <= 0) {
+        Scene.init(__currentOrigin, __storyName, "endgame", "energy-lose");
+        return;
+      }
+    }
 
     //store next as string (not reference) so it can be temporarily altered
     let next = option.next;
     
     //[optional] change the future 'next' of the selected option
-    if (option.next2 !== undefined) {
+    if (option.next2) {
       option.next = option.next2;
       delete option.next2;
     }
 
     //[optional] store a prefix for using on the next text
-    if (option.prefix !== undefined) {
+    if (option.prefix) {
       __prefix = option.prefix;
     }
 
     //[optional] if conditions are met, send player to a different 'next'
-    if (option.nextif !== undefined) {
-      
+    if (option.nextif) {
       //split nextif strings into arrays
       let conditions = option.nextif.slice(1);
       for (let i = 0; i < conditions.length; i += 1) {
@@ -290,6 +256,7 @@ const Scene = (function () {
     }
 
     this.removeOneoffs();
+    this.runHelpers(option);
     
     //check if "next" is referring to a Scene - if so, start it
     if (next.substr(0, 6).toLowerCase() === "scene ") {
@@ -301,7 +268,54 @@ const Scene = (function () {
       story[__currentScene][next].render();
     }
     
-    this.runHelpers(option);
+  };
+  
+  //load up the current frame and execute any necessary tasks
+  Frame.prototype.render = function () {
+    this.runHelpers(this);
+    
+    //if energy is low/0, change suffix
+    __changeSuffix();
+    
+    //TODO: change so that this takes 3 arguments - prefix, maintext, suffix - and assembles over at View
+    View.setFrameText(this.assembleText());
+    
+    //filter out options where showif conditions evaluate to false
+    let filteredOptions = this.options.filter(function(opt) {
+      if (opt.showif !== undefined) {
+        //split showif strings into subarrays
+        let conditions = [];
+        for (let i = 0; i < opt.showif.length; i += 1) {
+          conditions.push(opt.showif[i].split(" "));
+        }
+        //validate all the conditions
+        let outcome = this.validateConditions(conditions);
+        return outcome;
+      } else {
+        return true;
+      }
+    }, this);
+
+    View.addOptions(filteredOptions);
+    
+    if (this.info) {
+      View.addInfo(this.info, this.infoRead);
+    } else {
+      View.hideInfo();
+    }
+    
+    if (this.image) {
+      View.displayImage(this.image);
+    } else {
+      View.hideImage();
+    }
+    
+    if (this.coordinates) {
+      Scenemap.updateLocation(this.coordinates);
+    }
+    
+    console.log(`Currently at: ${this.id}`);
+    __currentFrame = this.id;
     
   };
   
