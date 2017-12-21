@@ -18,6 +18,7 @@ const Scene = (function () {
   let __storyName = "";
   let __currentScene = "";
   let __currentFrame = "";
+  let __timelimit = false;
   //holds on to optional text value for gluing at the start/end of the next Frame's text
   let __prefix = false;
   let __suffix = false;
@@ -215,11 +216,15 @@ const Scene = (function () {
       }
     }
     
-    //increment game time & load endgame if energy runs out as a result
+    //increment game time & check for game-ending conditions
     if (option.time) {
       Time.increment(option.time);
       if (Player.get("energy") <= 0) {
         Scene.init(__currentOrigin, __storyName, "endgame", "energy-lose");
+        return;
+      }
+      if (__timelimit && Time.laterThan(__timelimit)) {
+        Scene.init(__currentOrigin, __storyName, "endgame", "timeout-lose");
         return;
       }
     }
@@ -333,6 +338,10 @@ const Scene = (function () {
   self.processOption = function (optionUid) {
     story[__currentScene][__currentFrame].processOption(optionUid);
   };
+  
+  self.setTimelimit = function (timelimit) {
+    __timelimit = timelimit;
+  };
 
   //parse a scene
   self.init = function (currentOrigin, storyName, sceneName, startFrame) {
@@ -341,7 +350,7 @@ const Scene = (function () {
     //construct a path to the desired scene
     const scenePath = `${currentOrigin}/stories/${storyName}/scenes/${sceneName}.json`;
     
-    //save a private reference to the story path for later
+    //save private references for later
     __currentOrigin = currentOrigin;
     __storyName = storyName;
     __currentScene = sceneName;

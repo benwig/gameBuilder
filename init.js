@@ -29,7 +29,9 @@
   const loadStory = function (metadataJSON) {
     const metadata = JSON.parse(metadataJSON);
     const firstScene = metadata.metadata.first_scene;
+    const timelimit = metadata.metadata.timelimit;
     Scene.init(currentOrigin, storyName, firstScene);
+    Scene.setTimelimit(timelimit);
   };
   
   objectivesRequest.onload = function () {
