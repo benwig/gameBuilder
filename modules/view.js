@@ -4,9 +4,10 @@ const View = (function () {
   
   "use strict";
   
-  const optionList = document.querySelector("#options");
-  const itemList = document.querySelector('#inventory');
-  const wallet = document.querySelector('#wallet');
+  const __frameText = document.querySelector("#frameText");
+  const __optionList = document.querySelector("#options");
+  const __itemList = document.querySelector('#inventory');
+  const __wallet = document.querySelector('#wallet');
   const clock = document.querySelector('#clock');
   const coreObjectives = document.querySelector('#objectives-core');
   const secondaryObjectives = document.querySelector('#objectives-secondary');
@@ -61,12 +62,19 @@ const View = (function () {
       element.classList.add('js-invisible');
     },
     
-    setFrameText (text) {
-      document.querySelector("#frameText").innerHTML = text;
+    setFrameText (prefix, maintext, suffix) {
+      let fulltext = maintext;
+      if (prefix) {
+        fulltext = `${prefix}<br><br>${maintext}`;
+      }
+      if (suffix) {
+        fulltext += `<br><br>${suffix}`;
+      }
+      __frameText.innerHTML = fulltext;
     },
     
     addOptions (options) {
-      clear(optionList);
+      clear(__optionList);
       try {
         for (let i = 0, fol = options.length; i < fol; i += 1) {
           let li = document.createElement('li');
@@ -74,7 +82,7 @@ const View = (function () {
           button.dataset.optionId = options[i].uid;
           button.textContent = options[i].text;
           li.appendChild(button);
-          optionList.appendChild(li);
+          __optionList.appendChild(li);
         }
       } catch(TypeError) {
         console.error('It looks like frameData is currently empty.');
@@ -147,11 +155,11 @@ const View = (function () {
       const li = document.createElement('li');
       li.textContent = item.name;
       li.dataset.itemUid = uid;
-      itemList.appendChild(li);
+      __itemList.appendChild(li);
     },
     
     removeItem (uid) {
-      const items = itemList.children;
+      const items = __itemList.children;
       let itemToRemove;
       for (let i = 0; i < items.length; i += 1) {
         if (items[i].dataset.itemUid === uid) {
@@ -159,7 +167,7 @@ const View = (function () {
           break;
         }
       }
-      itemList.removeChild(itemToRemove);
+      __itemList.removeChild(itemToRemove);
     },
     
     closeItemInfo () {
@@ -218,7 +226,7 @@ const View = (function () {
     },
     
     updateWallet (value) {
-      wallet.textContent = value;
+      __wallet.textContent = value;
     },
     
     updateTime (now) {

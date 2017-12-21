@@ -21,7 +21,6 @@ const Scene = (function () {
   let __timelimit = false;
   //holds on to optional text value for gluing at the start/end of the next Frame's text
   let __prefix = false;
-  let __suffix = false;
   const __suffixOptions = {
     mild: ["Hunger is making it hard to concentrate.",
           "You're feeling a bit peckish.",
@@ -53,10 +52,9 @@ const Scene = (function () {
     } else if (energyRatio <= 0.1 && energyRatio !== 0) {
       suffixes = __suffixOptions.serious;
     } else {
-      __suffix = false;
-      return;
+      return false;
     }
-    __suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
+    return suffixes[Math.floor(Math.random() * suffixes.length)];
   };
   
   //TODO: options should also be objects inside Frames with their own methods etc.
@@ -88,19 +86,6 @@ const Scene = (function () {
   /////////////////////////////
   // FRAME PROTOTYPE METHODS //
   /////////////////////////////
-  
-  //return frame text (with suffix, if one is stored)  
-  Frame.prototype.assembleText = function () {
-    let fulltext = this.text;
-    if (__prefix) {
-      fulltext = `${__prefix}<br><br>${this.text}`;
-      __prefix = false;
-    }
-    if (__suffix) {
-      fulltext += `<br><br>${__suffix}`;
-    }
-    return fulltext;
-  };
   
   //remove frame options permanently if their oneoff is set to true
   Frame.prototype.removeOneoffs = function () {
@@ -241,6 +226,8 @@ const Scene = (function () {
     //[optional] store a prefix for using on the next text
     if (option.prefix) {
       __prefix = option.prefix;
+    } else {
+      __prefix = false;
     }
 
     //[optional] if conditions are met, send player to a different 'next'
@@ -277,13 +264,14 @@ const Scene = (function () {
   
   //load up the current frame and execute any necessary tasks
   Frame.prototype.render = function () {
+    let maintext = this.text; //store as string since helpers may change it
+    
     this.runHelpers(this);
     
     //if energy is low/0, change suffix
-    __changeSuffix();
+    let suffix = __changeSuffix();
     
-    //TODO: change so that this takes 3 arguments - prefix, maintext, suffix - and assembles over at View
-    View.setFrameText(this.assembleText());
+    View.setFrameText(__prefix, maintext, suffix);
     
     //filter out options where showif conditions evaluate to false
     let filteredOptions = this.options.filter(function(opt) {
