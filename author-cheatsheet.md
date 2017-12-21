@@ -31,6 +31,7 @@ Options can have any combination of these optional attributes:
 The first string is the id of a Frame. This is followed by one or more arrays. Each states first the area to evaluate (e.g. item, money, objectiveCompleted, choices), secondly the thing in that area which should be checked to be true. If all the conditions evalute to *true*, selecting the Option will take you to the nextif Frame. Otherwise, you'll proceed to *next* as usual.
 - **prefix**: *string* - text which will be displayed at the start of the next Frame visited.
 - **text2**: *string* - text which will be displayed on the option the next time it's shown to the player.
+- **time**: *integer* - the number of minutes by which game time should move forwards when the option is chosen. Will be modified up/down by as much as 50% depending on player stats (i.e. speed, enthusiasm).
 
 ## Shared Attributes for Frames & Options
 Both Frames and Options can have any combination of these optional attributes. They will be processed and applied to the game state as soon as the Frame is viewed, or as soon as the Option is selected:
@@ -41,5 +42,4 @@ Both Frames and Options can have any combination of these optional attributes. T
 - **getItem**: *string* - id of an item to be added to the player's inventory. Multiple items can be added, if separated by a space (e.g. "sword shield").
 - **energy**: *integer* - the amount of energy to be added/deducted from stats (can be positive or negative).
 - **enthusiasm**: *integer* - the amount of enthusiasm to be added/deducted from stats (can be positive or negative).
-- **time**: *integer* - the number of minutes by which game time should move forwards. Will be modified up/down by as much as 50% depending on player stats (i.e. speed, enthusiasm).
 - **money**: *integer* - the amount of money to be added/deducted from the user's wallet (can be positive or negative).
