@@ -7,6 +7,18 @@
       "timelimit": false
     },
     {
+      "parent": "collectHoney",
+      "id": "reachHives",
+      "text": "Find the field where the bees are",
+      "timelimit": false
+    },
+    {
+      "parent": "collectHoney",
+      "id": "takeHoney",
+      "text": "Gather honey",
+      "timelimit": false
+    },
+    {
       "id": "reachAthens",
       "text": "Get to Athens",
       "type": "core",
