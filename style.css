@@ -3,14 +3,6 @@ body {
   font-size: 16px;
 }
 
-ul {
-  padding: 0;
-}
-
-li {
-  list-style: none;
-}
-
 p {
   margin: 5px;
 }
@@ -31,6 +23,11 @@ h4 {
   max-width: 720px;
   min-height: 300px;
   margin: 10px;
+}
+
+#options, #inventory {
+  list-style: none;
+  padding-left: 0;
 }
 
 .maintext p {

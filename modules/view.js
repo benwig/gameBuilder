@@ -254,13 +254,22 @@ const View = (function () {
     },
     
     // adds new objective. includes effect for addition
-    assignObjective (id, text, type) {
-      let objLi = document.createElement('li');
+    assignObjective (id, text, type, parent, numOfChildren) {
+      let objLi = document.createElement('li'),
+          childUl;
       objLi.textContent = text;
       objLi.id = `objective--${id}`;
-      if (type === "core") {
+      if (numOfChildren > 0) {
+        childUl = document.createElement('ul');
+        childUl.id = `objective--${id}__children`;
+        objLi.append(childUl);
+      }
+      if (parent) {
+        let parentUl = document.getElementById(`objective--${parent}__children`);
+        parentUl.appendChild(objLi);
+      } else if (type === "core") {
         __coreObjectives.appendChild(objLi);
-      } else {
+      } else if (type === "secondary") {
         __secondaryObjectives.appendChild(objLi);
       }
     },
@@ -271,9 +280,9 @@ const View = (function () {
       toRemove.parentNode.removeChild(toRemove);
     },
     
-    // adds completed class to objective with selected index
-    markObjectiveCompleted (id) {
-      document.getElementById(`objective--${id}`).classList.add("objective--completed");
+    // adds or removes completed class on objective with selected index
+    toggleObjectiveCompletion (id) {
+      document.getElementById(`objective--${id}`).classList.toggle("objective--completed");
     },
     
     failObjective (id, text) {

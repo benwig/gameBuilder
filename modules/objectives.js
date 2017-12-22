@@ -19,27 +19,83 @@ const Objectives = (function () {
   
   //constructor function for objectives
   function Objective (settings) {
+    this.id = settings.id;
     this.text = settings.text;
-    this.type = settings.type;
+    this.type = settings.type || "inherit";
+    this.parent = settings.parent || false;
+    this.children = [];
+    this.timelimit = settings.timelimit || false;
     this.assigned = false;
     this.completed = false;
     this.failed = false;
-    this.successCriteria = settings.successCriteria;
   }
+  
+  //return true if all child objectives are complete
+  Objective.prototype.allChildrenComplete = function () {
+    let i,
+        childId;
+    for (i = 0; i < this.children.length; i += 1) {
+      childId = this.children[i];
+      if (!objectives[childId].completed) {
+        return false;
+      }
+    }
+    return true;
+  };
 
   Objective.prototype.changeComplete = function (bool) {
     this.completed = bool;
+    if (bool && this.parent) {
+      //Check whether parents' children have all been completed
+      if (objectives[this.parent].allChildrenComplete()) {
+        //If yes, mark parent as complete too
+        objectives[this.parent].changeComplete(true);
+      }
+    }
+    View.toggleObjectiveCompletion(this.id);
   };
   
   Objective.prototype.changeAssigned = function (bool) {
-    this.assigned = bool;
-    if (bool) {
-      this.timeAssigned = Time.get();
+    let i;
+    if (this.assigned !== bool) {
+      this.assigned = bool;
+      if (bool) {
+        this.timeAssigned = Time.get();
+        View.assignObjective(this.id, this.text, this.type, this.parent, this.children.length);
+      }
+    }
+    //make sure each of the objectives' children match its status
+    for (i = 0; i < this.children.length; i += 1) {
+      let childId = this.children[i];
+      if (objectives[childId].assigned !== bool) {
+        objectives[childId].changeAssigned(bool);
+      }
+    }
+    //if objective has a parent, make sure that matches too
+    if (this.parent && objectives[this.parent].assigned !== bool) {
+      objectives[this.parent].changeAssigned(bool);
     }
   };
   
+  //change all child objectives to failed
+  Objective.prototype.failChildren = function () {
+    for (let i = 0; i < this.children.length; i += 1) {
+      objectives[this.children[i]].failed = true;
+    }
+  };
+  
+  //fail if not assigned and not already completed/failed
   Objective.prototype.fail = function (bool) {
-    this.failed = true;
+    if (this.assigned && !this.failed && !this.completed) {
+      this.failed = true;
+      View.failObjective(this.id, this.text);
+      //fail the parent objective too
+      if (this.parent) {
+        objectives[this.parent].fail();
+      }
+      //fail any children
+      this.failChildren();
+    }
   };
 
   //////////////////////
@@ -48,34 +104,44 @@ const Objectives = (function () {
   
   //create objective objects using objectives.JSON
   self.init = function (objectivesJSON) {
-    let objList = objectivesJSON.objectives;
-    for (let i = 0; i < objList.length; i += 1) {
-      let id = objList[i].id,
-          text = objList[i].text,
-          type = objList[i].type;
-      objectives[id] = new Objective({"text": text, "type": type});
+    let objList = objectivesJSON.objectives,
+        i;
+    //first, create all objectives
+    for (i = 0; i < objList.length; i += 1) {
+      let o = objList[i];
+      objectives[o.id] = new Objective(o);
     }
+    //next, go back and add references to child objectives in parents
+    for (i = 0; i < objList.length; i += 1) {
+      let o = objList[i];
+      if (o.parent) {
+        try {
+          objectives[o.parent].children.push(o.id);
+        } catch (TypeError) {
+          console.error(`${o.id}'s parent doesn't exist.`);
+        }
+      }
+    }
+    console.log(objectives);
   };
   
+  //assign an objective to the player
   self.assign = function (ids) {
     __loopThroughArgs(ids, function (id) {
       try {
-        if (!objectives[id].assigned) {
-          objectives[id].changeAssigned(true);
-          View.assignObjective(id, objectives[id].text, objectives[id].type);
-        }
+        objectives[id].changeAssigned(true);
       } catch (TypeError) {
         console.error(`There's no objective called '${id}'`);
       }
     });
   };
   
+  //mark an objective as complete
   self.complete = function (ids) {
     __loopThroughArgs(ids, function (id) {
       try {
         if (!objectives[id].completed) {
           objectives[id].changeComplete(true);
-          View.markObjectiveCompleted(id);
         }
       } catch (TypeError) {
         console.error(`There's no objective called '${id}'`);
@@ -83,19 +149,18 @@ const Objectives = (function () {
     });
   };
   
+  //mark an objective as failed
   self.fail = function (ids) {
     __loopThroughArgs(ids, function (id) {
       try {
-        if (objectives[id].assigned && !objectives[id].failed && !objectives[id].completed) {
-          objectives[id].fail();
-          View.failObjective(id, objectives[id].text);
-        }
+        objectives[id].fail();
       } catch (TypeError) {
         console.error(`There's no objective called '${id}'`);
       }
     });
   };
   
+  //return an attribute value (e.g. bool failed, assigned)
   self.getAttribute = function (id, attr) {
     try {
       if (objectives[id].hasOwnProperty(attr)) {
@@ -106,20 +171,6 @@ const Objectives = (function () {
     } catch (TypeError) {
       console.error(`There's no objective called '${id}'`);
     }
-  };
-  
-  //returns an array with a subset of info about all assigned/completed objectives. Useful if repopulating frontend after reload.
-  self.getAll = function () {
-    let minilist = [];
-    
-    for (let key in objectives) {
-      if (!objectives.hasOwnProperty(key)) {
-        continue;
-      } else if (objectives[key].assigned && !objectives[key].failed) {
-        minilist.push({"text": objectives[key].text, "type": objectives[key].type, "completed": objectives[key].completed});
-      }
-    }
-    return minilist;
   };
   
   return self;

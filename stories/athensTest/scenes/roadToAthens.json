@@ -89,6 +89,7 @@
       "info": "Bees have the power to predict rain, according to Aristotle. These ones also produce the famous thyme honey of Mount Hymettos.",
       "coordinates": "honeyfield",
       "image": "greekbee.jpg",
+      "completeObjective": "reachHives",
       "options": [
         {
           "text": "Collect honey",
@@ -111,7 +112,7 @@
           "text": "Delicious honey! Wonderful.",
           "next": "honeyfield",
           "getItem": "honey honey",
-          "completeObjective": "collectHoney"
+          "completeObjective": "takeHoney"
         }
       ]
     },

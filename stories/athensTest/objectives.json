@@ -3,32 +3,28 @@
     {
       "id": "collectHoney",
       "text": "Collect honey from your hives",
-      "type": "secondary",
-      "timelimit": false
+      "type": "secondary"
     },
     {
-      "parent": "collectHoney",
       "id": "reachHives",
-      "text": "Find the field where the bees are",
-      "timelimit": false
+      "parent": "collectHoney",
+      "text": "Find the field where the bees are"
     },
     {
-      "parent": "collectHoney",
       "id": "takeHoney",
-      "text": "Gather honey",
-      "timelimit": false
+      "parent": "collectHoney",
+      "text": "Gather honey"
     },
     {
       "id": "reachAthens",
-      "text": "Get to Athens",
+      "text": "Get to Athens before eight in the morning",
       "type": "core",
-      "timelimit": false
+      "timelimit": 480
     },
     {
       "id": "visitTavern",
       "text": "Stop in at your local tavern",
-      "type": "secondary",
-      "timelimit": false
+      "type": "secondary"
     }
   ]
 }
