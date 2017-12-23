@@ -19,12 +19,13 @@
       "id": "reachAthens",
       "text": "Get to Athens before eight in the morning",
       "type": "core",
-      "timelimit": 480
+      "completeBy": 480
     },
     {
       "id": "visitTavern",
-      "text": "Stop in at your local tavern",
-      "type": "secondary"
+      "text": "Stop in at your local tavern in the next 20 minutes",
+      "type": "secondary",
+      "timelimit": 20
     }
   ]
 }

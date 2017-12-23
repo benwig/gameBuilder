@@ -25,10 +25,20 @@ const Objectives = (function () {
     this.parent = settings.parent || false;
     this.children = [];
     this.timelimit = settings.timelimit || false;
+    this.timeAssigned = null;
     this.assigned = false;
     this.completed = false;
     this.failed = false;
   }
+  
+  Objective.prototype.checkTimelimit = function () {
+    if (this.assigned && !this.completed && this.timelimit) {
+      let timeElapsed = Time.get() - this.timeAssigned;
+      if (timeElapsed > this.timelimit) {
+        this.fail();
+      }
+    }
+  };
   
   //return true if all child objectives are complete
   Objective.prototype.allChildrenComplete = function () {
@@ -172,6 +182,12 @@ const Objectives = (function () {
       console.error(`There's no objective called '${id}'`);
     }
   };
+  
+  self.checkTimelimits = function () {
+    for (var key in objectives) {
+      objectives[key].checkTimelimit();
+    }
+  }
   
   return self;
   

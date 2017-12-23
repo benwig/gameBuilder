@@ -204,6 +204,7 @@ const Scene = (function () {
     //increment game time & check for game-ending conditions
     if (option.time) {
       Time.increment(option.time);
+      Objectives.checkTimelimits(); //fail objectives that are out of time
       if (Player.get("energy") <= 0) {
         Scene.init(__currentOrigin, __storyName, "endgame", "energy-lose");
         return;
