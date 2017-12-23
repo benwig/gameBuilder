@@ -25,16 +25,20 @@ const Objectives = (function () {
     this.parent = settings.parent || false;
     this.children = [];
     this.timelimit = settings.timelimit || false;
+    this.completeBy = settings.completeBy || false;
     this.timeAssigned = null;
     this.assigned = false;
     this.completed = false;
     this.failed = false;
   }
   
-  Objective.prototype.checkTimelimit = function () {
-    if (this.assigned && !this.completed && this.timelimit) {
-      let timeElapsed = Time.get() - this.timeAssigned;
-      if (timeElapsed > this.timelimit) {
+  Objective.prototype.checkTimeConditions = function (now) {
+    let timeElapsed = now - this.timeAssigned;
+    if (this.assigned && !this.completed) {
+      if (this.timelimit && timeElapsed > this.timelimit) {
+        this.fail();
+      }
+      if (this.completeBy && now > this.completeBy) {
         this.fail();
       }
     }
@@ -183,11 +187,12 @@ const Objectives = (function () {
     }
   };
   
-  self.checkTimelimits = function () {
+  self.checkTimeConditions = function () {
+    let now = Time.get();
     for (var key in objectives) {
-      objectives[key].checkTimelimit();
+      objectives[key].checkTimeConditions(now);
     }
-  }
+  };
   
   return self;
   
