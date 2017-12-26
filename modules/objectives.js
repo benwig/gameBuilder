@@ -32,15 +32,14 @@ const Objectives = (function () {
     this.failed = false;
   }
   
+  //fail the objective if allocated time has elapsed
   Objective.prototype.checkTimeConditions = function (now) {
     let timeElapsed = now - this.timeAssigned;
-    if (this.assigned && !this.completed) {
-      if (this.timelimit && timeElapsed > this.timelimit) {
-        this.fail();
-      }
-      if (this.completeBy && now > this.completeBy) {
-        this.fail();
-      }
+    if (this.timelimit && timeElapsed > this.timelimit) {
+      this.fail();
+    }
+    if (this.completeBy && now > this.completeBy) {
+      this.fail();
     }
   };
   
@@ -98,8 +97,8 @@ const Objectives = (function () {
     }
   };
   
-  //fail if not assigned and not already completed/failed
-  Objective.prototype.fail = function (bool) {
+  //fail objective
+  Objective.prototype.fail = function () {
     if (this.assigned && !this.failed && !this.completed) {
       this.failed = true;
       View.failObjective(this.id, this.text);
@@ -150,6 +149,13 @@ const Objectives = (function () {
     });
   };
   
+  //returns an array of assigned, uncompleted objectives
+  self.getActiveObjectives = function () {
+    return objectives.filter(function (objective) {
+      return objective.assigned && !objective.completed;
+    });
+  };
+  
   //mark an objective as complete
   self.complete = function (ids) {
     __loopThroughArgs(ids, function (id) {
@@ -189,8 +195,9 @@ const Objectives = (function () {
   
   self.checkTimeConditions = function () {
     let now = Time.get();
-    for (var key in objectives) {
-      objectives[key].checkTimeConditions(now);
+    let actives = this.getActiveObjectives();
+    for (var key in actives) {
+      actives[key].checkTimeConditions(now);
     }
   };
   
