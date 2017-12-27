@@ -15,15 +15,6 @@
         <div id="image" class="js-hidden"></div>
       </div>
       <div id="frameText"></div>
-      <script id="frameText-template" type="text/x-handlebars-template">
-        {{#if prefix}}
-          <p>{{prefix}}</p>
-        {{/if}}
-        <p>{{maintext}}</p>
-        {{#if suffix}}
-          <p>{{suffix}}</p>
-        {{/if}}
-      </script>
       <ul id="options" onclick="Handlers.processOption(event)">
       </ul>
       <button id="infobutton" class="js-invisible" onclick="Handlers.toggleInfo()">i</button>
@@ -34,11 +25,7 @@
         <h4>Inventory</h4>
         <ul id="inventory"></ul>
       </div>
-      <dialog id="iteminfo">
-        <h3 id="iteminfo--name"></h3>
-        <div id="iteminfo--description"></div>
-        <div id="iteminfo--buttons"></div>
-      </dialog>
+      <dialog id="iteminfo"></dialog>
       <div class="objectives">
         <h4>Core Objectives</h4>
         <ul id="objectives-core"></ul>
@@ -51,7 +38,37 @@
       <p id="wallet"></p>
     </div>
     
+    <script id="frameText-template" type="text/x-handlebars-template">
+      {{#if prefix}}
+        <p>{{prefix}}</p>
+      {{/if}}
+      <p>{{maintext}}</p>
+      {{#if suffix}}
+        <p>{{suffix}}</p>
+      {{/if}}
+    </script>
+    
+    <script id="iteminfo-template" type="text/x-handlebars-template">
+      <h3>{{name}}</h3>
+      <p>{{description}}</p>
+      {{#if energy}}<p>Energy: {{energy}}</p>{{/if}}
+      {{#if speed}}<p>Speed bonus: {{speed}}</p>{{/if}}
+      <div>
+        <button id="item-close">Close</button>
+      {{#if use}}
+        <button id="item-use" data-uid="{{uid}}">Use</button>
+      {{/if}}
+      {{#if unuse}}
+        <button id="item-unuse" data-uid="{{uid}}">Stop using</button>
+      {{/if}}
+      {{#if edible}}
+        <button id="item-consume" data-uid="{{uid}}">Consume</button>
+      {{/if}}
+      </div>
+    </script>
+    
     <script src="handlebars.js"></script>
+    <script src="jquery.js"></script>
     <script src="modules/player.js"></script>
     <script src="modules/time.js"></script>
     <script src="modules/wallet.js"></script>

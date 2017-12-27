@@ -7,6 +7,7 @@ const View = (function () {
   const __frameText = document.querySelector("#frameText");
   const __optionList = document.querySelector("#options");
   const __itemList = document.querySelector('#inventory');
+  const __iteminfo = document.getElementById("iteminfo");
   const __wallet = document.querySelector('#wallet');
   const __clock = document.querySelector('#clock');
   const __coreObjectives = document.querySelector('#objectives-core');
@@ -21,6 +22,8 @@ const View = (function () {
   //compile handlebars templates
   const __frameTemplate = Handlebars.compile(document.getElementById("frameText-template").innerHTML);
   
+  const __iteminfoTemplate = Handlebars.compile(document.getElementById("iteminfo-template").innerHTML);
+  
   ///////////////////
   //PRIVATE HELPERS//
   ///////////////////
@@ -29,16 +32,6 @@ const View = (function () {
     while (parent.lastChild) {
         parent.removeChild(parent.lastChild);
       }
-  };
-  
-  //return a button
-  const __buildButton = function(label, callback) {
-    let button = document.createElement('button');
-    button.textContent = label;
-    button.addEventListener('click', function () {
-      callback();
-    });
-    return button;
   };
     
   //return a paragraph
@@ -168,57 +161,36 @@ const View = (function () {
     },
     
     closeItemInfo () {
-      document.getElementById('iteminfo').close();
+      __iteminfo.close();
     },
     
-    //build an info panel for items, with event listeners on buttons
-    openItemInfo (uid, item) {
-      const dialog = document.getElementById("iteminfo"),
-            name = document.getElementById("iteminfo--name"),
-            description = document.getElementById("iteminfo--description"),
-            buttons = document.getElementById("iteminfo--buttons");
-      
-      // add text
-      name.textContent = item.name;
-      __clear(description);
-      description.appendChild(__buildP(item.description));
-      
-      // add buttons
-      __clear(buttons);
-      buttons.appendChild(__buildButton("Close", Handlers.closeItemInfo));
-      // add consume button if item is edible
-      if (item.edible) {
-        buttons.appendChild(__buildButton("Consume", function(){
-          Handlers.consumeItem(uid);
-          Handlers.closeItemInfo();
-        }));
-        description.appendChild(__buildP(` Energy: ${item.energy}`));
-      }
-      //add use button if item is usable
-      if (item.usable && !item.using) {
-        buttons.appendChild(__buildButton("Use", function(){
-          Handlers.useItem(uid);
-          Handlers.closeItemInfo();
-        }));
-        description.appendChild(__buildP(` Speed bonus: ${item.speed}`));
-      }
-      //add unuse button if item's already in use
-      if (item.usable && item.using) {
-        buttons.appendChild(__buildButton("Stop using", function(){
-          Handlers.unuseItem(uid);
-          Handlers.closeItemInfo();
-        }));
-        description.appendChild(__buildP(` Speed bonus: ${item.speed}`));
-      }
-      dialog.showModal();
+    openItemInfo (itemUid, item) {
+      __iteminfo.showModal();
+      this.renderItemInfo(itemUid, item);
+    },
+    
+    //build an info panel for items
+    renderItemInfo (uid, item) {
+      const use = item.usable && !item.using,
+            unuse = item.usable && item.using,
+            context = {
+              name: item.name,
+              description: item.description,
+              edible: item.edible,
+              use: use,
+              unuse: unuse,
+              uid: uid,
+              speed: item.speed,
+              energy: item.energy
+            };
+      __iteminfo.innerHTML = __iteminfoTemplate(context);
     },
     
     switchItemAlert (uidInUse, nameInUse, uidToUse, nameToUse) {
       let msg = `You're already using ${nameInUse}. Use ${nameToUse} instead?`;
       let response = confirm(msg);
       if (response) {
-        Handlers.unuseItem(uidInUse);
-        Handlers.useItem(uidToUse);
+        Handlers.switchItems(uidInUse, uidToUse);
       }
     },
     

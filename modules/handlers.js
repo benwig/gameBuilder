@@ -6,6 +6,14 @@ const Handlers = (function () {
   
   return {
     
+    bindEvents () {
+      $('#iteminfo')
+        .on('click', '#item-use', this.useItem.bind(this))
+        .on('click', '#item-unuse', this.unuseItem.bind(this))
+        .on('click', '#item-consume', this.consumeItem.bind(this))
+        .on('click', '#item-close', this.closeItemInfo.bind(this));
+    },
+    
     //shows / hides frame info
     toggleInfo () {
       View.toggleInfo('#infobox');
@@ -36,11 +44,20 @@ const Handlers = (function () {
       View.closeItemInfo();
     },
     
-    consumeItem (uid) {
+    consumeItem (e) {
+      let uid = e.target.dataset.uid;
       Inventory.get(uid).consume(uid);
+      View.closeItemInfo();
     },
     
-    useItem (uid) {
+    switchItems (uidInUse, uidToUse) {
+      Inventory.get(uidInUse).unuse();
+      Inventory.get(uidToUse).use();
+      View.renderItemInfo(uidToUse, Inventory.get(uidToUse));
+    },
+    
+    useItem (e) {
+      let uid = e.target.dataset.uid;
       //Check if any other item is in use
       let inUse = Inventory.itemInUse();
       let nameToUse = Inventory.get(uid).name;
@@ -53,17 +70,22 @@ const Handlers = (function () {
         let outcome = Inventory.get(uid).use(uid);
         if (outcome) {
           console.log(`Started using ${nameToUse}`);
+          View.renderItemInfo(uid, Inventory.get(uid));
         }
       }
     },
     
-    unuseItem (uid) {      
+    unuseItem (e) {
+      let uid = e.target.dataset.uid;
       let outcome = Inventory.get(uid).unuse(uid);
       if (outcome) {
         console.log(`Stopped using ${Inventory.get(uid).name}`);
+        View.renderItemInfo(uid, Inventory.get(uid));
       }
     }
     
   };
   
 })();
+
+Handlers.bindEvents();
