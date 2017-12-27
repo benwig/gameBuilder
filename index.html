@@ -14,7 +14,16 @@
       <div id="map">
         <div id="image" class="js-hidden"></div>
       </div>
-      <p id="frameText"></p>
+      <div id="frameText"></div>
+      <script id="frameText-template" type="text/x-handlebars-template">
+        {{#if prefix}}
+          <p>{{prefix}}</p>
+        {{/if}}
+        <p>{{maintext}}</p>
+        {{#if suffix}}
+          <p>{{suffix}}</p>
+        {{/if}}
+      </script>
       <ul id="options" onclick="Handlers.processOption(event)">
       </ul>
       <button id="infobutton" class="js-invisible" onclick="Handlers.toggleInfo()">i</button>
@@ -42,6 +51,7 @@
       <p id="wallet"></p>
     </div>
     
+    <script src="handlebars.js"></script>
     <script src="modules/player.js"></script>
     <script src="modules/time.js"></script>
     <script src="modules/wallet.js"></script>

@@ -18,6 +18,9 @@ const View = (function () {
   const __infobutton = document.querySelector('#infobutton');
   const __infobox = document.querySelector('#infobox');
   
+  //compile handlebars templates
+  const __frameTemplate = Handlebars.compile(document.getElementById("frameText-template").innerHTML);
+  
   ///////////////////
   //PRIVATE HELPERS//
   ///////////////////
@@ -63,14 +66,8 @@ const View = (function () {
     },
     
     setFrameText (prefix, maintext, suffix) {
-      let fulltext = maintext;
-      if (prefix) {
-        fulltext = `${prefix}<br><br>${maintext}`;
-      }
-      if (suffix) {
-        fulltext += `<br><br>${suffix}`;
-      }
-      __frameText.innerHTML = fulltext;
+      let context = {prefix: prefix, maintext: maintext, suffix: suffix};
+      __frameText.innerHTML = __frameTemplate(context);
     },
     
     addOptions (options) {
