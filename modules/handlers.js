@@ -7,11 +7,17 @@ const Handlers = (function () {
   return {
     
     bindEvents () {
+      $('#options')
+        .on('click', 'button', this.processOption.bind(this));
+      $('#inventory')
+        .on('click', 'li', this.openItemInfo.bind(this));
       $('#iteminfo')
         .on('click', '#item-use', this.useItem.bind(this))
         .on('click', '#item-unuse', this.unuseItem.bind(this))
         .on('click', '#item-consume', this.consumeItem.bind(this))
         .on('click', '#item-close', this.closeItemInfo.bind(this));
+      $('#infobutton')
+        .on('click', this.toggleInfo.bind(this));
     },
     
     //shows / hides frame info
