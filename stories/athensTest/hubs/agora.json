@@ -1,0 +1,21 @@
+{"hub": {
+  "map": "",
+  "icons": [
+    {
+      "id": "painted-stoa",
+      "name": "Painted Stoa",
+      "img": "generic-hub-icon.png",
+      "next": 
+    },
+    {
+      "id": "textiles-shop",
+      "name": "Textile Stall",
+      "img": "generic-hub-icon.png"
+    },
+    {
+      "id": "goldsmith-shop",
+      "name": "Goldsmith's Stall",
+      "img": "generic-hub-icon.png"
+    }
+  ]
+}}
