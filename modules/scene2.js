@@ -1,26 +1,18 @@
 /*jshint esversion:6, devel: true, browser: true*/
 
-const Scene = (function () {
+const Storyrunner = (function () {
   
   "use strict";
   
-  //object to return
-  const self = {};
+  //private function for creating unique ids for options
+  const __uidMaker = function () {
+    let i = 0;
+    return function() {
+      return i++;
+    };
+  };
+  const __newUid = __uidMaker();
   
-  ///////////////////////
-  // PRIVATE VARIABLES //
-  ///////////////////////
-  
-  //holds the Scene objects as they're parsed by Scene.init
-  const story = {};
-  //hold private references to current origin, current story name, and current Scene, as passed in via Scene.init
-  let __currentOrigin = "";
-  let __storyName = "";
-  let __currentScene = "";
-  let __currentFrame = "";
-  let __timelimit = false;
-  //holds on to optional text value for gluing at the start/end of the next Frame's text
-  let __prefix = false;
   const __suffixOptions = {
     mild: ["Hunger is making it hard to concentrate.",
           "You're feeling a bit peckish.",
@@ -33,15 +25,6 @@ const Scene = (function () {
              "A haze is descending. You should really eat something.",
              "Your legs buckle. If you don't rest and eat soon, who knows what will happen."]
   };
-  
-  //function for creating unique ids for options
-  const __uidMaker = function () {
-    let i = 0;
-    return function() {
-      return i++;
-    };
-  };
-  const __newUid = __uidMaker();
   
   //create a random suffix
   const __changeSuffix = function () {
@@ -57,10 +40,34 @@ const Scene = (function () {
     return suffixes[Math.floor(Math.random() * suffixes.length)];
   };
   
-  //TODO: options should also be objects inside Frames with their own methods etc.
   
-  //Constructor for Frames, to be run in Scene.init
-  const Frame = function(settings) {
+  //////////////////
+  // CONSTRUCTORS //
+  //////////////////
+  
+  function Story (currentOrigin, name, metadata) {
+    this.name = name;
+    this.currentOrigin = currentOrigin;
+    this.timelimit = metadata.timelimit || false;
+    this.firstScene = metadata.first_scene;
+    this.currentScene = undefined;
+    this.currentFrame = undefined;
+    this.scenes = {};
+    this.hubs = {};
+  }
+  
+  function Scene (settings) {
+    this.map = settings.map;
+    this.firstFrame = settings.first_frame;
+    this.frames = {};
+    //create Frame objects and populate this.frames
+    for (let i = 0; i < settings.frames.length; i += 1) {
+      let frameid = settings.frames[i].id;
+      this.frames[frameid] = new Frame(settings.frames[i], this);
+    }
+  }
+  
+  function Frame (settings) {
     this.id = settings.id;
     this.text = settings.text;
     this.text2 = settings.text2 || false;
@@ -81,11 +88,113 @@ const Scene = (function () {
     this.enthusiasm = settings.enthusiasm || false;
     this.money = settings.money || false;
     this.choice = settings.choice || false;
+  }
+  
+  ///////////////////
+  // STORY METHODS //
+  ///////////////////
+  
+  //fetch a Scene JSON, and parse it to create a new Scene object if it doesn't already exist
+  Story.prototype.loadScene = function (sceneName, startFrame) {
+    //save references for later
+    const that = this;
+    this.currentScene = sceneName;
+    
+    //check to see if scene has already been parsed
+    if (this.scenes[sceneName] !== undefined) {
+      this.scenes[sceneName].init(startFrame);
+    } else {
+      //construct a path to the desired scene
+      const request = new XMLHttpRequest();
+      const scenePath = `${this.currentOrigin}/stories/${this.name}/scenes/${sceneName}.json`;
+      request.onload = function() {
+        if (request.status == 200) {
+          try {
+            //create Scene object, and store inside Story object
+            let settings = JSON.parse(request.responseText).scene;
+            that.scenes[sceneName] = new Scene(settings, that);
+            that.scenes[sceneName].init(startFrame);
+          } catch (SyntaxError) {
+            console.error(`There was an error processing the first frame, or there's something wrong in the JSON syntax of this scene: ${scenePath} Try running it through JSONLint.com`);
+          }
+        } else {
+          console.error(`Retrieved response, but status was not 200. Status text: ${request.statusText}`);
+        }
+      };
+      request.onerror = function() {
+        console.error("XMLHttpRequest failed, could not reach Scene.");
+      };
+      request.open("GET", scenePath, true);
+      request.send();
+    }
   };
   
-  /////////////////////////////
-  // FRAME PROTOTYPE METHODS //
-  /////////////////////////////
+  ///////////////////
+  // SCENE METHODS //
+  ///////////////////
+  
+  Scene.prototype.init = function (startFrame) {
+    startFrame = startFrame || this.firstFrame;
+    if (this.map) {
+      Scenemap.set(this.map);
+    }
+    this.frames[startFrame].render();
+  };
+  
+  ////////////////////
+  // FRAME  METHODS //
+  ////////////////////
+  
+  //load up the current frame and execute any necessary tasks
+  Frame.prototype.render = function (prefix) {
+    let maintext = this.text; //store as string since helpers may change it
+    
+    this.runHelpers(this);
+    
+    //if energy is low/0, change suffix
+    let suffix = __changeSuffix();
+    
+    View.setFrameText(prefix, maintext, suffix);
+    
+    //filter out options where showif conditions evaluate to false
+    let filteredOptions = this.options.filter(function(opt) {
+      if (opt.showif !== undefined) {
+        //split showif strings into subarrays
+        let conditions = [];
+        for (let i = 0; i < opt.showif.length; i += 1) {
+          conditions.push(opt.showif[i].split(" "));
+        }
+        //validate all the conditions
+        let outcome = this.validateConditions(conditions);
+        return outcome;
+      } else {
+        return true;
+      }
+    }, this);
+
+    View.addOptions(filteredOptions);
+    
+    if (this.info) {
+      View.addInfo(this.info, this.infoRead);
+    } else {
+      View.hideInfo();
+    }
+    
+    if (this.image) {
+      View.displayImage(this.image);
+    } else {
+      View.hideImage();
+    }
+    
+    if (this.coordinates) {
+      Scenemap.updateLocation(this.coordinates);
+    }
+    
+    console.log(`Currently at: ${this.id}`);
+    //return the id of current frame
+    return this.id;
+    
+  };
   
   //remove frame options permanently if their oneoff is set to true
   Frame.prototype.removeOneoffs = function () {
@@ -191,9 +300,10 @@ const Scene = (function () {
   };
   
   Frame.prototype.processOption = function (optionUid) {
+    let prefix,
+        option,
+        optionIndex;
     //look up the option on this frame with the supplied uid
-    let option;
-    let optionIndex;
     for (let i = 0; i < this.options.length; i += 1) {
       if (this.options[i].uid === parseInt(optionUid)) {
         option = this.options[i];
@@ -206,12 +316,10 @@ const Scene = (function () {
       Time.increment(option.time);
       Objectives.checkTimeConditions(); //fail objectives that are out of time
       if (Player.get("energy") <= 0) {
-        Scene.init(__currentOrigin, __storyName, "endgame", "energy-lose");
-        return;
+        return {next: "scene endgame energy-lose"};
       }
-      if (__timelimit && Time.laterThan(__timelimit)) {
-        Scene.init(__currentOrigin, __storyName, "endgame", "timeout-lose");
-        return;
+      if (this.story.timelimit && Time.laterThan(this.story.timelimit)) {
+        return {next: "scene endgame timeout-lose"};
       }
     }
 
@@ -226,9 +334,9 @@ const Scene = (function () {
 
     //[optional] store a prefix for using on the next text
     if (option.prefix) {
-      __prefix = option.prefix;
+      prefix = option.prefix;
     } else {
-      __prefix = false;
+      prefix = false;
     }
 
     //[optional] if conditions are met, send player to a different 'next'
@@ -250,138 +358,44 @@ const Scene = (function () {
 
     this.removeOneoffs();
     this.runHelpers(option);
-    
-    //check if "next" is referring to a Scene - if so, start it
-    if (next.substr(0, 6).toLowerCase() === "scene ") {
-      const args = next.split(" ", 3);
-      const sceneName = args[1];
-      const startFrame = args[2] || false;
-      Scene.init(__currentOrigin, __storyName, sceneName, startFrame);
-    } else {
-      story[__currentScene][next].render();
-    }
+  
+    return {next: next, prefix: prefix};
     
   };
   
-  //load up the current frame and execute any necessary tasks
-  Frame.prototype.render = function () {
-    let maintext = this.text; //store as string since helpers may change it
-    
-    this.runHelpers(this);
-    
-    //if energy is low/0, change suffix
-    let suffix = __changeSuffix();
-    
-    View.setFrameText(__prefix, maintext, suffix);
-    
-    //filter out options where showif conditions evaluate to false
-    let filteredOptions = this.options.filter(function(opt) {
-      if (opt.showif !== undefined) {
-        //split showif strings into subarrays
-        let conditions = [];
-        for (let i = 0; i < opt.showif.length; i += 1) {
-          conditions.push(opt.showif[i].split(" "));
-        }
-        //validate all the conditions
-        let outcome = this.validateConditions(conditions);
-        return outcome;
-      } else {
-        return true;
-      }
-    }, this);
-
-    View.addOptions(filteredOptions);
-    
-    if (this.info) {
-      View.addInfo(this.info, this.infoRead);
-    } else {
-      View.hideInfo();
-    }
-    
-    if (this.image) {
-      View.displayImage(this.image);
-    } else {
-      View.hideImage();
-    }
-    
-    if (this.coordinates) {
-      Scenemap.updateLocation(this.coordinates);
-    }
-    
-    console.log(`Currently at: ${this.id}`);
-    __currentFrame = this.id;
-    
-  };
+  ////////////////////////
+  // NEED TO BE EXPOSED to handlers etc. - TODO: figure out how //
+  ////////////////////////
   
-  //////////////////////
-  /// PUBLIC METHODS ///
-  //////////////////////
-  
-  self.markInfoAsRead = function () {
-    let frame = story[__currentScene][__currentFrame];
+  Story.prototype.markInfoAsRead = function () {
+    let frame = this.scenes[this.currentScene][this.currentFrame];
     if (!frame.infoRead) {
       frame.infoRead = true;
     }
   };
-
-  self.processOption = function (optionUid) {
-    story[__currentScene][__currentFrame].processOption(optionUid);
+  
+  //process the selected option, then load up the next 
+  Story.prototype.processOption = function (optionUid) {
+    let next = this.scenes[this.currentScene][this.currentFrame].processOption(optionUid);
+    
+    //check if "next.next" is referring to a Scene
+    if (next.next.substr(0, 6).toLowerCase() === "scene ") {
+      const args = next.next.split(" ", 3);
+      const sceneName = args[1];
+      const startFrame = args[2] || false;
+      this.loadScene(sceneName, startFrame);
+    } else {
+      //render next frame and store id of the new frame
+      this.currentFrame = this.scenes[this.currentScene].frames[next.next].render(next.prefix);
+    }
   };
   
-  self.setTimelimit = function (timelimit) {
-    __timelimit = timelimit;
-  };
-
-  //parse a scene //TODO - or a hub
-  self.init = function (currentOrigin, storyName, sceneName, startFrame) {
-    const self = this;
-    const request = new XMLHttpRequest();
-    //construct a path to the desired scene
-    const scenePath = `${currentOrigin}/stories/${storyName}/scenes/${sceneName}.json`;
+  return {
     
-    //save private references for later
-    __currentOrigin = currentOrigin;
-    __storyName = storyName;
-    __currentScene = sceneName;
-
-    request.onload = function() {
-      if (request.status == 200) {
-        try {
-          //check to see if scene has already been parsed; if not, create scene object with one attribute (first_frame), and add to story object
-          if (story[sceneName] === undefined) {
-            let scene = JSON.parse(request.responseText).scene;
-            let frames = scene.frames;
-            story[sceneName] = {};
-            story[sceneName].map = scene.map;
-            story[sceneName].first_frame = scene.first_frame;
-            //create Frame objects and add them to Scene object as they're created. Story["scenename"]["framename"] = new Scene(....);
-            for (let i = 0; i < frames.length; i += 1) {
-              let frameid = frames[i].id;
-              story[sceneName][frameid] = new Frame(frames[i]);
-            }
-          }
-          let firstFrame = startFrame || story[sceneName].first_frame;
-          if (story[sceneName].map !== undefined) {
-            Scenemap.set(story[sceneName].map);
-          }
-          story[sceneName][firstFrame].render();
-        } catch (SyntaxError) {
-          console.error(`There was an error processing the first frame, or there's something wrong in the JSON syntax of this scene: ${scenePath} Try running it through JSONLint.com`);
-        }
-      } else {
-        console.error(`Retrieved response, but status was not 200. Status text: ${request.statusText}`);
-      }
-    };
-
-    request.onerror = function() {
-      console.error("XMLHttpRequest failed, could not reach Scene.");
-    };
-    
-    request.open("GET", scenePath, true);
-    request.send();
+    newStory: function (currentOrigin, storyName, metadata) {
+      return new Story(currentOrigin, storyName, metadata);
+    }
     
   };
-  
-  return self;
 
 })();

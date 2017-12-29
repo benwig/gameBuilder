@@ -136,7 +136,6 @@ const Objectives = (function () {
         }
       }
     }
-    console.log(objectives);
   };
   
   //assign an objective to the player

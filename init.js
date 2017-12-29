@@ -27,11 +27,10 @@
   };
   
   const loadStory = function (metadataJSON) {
-    const metadata = JSON.parse(metadataJSON);
-    const firstScene = metadata.metadata.first_scene;
-    const timelimit = metadata.metadata.timelimit;
-    Scene.init(currentOrigin, storyName, firstScene);
-    Scene.setTimelimit(timelimit);
+    const metadata = JSON.parse(metadataJSON).metadata;
+    const firstScene = metadata.first_scene;
+    const story = Storyrunner.newStory(currentOrigin, storyName, metadata);
+    story.loadScene(firstScene);
   };
   
   objectivesRequest.onload = function () {
