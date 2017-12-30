@@ -16,13 +16,14 @@ const View = (function () {
   const __enthusiasm = document.querySelector('#enthusiasm');
   const __mapSpace = document.querySelector('#map');
   const __imageSpace = document.querySelector('#image');
-  const __infobutton = document.querySelector('#infobutton');
-  const __infobox = document.querySelector('#infobox');
+  const __storyinfo = document.querySelector('#storyinfo');
   
   //compile handlebars templates
   const __frameTemplate = Handlebars.compile(document.getElementById("frameText-template").innerHTML);
   
   const __iteminfoTemplate = Handlebars.compile(document.getElementById("iteminfo-template").innerHTML);
+  
+  const __storyinfoTemplate = Handlebars.compile(document.getElementById("storyinfo-template").innerHTML);
   
   ///////////////////
   //PRIVATE HELPERS//
@@ -42,11 +43,6 @@ const View = (function () {
   };
   
   return {
-    
-    //sets css to display: none / removes display: none
-    toggleReveal (element) {
-      element.classList.toggle('js-hidden');
-    },
     
     //removes css for visibility: hidden
     makeVisible (element) {
@@ -79,31 +75,19 @@ const View = (function () {
       }
     },
     
-    addInfo (infotext, read) {
-      __clear(__infobox);
-      let p = __buildP(infotext);
-      __infobox.appendChild(p);
-      this.makeVisible(__infobutton);
-      if (read) {
-        __infobutton.classList.remove("infobutton--unread");
-        __infobutton.classList.add("infobutton--read");
-      } else {
-        __infobutton.classList.add("infobutton--unread");
-        __infobutton.classList.remove("infobutton--read");
-      }
+    renderInfo (infotext, read) {
+      const context = {
+        infotext: infotext,
+        read: read
+      };
+      __storyinfo.innerHTML = __storyinfoTemplate(context);
     },
     
     toggleInfo () {
-      this.toggleReveal(__infobox);
-      __infobutton.classList.remove("infobutton--unread");
-      __infobutton.classList.add("infobutton--read");
-    },
-    
-    hideInfo () {
-      if (!__infobox.classList.contains('js-hidden')) {
-        __infobox.classList.add('js-hidden');
-      }
-      this.makeInvisible(__infobutton);
+      $('#infobox').toggleClass('js-hidden');
+      $('#infobutton')
+        .removeClass('infobutton--unread')
+        .addClass('infobutton--read');
     },
     
     setMap (filename) {

@@ -23,8 +23,8 @@ const Handlers = (function () {
         .on('click', '#item-unuse', this.unuseItem.bind(this))
         .on('click', '#item-consume', this.consumeItem.bind(this))
         .on('click', '#item-close', this.closeItemInfo.bind(this));
-      $('#infobutton')
-        .on('click', this.toggleInfo.bind(this));
+      $('#storyinfo')
+        .on('click', '#infobutton', this.toggleInfo.bind(this));
     },
     
     //shows / hides frame info

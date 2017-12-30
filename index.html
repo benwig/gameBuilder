@@ -17,8 +17,7 @@
       <div id="frameText"></div>
       <ul id="options">
       </ul>
-      <button id="infobutton" class="js-invisible">i</button>
-      <div id="infobox"></div>
+      <div id="storyinfo"></div>
     </div>
     <div class="container">
       <div class="inventory">
@@ -37,6 +36,14 @@
       <h4>Wallet</h4>
       <p id="wallet"></p>
     </div>
+    
+    <script id="storyinfo-template" type="text/x-handlebars-template">
+      <button id="infobutton" class="{{#unless infotext}}js-invisible{{/unless}} {{#if read}}infobutton--read{{else}}infobutton--unread{{/if}}">i</button>
+      
+      <div id="infobox" class="js-hidden">
+        {{#if infotext}}<p>{{infotext}}</p>{{/if}}
+      </div>
+    </script>
     
     <script id="frameText-template" type="text/x-handlebars-template">
       {{#if prefix}}
