@@ -200,7 +200,7 @@ const Storyrunner = (function () {
     }, this);
 
     View.addOptions(filteredOptions);
-    View.renderInfo(this.info, this.infoRead);
+    View.renderStoryInfo(this.info, this.infoRead);
     
     if (this.image) {
       View.displayImage(this.image);

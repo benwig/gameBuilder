@@ -75,7 +75,7 @@ const View = (function () {
       }
     },
     
-    renderInfo (infotext, read) {
+    renderStoryInfo (infotext, read) {
       const context = {
         infotext: infotext,
         read: read
