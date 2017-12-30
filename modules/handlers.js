@@ -35,11 +35,9 @@ const Handlers = (function () {
     
     //handle click on an option button
     processOption (event) {
-      const optionId = event.target.dataset.optionId;
+      const optionId = event.target.dataset.optionid;
       if (optionId !== undefined) {
         __story.goToNext(optionId);
-      } else {
-        event.stopPropagation();
       }
     },
     

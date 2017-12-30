@@ -15,8 +15,7 @@
         <div id="image" class="js-hidden"></div>
       </div>
       <div id="frameText"></div>
-      <ul id="options">
-      </ul>
+      <ul id="options"></ul>
       <div id="storyinfo"></div>
     </div>
     <div class="container">
@@ -53,6 +52,14 @@
       {{#if suffix}}
         <p>{{suffix}}</p>
       {{/if}}
+    </script>
+    
+    <script id="options-template" type="text/x-handlebars-template">
+      {{#each options}}
+        <li>
+          <button data-optionid="{{this.uid}}">{{this.text}}</button>
+        </li>
+      {{/each}}
     </script>
     
     <script id="iteminfo-template" type="text/x-handlebars-template">

@@ -4,8 +4,8 @@ const View = (function () {
   
   "use strict";
   
-  const __frameText = document.querySelector("#frameText");
-  const __optionList = document.querySelector("#options");
+  const $frameText = $('#frameText');
+  const $optionList = $('#options');
   const __itemList = document.querySelector('#inventory');
   const __iteminfo = document.getElementById("iteminfo");
   const __wallet = document.querySelector('#wallet');
@@ -15,64 +15,30 @@ const View = (function () {
   const __energy = document.querySelector('#energy');
   const __enthusiasm = document.querySelector('#enthusiasm');
   const __mapSpace = document.querySelector('#map');
-  const __imageSpace = document.querySelector('#image');
+  const $imageSpace = $('#image');
   const __storyinfo = document.querySelector('#storyinfo');
   
   //compile handlebars templates
   const __frameTemplate = Handlebars.compile(document.getElementById("frameText-template").innerHTML);
   
+  const __optionsTemplate = Handlebars.compile(document.getElementById("options-template").innerHTML);
+  
   const __iteminfoTemplate = Handlebars.compile(document.getElementById("iteminfo-template").innerHTML);
   
   const __storyinfoTemplate = Handlebars.compile(document.getElementById("storyinfo-template").innerHTML);
   
-  ///////////////////
-  //PRIVATE HELPERS//
-  ///////////////////
-  
-  const __clear = function (parent) {
-    while (parent.lastChild) {
-        parent.removeChild(parent.lastChild);
-      }
-  };
-    
-  //return a paragraph
-  const __buildP = function(content) {
-    let p = document.createElement('p');
-    p.textContent = content;
-    return p;
-  };
-  
   return {
-    
-    //removes css for visibility: hidden
-    makeVisible (element) {
-      element.classList.remove('js-invisible');
-    },
-    
-    //adds css for visibility: hidden
-    makeInvisible (element) {
-      element.classList.add('js-invisible');
-    },
-    
+
     setFrameText (prefix, maintext, suffix) {
-      let context = {prefix: prefix, maintext: maintext, suffix: suffix};
-      __frameText.innerHTML = __frameTemplate(context);
+      const context = {prefix: prefix, maintext: maintext, suffix: suffix};
+      $frameText.html(__frameTemplate(context));
     },
     
     addOptions (options) {
-      __clear(__optionList);
-      try {
-        for (let i = 0, fol = options.length; i < fol; i += 1) {
-          let li = document.createElement('li');
-          let button = document.createElement('button');
-          button.dataset.optionId = options[i].uid;
-          button.textContent = options[i].text;
-          li.appendChild(button);
-          __optionList.appendChild(li);
-        }
-      } catch(TypeError) {
-        console.error('It looks like frameData is currently empty.');
-      }
+      const context = {
+        "options": options
+      };
+      $optionList.html(__optionsTemplate(context));
     },
     
     renderStoryInfo (infotext, read) {
@@ -115,14 +81,12 @@ const View = (function () {
     },
     
     displayImage (filename) {
-      __imageSpace.style.backgroundImage = `url("media/images/${filename}")`;
-      __imageSpace.classList.remove('js-hidden');
+      $imageSpace.css('background-image', `url("media/images/${filename}")`);
+      $imageSpace.removeClass('js-hidden');
     },
     
     hideImage () {
-      if (!__imageSpace.classList.contains('js-hidden')) {
-        __imageSpace.classList.add('js-hidden');
-      }
+      $imageSpace.addClass('js-hidden');
     },
     
     addItem (uid, item) {
