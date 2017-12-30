@@ -4,7 +4,14 @@ const Handlers = (function () {
   
   "use strict";
   
+  let __story;
+  
   return {
+    
+    init (storyReference) {
+      __story = storyReference;
+      this.bindEvents();
+    },
     
     bindEvents () {
       $('#options')
@@ -23,14 +30,14 @@ const Handlers = (function () {
     //shows / hides frame info
     toggleInfo () {
       View.toggleInfo('#infobox');
-      Scene.markInfoAsRead();
+      __story.markInfoAsRead();
     },
     
     //handle click on an option button
     processOption (event) {
       const optionId = event.target.dataset.optionId;
       if (optionId !== undefined) {
-        Scene.processOption(optionId);
+        __story.goToNext(optionId);
       } else {
         event.stopPropagation();
       }
@@ -93,5 +100,3 @@ const Handlers = (function () {
   };
   
 })();
-
-Handlers.bindEvents();

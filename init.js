@@ -31,6 +31,7 @@
     const firstScene = metadata.first_scene;
     const story = Storyrunner.newStory(currentOrigin, storyName, metadata);
     story.loadScene(firstScene);
+    Handlers.init(story);
   };
   
   objectivesRequest.onload = function () {

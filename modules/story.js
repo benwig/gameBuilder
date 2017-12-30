@@ -4,6 +4,10 @@ const Storyrunner = (function () {
   
   "use strict";
   
+  //////////////////
+  // PRIVATE  //
+  //////////////////
+  
   //private function for creating unique ids for options
   const __uidMaker = function () {
     let i = 0;
@@ -102,7 +106,7 @@ const Storyrunner = (function () {
     
     //check to see if scene has already been parsed
     if (this.scenes[sceneName] !== undefined) {
-      this.scenes[sceneName].init(startFrame);
+      this.currentFrame = this.scenes[sceneName].init(startFrame);
     } else {
       //construct a path to the desired scene
       const request = new XMLHttpRequest();
@@ -113,7 +117,7 @@ const Storyrunner = (function () {
             //create Scene object, and store inside Story object
             let settings = JSON.parse(request.responseText).scene;
             that.scenes[sceneName] = new Scene(settings, that);
-            that.scenes[sceneName].init(startFrame);
+            that.currentFrame = that.scenes[sceneName].init(startFrame);
           } catch (SyntaxError) {
             console.error(`There was an error processing the first frame, or there's something wrong in the JSON syntax of this scene: ${scenePath} Try running it through JSONLint.com`);
           }
@@ -129,6 +133,29 @@ const Storyrunner = (function () {
     }
   };
   
+  //process the selected option, then load up the next 
+  Story.prototype.goToNext = function (optionUid) {
+    let next = this.scenes[this.currentScene].frames[this.currentFrame].processOption(optionUid, this.timelimit);
+    
+    //check if "next.next" is referring to a Scene
+    if (next.next.substr(0, 6).toLowerCase() === "scene ") {
+      const args = next.next.split(" ", 3);
+      const sceneName = args[1];
+      const startFrame = args[2] || false;
+      this.loadScene(sceneName, startFrame);
+    } else {
+      //render next frame and store id of the new frame
+      this.currentFrame = this.scenes[this.currentScene].frames[next.next].render(next.prefix);
+    }
+  };
+  
+  Story.prototype.markInfoAsRead = function () {
+    let frame = this.scenes[this.currentScene].frames[this.currentFrame];
+    if (!frame.infoRead) {
+      frame.infoRead = true;
+    }
+  };
+  
   ///////////////////
   // SCENE METHODS //
   ///////////////////
@@ -138,7 +165,7 @@ const Storyrunner = (function () {
     if (this.map) {
       Scenemap.set(this.map);
     }
-    this.frames[startFrame].render();
+    return this.frames[startFrame].render();
   };
   
   ////////////////////
@@ -299,7 +326,7 @@ const Storyrunner = (function () {
     }
   };
   
-  Frame.prototype.processOption = function (optionUid) {
+  Frame.prototype.processOption = function (optionUid, timelimit) {
     let prefix,
         option,
         optionIndex;
@@ -318,7 +345,7 @@ const Storyrunner = (function () {
       if (Player.get("energy") <= 0) {
         return {next: "scene endgame energy-lose"};
       }
-      if (this.story.timelimit && Time.laterThan(this.story.timelimit)) {
+      if (timelimit && Time.laterThan(timelimit)) {
         return {next: "scene endgame timeout-lose"};
       }
     }
@@ -363,39 +390,10 @@ const Storyrunner = (function () {
     
   };
   
-  ////////////////////////
-  // NEED TO BE EXPOSED to handlers etc. - TODO: figure out how //
-  ////////////////////////
-  
-  Story.prototype.markInfoAsRead = function () {
-    let frame = this.scenes[this.currentScene][this.currentFrame];
-    if (!frame.infoRead) {
-      frame.infoRead = true;
-    }
-  };
-  
-  //process the selected option, then load up the next 
-  Story.prototype.processOption = function (optionUid) {
-    let next = this.scenes[this.currentScene][this.currentFrame].processOption(optionUid);
-    
-    //check if "next.next" is referring to a Scene
-    if (next.next.substr(0, 6).toLowerCase() === "scene ") {
-      const args = next.next.split(" ", 3);
-      const sceneName = args[1];
-      const startFrame = args[2] || false;
-      this.loadScene(sceneName, startFrame);
-    } else {
-      //render next frame and store id of the new frame
-      this.currentFrame = this.scenes[this.currentScene].frames[next.next].render(next.prefix);
-    }
-  };
-  
   return {
-    
     newStory: function (currentOrigin, storyName, metadata) {
       return new Story(currentOrigin, storyName, metadata);
     }
-    
   };
 
 })();
