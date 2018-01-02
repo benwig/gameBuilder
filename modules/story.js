@@ -174,6 +174,7 @@ const Storyrunner = (function () {
   
   //load up the current frame and execute any necessary tasks
   Frame.prototype.render = function (prefix) {
+    
     let maintext = this.text; //store as string since helpers may change it
     
     this.runHelpers(this);

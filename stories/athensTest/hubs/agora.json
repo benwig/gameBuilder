@@ -3,9 +3,11 @@
   "icons": [
     {
       "id": "painted-stoa",
-      "name": "Painted Stoa",
-      "img": "generic-hub-icon.png",
-      "next": 
+      "name": "Painted Stoa", 
+      "zone": 1,
+      "icon": "generic-hub-icon.png",
+      "coordinates": "95 70",
+      "next": ""
     },
     {
       "id": "textiles-shop",

@@ -31,6 +31,12 @@
       "description": "Your trusty walking stick.",
       "usable": true,
       "speed": 3
+    },
+    {
+      "id": "aesclypius-statue",
+      "name": "Statue of Aesclypius",
+      "value": 10,
+      "description": "A small votive statue of Aesclypius, the god of healing."
     }
   ]
 }
