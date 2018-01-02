@@ -1,0 +1,266 @@
+{"scene": {
+  "first_frame": "scene-start",
+  "frames": [
+    {
+      "id": "scene-start",
+      "text": "YOU THERE! You look like a man who honours and fears the gods. Not like one of those godless eggheads that lounge around the stoas. Prove it by answering me twelve questions for the twelve gods! What say you?",
+      "text2": "Aha, back again, are you? Are you ready to prove what you know about the twelve gods?",
+      "options": [
+        {
+          "text": "Er... maybe another time.",
+          "next": "scene-start"
+        },
+        {
+          "text": "Very well, but I'd better not get smitten down if I get something wrong.",
+          "next": "q1"
+        },
+        {
+          "text": "Gladly, I am well known for my piety and my humility.",
+          "next": "q1"
+        }
+      ]
+    },
+    {
+      "id": "quiz-lose",
+      "text": "INCORRECT! You have been judged and found wanting! You had better go to the temple of Hephaestus and hang your head in shame.",
+      "choice": "failedQuiz",
+      "enthusiasm": -1,
+      "options": [
+        {
+          "text": "...",
+          "next": "scene-start"
+        }
+      ]
+    },
+    {
+      "id": "q1",
+      "text": "Excellent, excellent. Prove your worth in the eyes of the gods! The first question concerns the almighty Zeus, father of the gods: what is Zeus' weapon of choice?",
+      "options": [
+        {
+          "text": "Thunderbolts",
+          "next": "q2"
+        },
+        {
+          "text": "A bow and arrows",
+          "next": "quiz-lose",
+          "prefix": "No, no, no."
+        },
+        {
+          "text": "Earthquakes",
+          "next": "quiz-lose",
+          "prefix": "Oh dear me... "
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "Who is the wife of Zeus?",
+      "options": [
+        {
+          "text": "Hestia",
+          "next": "quiz-lose"
+        },
+        {
+          "text": "Hera",
+          "next": "q3"
+        },
+        {
+          "text": "Themis",
+          "next": "quiz-lose"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "That's right! And now for our own beloved goddess. When Athena was battling with Poseidon for this land, what was the gift she offered to the Athenians?",
+      "options": [
+        {
+          "text": "A horse",
+          "next": "quiz-lose"
+        },
+        {
+          "text": "A spring of water",
+          "next": "quiz-lose"
+        },
+        {
+          "text": "An olive tree",
+          "next": "q4"
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "Any true Athenian would know that, of course. You see it as soon as you look at the Parthenon. But can you answer this? What is the attribute of Artemis?",
+      "info": "A god's attribute is, of course, an object which they use and which symbolises them.",
+      "options": [
+        {
+          "text": "An arrow",
+          "next": "q5"
+        },
+        {
+          "text": "A water jar",
+          "next": "quiz-lose",
+          "prefix": "No, no, no."
+        },
+        {
+          "text": "A spinning wheel",
+          "next": "quiz-lose",
+          "prefix": "A spinning wheel is not too much use for the goddess of the hunt, is it! Peh."
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "Correct! On to Artemis' twin, then. What is his name?",
+      "options": [
+        {
+          "text": "Hades",
+          "next": "quiz-lose"
+        },
+        {
+          "text": "Hercules",
+          "next": "quiz-lose"
+        },
+        {
+          "text": "Apollo",
+          "next": "q6"
+        }
+      ]
+    },
+    {
+      "id": "q6",
+      "text": "Quite right. Next question! Which goddess is often accompanied by Cupid?",
+      "options": [
+        {
+          "text": "Persephone",
+          "next": "quiz-lose",
+          "prefix": "What? What would Cupid be doing in the underworld with Persephone?"
+        },
+        {
+          "text": "Aphrodite",
+          "next": "q7"
+        },
+        {
+          "text": "Hebe",
+          "next": "quiz-lose"
+        }
+      ]
+    },
+    {
+      "id": "q7",
+      "text": "From the prettiest god to the ugliest... It's time to see what you know about Hephaestus. Where does he spend most of his time?",
+      "options": [
+        {
+          "text": "At his forge",
+          "next": "q8"
+        },
+        {
+          "text": "In bed, asleep",
+          "next": "quiz-lose",
+          "prefix": "Did you really think we'd build a temple to a god who does nothing?"
+        },
+        {
+          "text": "At the racetrack",
+          "next": "quiz-lose"
+        }
+      ]
+    },
+    {
+      "id": "q8",
+      "text": "You're right again! On to Ares now. The god of what?",
+      "options": [
+        {
+          "text": "The god of healing",
+          "next": "quiz-lose"
+        },
+        {
+          "text": "The god of puppies",
+          "next": "quiz-lose"
+        },
+        {
+          "text": "The god of war",
+          "next": "q9"
+        }
+      ]
+    },
+    {
+      "id": "q9",
+      "text": "Well done. We seafaring Athenians have much respect for Poseidon, but he's not only the god of the sea. For what else is he honoured?",
+      "options": [
+        {
+          "text": "Horses and earthquakes",
+          "next": "q10"
+        },
+        {
+          "text": "Architecture and engineering",
+          "next": "quiz-lose"
+        },
+        {
+          "text": "Marriage and children",
+          "next": "quiz-lose"
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "text": "Indeed. Only three gods left. Every year in the Spring we present something to Demeter, goddess of fertile land. What is it?",
+      "options": [
+        {
+          "text": "Our firstborn lambs",
+          "next": "quiz-lose"
+        },
+        {
+          "text": "The first of our crops and fruit",
+          "next": "q11"
+        },
+        {
+          "text": "Some of our childrens' old clothes",
+          "next": "quiz-lose"
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "text": "Correct! Hermes, the god of messengers and travellers. What does he wear on his feet?",
+      "options": [
+        {
+          "text": "Winged sandals",
+          "next": "q12"
+        },
+        {
+          "text": "Tiny chariots",
+          "next": "quiz-lose",
+          "prefix": "I... I have no words."
+        },
+        {
+          "text": "Quicksilver boots",
+          "next": "quiz-lose"
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "text": "Yes, that's right. And now for the god we honour every year with our tragedies and comedies in the Theatre. Name one of the gifts which Dionysus gave to us.",
+      "options": [
+        {
+          "text": "The art of writing",
+          "next": "q12"
+        },
+        {
+          "text": "Fire",
+          "next": "quiz-lose"
+        },
+        {
+          "text": "Wine",
+          "next": "quiz-win"
+        }
+      ]
+    },
+    {
+      "id": "quiz-win",
+      "text": "All twelve questions answered correctly! You are truly a pious man, of whom the whole city can be proud. Of course, there are many gods besides the twelve Olympians. For your piety, please accept this - a statue of Aesclypius, the god of healing. Go on your way and may the gods bless you.",
+      "enthusiasm": 4,
+      "getItem": "aesclypius-statue"
+    }
+  ]
+}}
