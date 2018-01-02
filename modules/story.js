@@ -193,7 +193,7 @@ const Storyrunner = (function () {
           conditions.push(opt.showif[i].split(" "));
         }
         //validate all the conditions
-        let outcome = this.validateConditions(conditions);
+        let outcome = this.allConditionsTrue(conditions);
         return outcome;
       } else {
         return true;
@@ -275,7 +275,7 @@ const Storyrunner = (function () {
   };
     
   //loop through nested array and return true if all conditions are met; else return false
-  Frame.prototype.validateConditions = function (arr) {
+  Frame.prototype.allConditionsTrue = function (arr) {
     const conditions = {
       inventory: function (itemId) {
         return Inventory.contains(itemId);
@@ -369,7 +369,7 @@ const Storyrunner = (function () {
       for (let i = 0; i < conditions.length; i += 1) {
         conditions[i] = conditions[i].split(" ");
       }
-      if (this.validateConditions(conditions)) {
+      if (this.allConditionsTrue(conditions)) {
         next = option.nextif[0];
       }
     }
