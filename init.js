@@ -30,7 +30,7 @@
     const metadata = JSON.parse(metadataJSON).metadata;
     const firstScene = metadata.first_scene;
     const story = Storyrunner.newStory(currentOrigin, storyName, metadata);
-    story.loadScene(firstScene);
+    story.load(firstScene, "scene");
     Handlers.init(story);
   };
   

@@ -36,6 +36,9 @@ const View = (function () {
     setFrameText (prefix, maintext, suffix) {
       const context = {prefix: prefix, maintext: maintext, suffix: suffix};
       $frameText.html(__frameTemplate(context));
+      // hide hubframe and reveal mainframe
+      $mainframe.removeClass('js-hidden');
+      $hubframe.addClass('js-hidden');
     },
     
     addOptions (options) {

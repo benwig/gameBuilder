@@ -64,8 +64,8 @@
     
     <script id="hub-template" type="text/x-handlebars-template">
       {{#each icons}}
-        <button data-optionid="{{this.id}}" style="left:{{this.x}}; top:{{this.y}}" alt="{{this.name}}">
-          <img src="media/icons/{{this.icon}}">
+        <button style="left:{{this.x}}; top:{{this.y}}" alt="{{this.name}}">
+          <img src="media/icons/{{this.icon}}" data-optionid="{{this.id}}" >
         </button>
       {{/each}}
     </script>
