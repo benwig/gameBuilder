@@ -19,7 +19,7 @@ h4 {
   margin: 0;
 }
 
-.maintext {
+#mainframe, #hubframe {
   max-width: 720px;
   min-height: 300px;
   margin: 10px;
@@ -30,12 +30,27 @@ h4 {
   padding-left: 0;
 }
 
-.maintext p {
+#mainframe p {
   font-size: 1.3em;
 }
 
-.maintext button {
+#mainframe button,
+#hubframe button {
   cursor: pointer;
+}
+
+#hubframe {
+  position: relative;
+  background-position: top left;
+  background-repeat: no-repeat;
+  overflow: scroll;
+}
+
+#hubframe button {
+  position: absolute;
+  border: 0;
+  margin: 0;
+  padding: 0;
 }
 
 #map {

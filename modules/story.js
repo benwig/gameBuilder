@@ -60,6 +60,12 @@ const Storyrunner = (function () {
     this.hubs = {};
   }
   
+  function Hub (settings) {
+    this.map = settings.map || false;
+    this.icons = settings.icons || [];
+    this.currentZone = settings.startZone;
+  }
+  
   function Scene (settings) {
     this.map = settings.map;
     this.firstFrame = settings.first_frame;
@@ -116,7 +122,7 @@ const Storyrunner = (function () {
           try {
             //create Scene object, and store inside Story object
             let settings = JSON.parse(request.responseText).scene;
-            that.scenes[sceneName] = new Scene(settings, that);
+            that.scenes[sceneName] = new Scene(settings);
             that.currentFrame = that.scenes[sceneName].init(startFrame);
           } catch (SyntaxError) {
             console.error(`There was an error processing the first frame, or there's something wrong in the JSON syntax of this scene: ${scenePath} Try running it through JSONLint.com`);
@@ -133,16 +139,52 @@ const Storyrunner = (function () {
     }
   };
   
+  //fetch a Hub JSON, and parse it to create a new Hub object if it doesn't already exist
+  Story.prototype.loadHub = function (hubName, startZone) {
+    //check to see if hub has already been parsed
+    if (this.hubs[hubName] !== undefined) {
+      this.hubs[sceneName].init(startZone);
+    } else {
+      //construct a path to the desired scene
+      const request = new XMLHttpRequest();
+      const hubPath = `${this.currentOrigin}/stories/${this.name}/hubs/${hubName}.json`;
+      const that = this;
+      request.onload = function() {
+        if (request.status == 200) {
+          try {
+            //create Scene object, and store inside Story object
+            let settings = JSON.parse(request.responseText).hub;
+            that.hubs[hubName] = new Hub(settings);
+            that.hubs[hubName].init(startZone);
+          } catch (SyntaxError) {
+            console.error(`There was an error processing the hub. There might be something wrong in the JSON syntax of: ${scenePath} Try running it through JSONLint.com`);
+          }
+        } else {
+          console.error(`Retrieved response, but status was not 200. Status text: ${request.statusText}`);
+        }
+      };
+      request.onerror = function() {
+        console.error(`XMLHttpRequest failed, could not reach ${hubName}.`);
+      };
+      request.open("GET", hubPath, true);
+      request.send();
+    }
+  };
+  
   //process the selected option, then load up the next 
   Story.prototype.goToNext = function (optionUid) {
     let next = this.scenes[this.currentScene].frames[this.currentFrame].processOption(optionUid, this.timelimit);
+    const args = next.next.split(" ", 3);
     
-    //check if "next.next" is referring to a Scene
-    if (next.next.substr(0, 6).toLowerCase() === "scene ") {
-      const args = next.next.split(" ", 3);
-      const sceneName = args[1];
-      const startFrame = args[2] || false;
+    //check if "next.next" is referring to a Scene / Hub
+    if (args[0].toLowerCase() === "scene") {
+      let sceneName = args[1];
+      let startFrame = args[2] || false;
       this.loadScene(sceneName, startFrame);
+    } else if (args[0].toLowerCase() === "hub") {
+      let hubName = args[1];
+      let startZone = parseInt(args[2]) || 1;
+      this.loadHub(hubName, startZone);
     } else {
       //render next frame and store id of the new frame
       this.currentFrame = this.scenes[this.currentScene].frames[next.next].render(next.prefix);
@@ -155,6 +197,16 @@ const Storyrunner = (function () {
       frame.infoRead = true;
     }
   };
+  
+  /////////////////
+  // HUB METHODS //
+  /////////////////
+  
+  Hub.prototype.init = function (startZone) {
+    startZone = startZone || this.startZone;
+    console.log(`Hub loaded in zone ${startZone}`);
+    View.renderHub(this.icons, this.map, startZone);
+  }
   
   ///////////////////
   // SCENE METHODS //

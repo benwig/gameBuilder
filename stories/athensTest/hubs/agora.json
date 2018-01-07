@@ -1,5 +1,6 @@
 {"hub": {
   "map": "",
+  "startZone": 1,
   "icons": [
     {
       "id": "painted-stoa",
@@ -7,17 +8,22 @@
       "zone": 1,
       "icon": "generic-hub-icon.png",
       "coordinates": "95 70",
-      "next": ""
+      "next": "scene painted-stoa"
     },
     {
       "id": "textiles-shop",
       "name": "Textile Stall",
-      "img": "generic-hub-icon.png"
+      "zone": 1,
+      "icon": "generic-hub-icon.png",
+      "coordinates": "90 70",
+      "next": "scene textiles-shop"
     },
     {
       "id": "goldsmith-shop",
       "name": "Goldsmith's Stall",
-      "img": "generic-hub-icon.png"
+      "zone": 1,
+      "icon": "generic-hub-icon.png",
+      "next": "scene goldsmith-shop"
     }
   ]
 }}

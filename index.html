@@ -10,7 +10,7 @@
       <p>Energy: <span id="energy"></span></p>
       <p>Enthusiasm: <span id="enthusiasm"></span></p>
     </div>
-    <div class="maintext">
+    <div id="mainframe">
       <div id="map">
         <div id="image" class="js-hidden"></div>
       </div>
@@ -18,6 +18,7 @@
       <ul id="options"></ul>
       <div id="storyinfo"></div>
     </div>
+    <div id="hubframe" class="js-hidden"></div>
     <div class="container">
       <div class="inventory">
         <h4>Inventory</h4>
@@ -38,7 +39,6 @@
     
     <script id="storyinfo-template" type="text/x-handlebars-template">
       <button id="infobutton" class="{{#unless infotext}}js-invisible{{/unless}} {{#if read}}infobutton--read{{else}}infobutton--unread{{/if}}">i</button>
-      
       <div id="infobox" class="js-hidden">
         {{#if infotext}}<p>{{infotext}}</p>{{/if}}
       </div>
@@ -59,6 +59,14 @@
         <li>
           <button data-optionid="{{this.uid}}">{{this.text}}</button>
         </li>
+      {{/each}}
+    </script>
+    
+    <script id="hub-template" type="text/x-handlebars-template">
+      {{#each icons}}
+        <button data-optionid="{{this.id}}" style="left:{{this.x}}; top:{{this.y}}" alt="{{this.name}}">
+          <img src="media/icons/{{this.icon}}">
+        </button>
       {{/each}}
     </script>
     
