@@ -228,7 +228,11 @@ const View = (function () {
       };
       $hubframe.html(__hubTemplate(context));
       //set hubframe map
-      $hubframe.css('background-image', `url("media/maps/${map}")`);
+      if (map) {
+        $hubframe.css('background-image', `url("media/maps/${map}")`);
+      } else {
+        $hubframe.css('background-image', 'none');
+      }
       // hide mainframe and reveal hubframe
       $mainframe.addClass('js-hidden');
       $hubframe.removeClass('js-hidden');
