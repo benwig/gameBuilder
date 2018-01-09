@@ -16,7 +16,7 @@
       "zone": 1,
       "icon": "generic-icon.png",
       "coordinates": "50 50",
-      "next": "scene bedroom"
+      "next": "hub athens"
     },
     {
       "id": "doorway",
