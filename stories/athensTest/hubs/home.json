@@ -1,0 +1,30 @@
+{"hub": {
+  "map": "generic-map.png",
+  "startZone": 1,
+  "icons": [
+    {
+      "id": "kitchen",
+      "name": "Kitchen",
+      "zone": 1,
+      "icon": "generic-icon.png",
+      "coordinates": "200 0",
+      "next": "scene kitchen"
+    },
+    {
+      "id": "bedroom",
+      "name": "Bedroom",
+      "zone": 1,
+      "icon": "generic-icon.png",
+      "coordinates": "50 50",
+      "next": "hub athens"
+    },
+    {
+      "id": "doorway",
+      "name": "Way out",
+      "zone": 2,
+      "icon": "generic-icon.png",
+      "coordinates": "30 100",
+      "next": "scene roadToAthens road-start"
+    }
+  ]
+}}

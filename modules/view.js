@@ -4,6 +4,8 @@ const View = (function () {
   
   "use strict";
   
+  const $hubframe = $('#hubframe');
+  const $mainframe = $('#mainframe');
   const $frameText = $('#frameText');
   const $optionList = $('#options');
   const __itemList = document.querySelector('#inventory');
@@ -19,6 +21,8 @@ const View = (function () {
   const __storyinfo = document.querySelector('#storyinfo');
   
   //compile handlebars templates
+  const __hubTemplate = Handlebars.compile(document.getElementById("hub-template").innerHTML);
+  
   const __frameTemplate = Handlebars.compile(document.getElementById("frameText-template").innerHTML);
   
   const __optionsTemplate = Handlebars.compile(document.getElementById("options-template").innerHTML);
@@ -32,6 +36,9 @@ const View = (function () {
     setFrameText (prefix, maintext, suffix) {
       const context = {prefix: prefix, maintext: maintext, suffix: suffix};
       $frameText.html(__frameTemplate(context));
+      // hide hubframe and reveal mainframe
+      $mainframe.removeClass('js-hidden');
+      $hubframe.addClass('js-hidden');
     },
     
     addOptions (options) {
@@ -205,6 +212,30 @@ const View = (function () {
     failObjective (id, text) {
       alert(`You have failed an objective: ${text}`);
       this.removeObjective(id);
+    },
+    
+    // hides mainframe and reveals hubframe with icons and bg map
+    renderHub (icons, map, startZone) {
+      // for each icon, break coordinates into x and y integers
+      icons.forEach(function (icon) {
+        let co = icon.coordinates.split(" ");
+        icon.x = co[0];
+        icon.y = co[1];
+      });
+      // build context for handlebars template
+      const context = {
+        icons: icons
+      };
+      $hubframe.html(__hubTemplate(context));
+      //set hubframe map
+      if (map) {
+        $hubframe.css('background-image', `url("media/maps/${map}")`);
+      } else {
+        $hubframe.css('background-image', 'none');
+      }
+      // hide mainframe and reveal hubframe
+      $mainframe.addClass('js-hidden');
+      $hubframe.removeClass('js-hidden');
     }
     
   };

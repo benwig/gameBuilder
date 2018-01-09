@@ -16,6 +16,8 @@ const Handlers = (function () {
     bindEvents () {
       $('#options')
         .on('click', 'button', this.processOption.bind(this));
+      $('#hubframe')
+        .on('click', 'button', this.processOption.bind(this));
       $('#inventory')
         .on('click', 'li', this.openItemInfo.bind(this));
       $('#iteminfo')

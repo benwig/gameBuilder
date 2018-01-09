@@ -44,193 +44,8 @@ const Storyrunner = (function () {
     return suffixes[Math.floor(Math.random() * suffixes.length)];
   };
   
-  
-  //////////////////
-  // CONSTRUCTORS //
-  //////////////////
-  
-  function Story (currentOrigin, name, metadata) {
-    this.name = name;
-    this.currentOrigin = currentOrigin;
-    this.timelimit = metadata.timelimit || false;
-    this.firstScene = metadata.first_scene;
-    this.currentScene = undefined;
-    this.currentFrame = undefined;
-    this.scenes = {};
-    this.hubs = {};
-  }
-  
-  function Scene (settings) {
-    this.map = settings.map;
-    this.firstFrame = settings.first_frame;
-    this.frames = {};
-    //create Frame objects and populate this.frames
-    for (let i = 0; i < settings.frames.length; i += 1) {
-      let frameid = settings.frames[i].id;
-      this.frames[frameid] = new Frame(settings.frames[i], this);
-    }
-  }
-  
-  function Frame (settings) {
-    this.id = settings.id;
-    this.text = settings.text;
-    this.text2 = settings.text2 || false;
-    this.info = settings.info || false;
-    this.infoRead = false;
-    this.image = settings.image || false;
-    this.coordinates = settings.coordinates || false;
-    this.options = settings.options || [];
-    //add a unique id to each option
-    for (let i = 0; i < this.options.length; i += 1) {
-      this.options[i].uid = __newUid();
-    }
-    this.objective = settings.objective || false;
-    this.completeObjective = settings.completeObjective || false;
-    this.failObjective = settings.failObjective;
-    this.getItem = settings.getItem || false;
-    this.energy = settings.energy || false;
-    this.enthusiasm = settings.enthusiasm || false;
-    this.money = settings.money || false;
-    this.choice = settings.choice || false;
-  }
-  
-  ///////////////////
-  // STORY METHODS //
-  ///////////////////
-  
-  //fetch a Scene JSON, and parse it to create a new Scene object if it doesn't already exist
-  Story.prototype.loadScene = function (sceneName, startFrame) {
-    //save references for later
-    const that = this;
-    this.currentScene = sceneName;
-    
-    //check to see if scene has already been parsed
-    if (this.scenes[sceneName] !== undefined) {
-      this.currentFrame = this.scenes[sceneName].init(startFrame);
-    } else {
-      //construct a path to the desired scene
-      const request = new XMLHttpRequest();
-      const scenePath = `${this.currentOrigin}/stories/${this.name}/scenes/${sceneName}.json`;
-      request.onload = function() {
-        if (request.status == 200) {
-          try {
-            //create Scene object, and store inside Story object
-            let settings = JSON.parse(request.responseText).scene;
-            that.scenes[sceneName] = new Scene(settings, that);
-            that.currentFrame = that.scenes[sceneName].init(startFrame);
-          } catch (SyntaxError) {
-            console.error(`There was an error processing the first frame, or there's something wrong in the JSON syntax of this scene: ${scenePath} Try running it through JSONLint.com`);
-          }
-        } else {
-          console.error(`Retrieved response, but status was not 200. Status text: ${request.statusText}`);
-        }
-      };
-      request.onerror = function() {
-        console.error("XMLHttpRequest failed, could not reach Scene.");
-      };
-      request.open("GET", scenePath, true);
-      request.send();
-    }
-  };
-  
-  //process the selected option, then load up the next 
-  Story.prototype.goToNext = function (optionUid) {
-    let next = this.scenes[this.currentScene].frames[this.currentFrame].processOption(optionUid, this.timelimit);
-    
-    //check if "next.next" is referring to a Scene
-    if (next.next.substr(0, 6).toLowerCase() === "scene ") {
-      const args = next.next.split(" ", 3);
-      const sceneName = args[1];
-      const startFrame = args[2] || false;
-      this.loadScene(sceneName, startFrame);
-    } else {
-      //render next frame and store id of the new frame
-      this.currentFrame = this.scenes[this.currentScene].frames[next.next].render(next.prefix);
-    }
-  };
-  
-  Story.prototype.markInfoAsRead = function () {
-    let frame = this.scenes[this.currentScene].frames[this.currentFrame];
-    if (!frame.infoRead) {
-      frame.infoRead = true;
-    }
-  };
-  
-  ///////////////////
-  // SCENE METHODS //
-  ///////////////////
-  
-  Scene.prototype.init = function (startFrame) {
-    startFrame = startFrame || this.firstFrame;
-    if (this.map) {
-      Scenemap.set(this.map);
-    }
-    return this.frames[startFrame].render();
-  };
-  
-  ////////////////////
-  // FRAME  METHODS //
-  ////////////////////
-  
-  //load up the current frame and execute any necessary tasks
-  Frame.prototype.render = function (prefix) {
-    
-    let maintext = this.text; //store as string since helpers may change it
-    
-    this.runHelpers(this);
-    
-    //if energy is low/0, change suffix
-    let suffix = __changeSuffix();
-    
-    View.setFrameText(prefix, maintext, suffix);
-    
-    //filter out options where showif conditions evaluate to false
-    let filteredOptions = this.options.filter(function(opt) {
-      if (opt.showif !== undefined) {
-        //split showif strings into subarrays
-        let conditions = [];
-        for (let i = 0; i < opt.showif.length; i += 1) {
-          conditions.push(opt.showif[i].split(" "));
-        }
-        //validate all the conditions
-        let outcome = this.validateConditions(conditions);
-        return outcome;
-      } else {
-        return true;
-      }
-    }, this);
-
-    View.addOptions(filteredOptions);
-    View.renderStoryInfo(this.info, this.infoRead);
-    
-    if (this.image) {
-      View.displayImage(this.image);
-    } else {
-      View.hideImage();
-    }
-    
-    if (this.coordinates) {
-      Scenemap.updateLocation(this.coordinates);
-    }
-    
-    console.log(`Currently at: ${this.id}`);
-    //return the id of current frame
-    return this.id;
-    
-  };
-  
-  //remove frame options permanently if their oneoff is set to true
-  Frame.prototype.removeOneoffs = function () {
-    let i = this.options.length;
-    while (i--) {
-      if (this.options[i].oneoff) {
-        this.options.splice(i, 1);
-      }
-    }
-  };
-  
-  //processes commonalities for option or frame. 'focus' stands in for either "Frame" or "option"
-  Frame.prototype.runHelpers = function (focus) {
+  //processes commonalities for option/frame/hub. 'focus' stands in for either "Frame" or "option" or "icon"
+  const __runHelpers = function (focus) {
     //[optional] change the future text of the current frame / option
     if (focus.text2) {
       focus.text = focus.text2;
@@ -273,55 +88,270 @@ const Storyrunner = (function () {
       console.log(focus.choice, Player.get("choices", focus.choice));
     }
   };
-    
-  //loop through nested array and return true if all conditions are met; else return false
-  Frame.prototype.validateConditions = function (arr) {
-    const conditions = {
-      inventory: function (itemId) {
-        return Inventory.contains(itemId);
-      },
-      money: function (value) {
-        return Wallet.canAfford(value);
-      },
-      objectiveCompleted: function (id) {
-        return Objectives.getAttribute(id, "complete");
-      },
-      objectiveAssigned: function (id) {
-        return Objectives.getAttribute(id, "assigned");
-      },
-      objectiveFailed: function (id) {
-        return Objectives.getAttribute(id, "failed");
-      },
-      energy: function (value) {
-        return Player.get("energy") >= value;
-      },
-      enthusiasm: function (value) {
-        return Player.get("enthusiasm") >= value;
-      },
-      choices: function (choice) {
-        return Player.get("choices", choice);
+  
+  //////////////////
+  // CONSTRUCTORS //
+  //////////////////
+  
+  function Story (currentOrigin, name, metadata) {
+    this.name = name;
+    this.currentOrigin = currentOrigin;
+    this.timelimit = metadata.timelimit || false;
+    this.firstScene = metadata.first_scene;
+    this.currentLocationType = undefined;
+    this.currentScene = undefined;
+    this.currentFrame = undefined;
+    this.currentHub = undefined;
+    this.currentZone = undefined;
+    this.scenes = {};
+    this.hubs = {};
+  }
+  
+  function Hub (settings) {
+    this.map = settings.map || false;
+    this.icons = settings.icons || [];
+    this.currentZone = settings.startZone;
+  }
+  
+  function Scene (settings) {
+    this.map = settings.map;
+    this.firstFrame = settings.first_frame;
+    this.frames = {};
+    //create Frame objects and populate this.frames
+    for (let i = 0; i < settings.frames.length; i += 1) {
+      let frameid = settings.frames[i].id;
+      this.frames[frameid] = new Frame(settings.frames[i], this);
+    }
+  }
+  
+  function Frame (settings) {
+    this.id = settings.id;
+    this.text = settings.text;
+    this.text2 = settings.text2 || false;
+    this.info = settings.info || false;
+    this.infoRead = false;
+    this.image = settings.image || false;
+    this.coordinates = settings.coordinates || false;
+    this.options = settings.options || [];
+    //add a unique id to each option
+    for (let i = 0; i < this.options.length; i += 1) {
+      this.options[i].uid = __newUid();
+    }
+    this.objective = settings.objective || false;
+    this.completeObjective = settings.completeObjective || false;
+    this.failObjective = settings.failObjective;
+    this.getItem = settings.getItem || false;
+    this.energy = settings.energy || false;
+    this.enthusiasm = settings.enthusiasm || false;
+    this.money = settings.money || false;
+    this.choice = settings.choice || false;
+  }
+  
+  ///////////////////
+  // STORY METHODS //
+  ///////////////////
+  
+  //fetch a scene/hub JSON, and parse it to create a new scene/hub object if it doesn't already exist
+  Story.prototype.load = function (nameToLoad, typeToLoad, startingPoint) {
+    //save references for later
+    const that = this,
+          path = `${this.currentOrigin}/stories/${this.name}/${typeToLoad}s/${nameToLoad}.json`,
+          request = new XMLHttpRequest();
+    typeToLoad = typeToLoad.toLowerCase();
+    request.onload = function() {
+      if (request.status == 200) {
+        try {
+          if (typeToLoad === "scene") {
+            //create Scene object, and store inside Story object
+            let settings = JSON.parse(request.responseText).scene;
+            that.scenes[nameToLoad] = new Scene(settings);
+            // save references for later
+            startingPoint = startingPoint || that.scenes[nameToLoad].firstFrame;
+            that.updateLocationReferences("scene", nameToLoad, startingPoint);
+            // start scene at specified frame
+            that.scenes[nameToLoad].init(startingPoint);
+          } else if (typeToLoad === "hub") {
+            //create Hub object, and store inside Story object
+            let settings = JSON.parse(request.responseText).hub;
+            that.hubs[nameToLoad] = new Hub(settings);
+            // save references for later
+            startingPoint = startingPoint || that.hubs[nameToLoad].startZone;
+            that.updateLocationReferences("hub", nameToLoad, startingPoint);
+            // render hub
+            that.hubs[nameToLoad].init(startingPoint);
+          }
+        } catch (SyntaxError) {
+          console.error(`Could not load ${nameToLoad}. Try running it through JSONLint.com`);
+        }
+      } else {
+        console.error(`Retrieved response, but status was not 200. Status text: ${request.statusText}`);
       }
     };
-    let outcome;
-    for (let i = 0; i < arr.length; i += 1) {
-      let setting = arr[i][0];
-      let hasValue = arr[i][1];
-      let boolWanted = arr[i][2] || true;
-      //convert boolWanted from string to bool
-      if (boolWanted === "true") {
-        boolWanted = true;
-      } else if (boolWanted === "false") {
-        boolWanted = false;
-      }
-      outcome = conditions[setting](hasValue) === boolWanted;
-    }
-    if (outcome) {
-      return true;
+    request.onerror = function() {
+      console.error(`XMLHttpRequest failed, could not reach ${nameToLoad}.`);
+    };
+    request.open("GET", path, true);
+    request.send();
+  };
+  
+  //process the selected option, then load up the next 
+  Story.prototype.goToNext = function (optionUid) {
+    let next;
+    
+    //process any option settings, and get the value of next
+    if (this.currentLocationType === "hub") {
+      next = this.hubs[this.currentHub].processOption(optionUid, this.timelimit, this.currentZone);
+      this.currentZone = next.zone;
     } else {
-      return false;
+      next = this.scenes[this.currentScene].frames[this.currentFrame].processOption(optionUid, this.timelimit);
+    }
+    
+    //check whether next is pointing to a new Scene or Hub - if so, load
+    const args = next.next.split(" ", 3);
+    if (args[0].toLowerCase() === "scene") {
+      let sceneName = args[1];
+      let startFrame = args[2] || false;
+      //create Scene and init it, if it hasn't already been parsed
+      if (this.scenes[sceneName] === undefined) {
+        this.load(sceneName, "scene", startFrame);
+      } else {
+        this.updateLocationReferences("frame", sceneName, startFrame);
+        this.currentFrame = this.scenes[sceneName].init(startFrame);
+      }
+    } else if (args[0].toLowerCase() === "hub") {
+      let hubName = args[1];
+      let startZone = parseInt(args[2]) || 1;
+      //create Hub and init it, if it hasn't already been parsed
+      if (this.hubs[hubName] === undefined) {
+        this.load(hubName, "hub", startZone);
+      } else {
+        this.updateLocationReferences("hub", hubName, startZone);
+        this.hubs[hubName].init(startZone);
+      }
+    } else {
+      //else render next frame in current Scene
+      this.currentFrame = this.scenes[this.currentScene].frames[next.next].render(next.prefix);
     }
   };
   
+  Story.prototype.markInfoAsRead = function () {
+    let frame = this.scenes[this.currentScene].frames[this.currentFrame];
+    if (!frame.infoRead) {
+      frame.infoRead = true;
+    }
+  };
+  
+  Story.prototype.updateLocationReferences = function (locationType, locationName, startingPoint) {
+    this.currentLocationType = locationType;
+    if (locationType === "hub") {
+      this.currentHub = locationName;
+      this.currentZone = startingPoint; 
+    } else if (locationType === "scene") {
+      this.currentScene = locationName;
+      this.currentFrame = startingPoint;
+    }
+  };
+  
+  /////////////////
+  // HUB METHODS //
+  /////////////////
+  
+  Hub.prototype.init = function (startZone) {
+    startZone = startZone || this.startZone;
+    console.log(`Hub loaded in zone ${startZone}`);
+    View.renderHub(this.icons, this.map, startZone);
+  }
+  
+  Hub.prototype.processOption = function (optionId, timelimit, currentZone) {
+    let selectedIcon,
+        i,
+        next;
+    //look up the selected icon among Hub icons
+    for (i = 0; i < this.icons.length; i += 1) {
+      if (this.icons[i].id === optionId) {
+        selectedIcon = this.icons[i];
+        next = selectedIcon.next;
+      }
+    }
+    
+    //TODO: process travel time between currentZone and new Zone, and increment game time
+    //TODO:  & check for game-ending time conditions
+    
+    //[optional] change the future 'next' of the selected icon
+    if (selectedIcon.next2) {
+      selectedIcon.next = selectedIcon.next2;
+      delete selectedIcon.next2;
+    }
+    
+    __runHelpers(selectedIcon);
+    
+    return {next: next, zone: selectedIcon.zone};
+  }
+  
+  ///////////////////
+  // SCENE METHODS //
+  ///////////////////
+  
+  Scene.prototype.init = function (startFrame) {
+    startFrame = startFrame || this.firstFrame;
+    if (this.map) {
+      Scenemap.set(this.map);
+    }
+    return this.frames[startFrame].render();
+  };
+  
+  ////////////////////
+  // FRAME  METHODS //
+  ////////////////////
+  
+  //load up the current frame and execute any necessary tasks
+  Frame.prototype.render = function (prefix) {
+    
+    let maintext = this.text; //store as string since helpers may change it
+    
+    __runHelpers(this);
+    
+    //if energy is low/0, change suffix
+    let suffix = __changeSuffix();
+    
+    View.setFrameText(prefix, maintext, suffix);
+    
+    //filter out options where showif conditions evaluate to false
+    let filteredOptions = this.options.filter(function(opt) {
+      if (opt.showif !== undefined) {
+        //split showif strings into subarrays
+        let conditions = [];
+        for (let i = 0; i < opt.showif.length; i += 1) {
+          conditions.push(opt.showif[i].split(" "));
+        }
+        //validate all the conditions
+        let outcome = this.allConditionsTrue(conditions);
+        return outcome;
+      } else {
+        return true;
+      }
+    }, this);
+
+    View.addOptions(filteredOptions);
+    View.renderStoryInfo(this.info, this.infoRead);
+    
+    if (this.image) {
+      View.displayImage(this.image);
+    } else {
+      View.hideImage();
+    }
+    
+    if (this.coordinates) {
+      Scenemap.updateLocation(this.coordinates);
+    }
+    
+    console.log(`Currently at: ${this.id}`);
+    //return the id of current frame
+    return this.id;
+    
+  };
+  
+  //process selected option and return id of 'next'
   Frame.prototype.processOption = function (optionUid, timelimit) {
     let prefix,
         option,
@@ -369,7 +399,7 @@ const Storyrunner = (function () {
       for (let i = 0; i < conditions.length; i += 1) {
         conditions[i] = conditions[i].split(" ");
       }
-      if (this.validateConditions(conditions)) {
+      if (this.allConditionsTrue(conditions)) {
         next = option.nextif[0];
       }
     }
@@ -378,12 +408,68 @@ const Storyrunner = (function () {
     if (option.remove) {
       this.options.splice(optionIndex, 1);
     }
-
     this.removeOneoffs();
-    this.runHelpers(option);
+    __runHelpers(option);
   
     return {next: next, prefix: prefix};
+  };
+  
+  //remove frame options permanently if their oneoff is set to true
+  Frame.prototype.removeOneoffs = function () {
+    let i = this.options.length;
+    while (i--) {
+      if (this.options[i].oneoff) {
+        this.options.splice(i, 1);
+      }
+    }
+  };
     
+  //loop through nested array and return true if all conditions are met; else return false
+  Frame.prototype.allConditionsTrue = function (arr) {
+    const conditions = {
+      inventory: function (itemId) {
+        return Inventory.contains(itemId);
+      },
+      money: function (value) {
+        return Wallet.canAfford(value);
+      },
+      objectiveCompleted: function (id) {
+        return Objectives.getAttribute(id, "complete");
+      },
+      objectiveAssigned: function (id) {
+        return Objectives.getAttribute(id, "assigned");
+      },
+      objectiveFailed: function (id) {
+        return Objectives.getAttribute(id, "failed");
+      },
+      energy: function (value) {
+        return Player.get("energy") >= value;
+      },
+      enthusiasm: function (value) {
+        return Player.get("enthusiasm") >= value;
+      },
+      choices: function (choice) {
+        return Player.get("choices", choice);
+      }
+    };
+    let outcome;
+    for (let i = 0; i < arr.length; i += 1) {
+      let setting = arr[i][0];
+      let hasValue = arr[i][1];
+      let boolWanted = arr[i][2] || true;
+      //convert boolWanted from string to bool
+      if (boolWanted === "true") {
+        boolWanted = true;
+      } else if (boolWanted === "false") {
+        boolWanted = false;
+      }
+      outcome = conditions[setting](hasValue) === boolWanted;
+    }
+    if (outcome) {
+      return true;
+    } else {
+      return false;
+    }
   };
   
   return {
