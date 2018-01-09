@@ -4,7 +4,7 @@ const Time = (function () {
   
   "use strict";
   
-  let __now = 300; //time in minutes since 00:00
+  let __now = 0; //time in minutes since 00:00
   //TODO: timebands so you can quickly check if game has reached a certain timeframe, e.g. for use in descriptions. May be easier than using laterThan/earlierThan. Add corresponding function to return timezone/check timezone.
   /*const timebands = {
     "predawn": {lower: 0, upper: 299}, //00:00 - 05:00
@@ -69,6 +69,13 @@ const Time = (function () {
       } else {
         return false;
       }
+    },
+    
+    //called once when game is loaded - sets starting time and updates the time widget in DOM
+    //TODO: call Time.init from init.js
+    init: function (startTime) {
+      __now = startTime || 0;
+      View.updateTime(__now);
     }
     
   };
