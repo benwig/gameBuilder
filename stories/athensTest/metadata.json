@@ -4,6 +4,11 @@
     "author": "Rob & Gwen",
     "first_scene": "roadToAthens",
     "startTime": 300,
-    "timelimit": 1320
+    "timelimit": 1320,
+    "startEnergy": 3,
+    "energyLimit": 10,
+    "startEnthusiasm": 1,
+    "enthusiasmLimit": 5,
+    "speedLimit": 10
   }
 }

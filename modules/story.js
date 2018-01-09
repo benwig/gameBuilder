@@ -84,7 +84,7 @@ const Storyrunner = (function () {
     }
     //set a choice to true
     if (focus.choice) {
-      Player.set(true, "choices", focus.choice);
+      Player.setChoice(true, focus.choice);
       console.log(focus.choice, Player.get("choices", focus.choice));
     }
   };

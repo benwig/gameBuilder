@@ -72,7 +72,6 @@ const Time = (function () {
     },
     
     //called once when game is loaded - sets starting time and updates the time widget in DOM
-    //TODO: call Time.init from init.js
     init: function (startTime) {
       __now = startTime || 0;
       View.updateTime(__now);

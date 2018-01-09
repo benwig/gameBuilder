@@ -54,6 +54,8 @@
         const story = Storyrunner.newStory(currentOrigin, storyName, metadata);
         story.load(firstScene, "scene");
         Handlers.init(story);
+        Time.init(metadata.startTime);
+        Player.init(metadata);
       }
     }
   ];

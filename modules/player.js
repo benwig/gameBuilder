@@ -22,9 +22,9 @@ const Player = (function () {
   
   return {
     
-    set: function (newvalue, key, key2="value") {
-      __data[key][key2] = newvalue;
-      return __data[key][key2];
+    setChoice: function (newvalue, key) {
+      __data.choices[key] = newvalue;
+      return __data.choices[key];
     },
     
     get: function (key, key2="value") {
@@ -51,6 +51,14 @@ const Player = (function () {
       for (let i = 0; i < c.length; i += 1) {
         __data.choices[c[i]] = false; 
       }
+    },
+    
+    init: function (settings) {
+      __data.energy.limit = settings.energyLimit;
+      this.increment(settings.startEnergy, 'energy');
+      __data.enthusiasm.limit = settings.enthusiasmLimit;
+      this.increment(settings.startEnthusiasm, 'enthusiasm');
+      __data.speed.limit = settings.speedLimit;
     }
 
   };
