@@ -1,11 +1,16 @@
 {"hub": {
   "map": "",
   "startZone": 1,
+  "travelTimes": [
+    [    ], ["z1"], ["z2"],
+    ["z1"],  [0],   [30],
+    ["z2"],  [ ],   [0]
+  ],
   "icons": [
     {
       "id": "painted-stoa",
       "name": "Painted Stoa", 
-      "zone": 1,
+      "zone": "z1",
       "icon": "generic-hub-icon.png",
       "coordinates": "95 70",
       "next": "scene painted-stoa"
@@ -13,7 +18,7 @@
     {
       "id": "textiles-shop",
       "name": "Textile Stall",
-      "zone": 1,
+      "zone": "z2",
       "icon": "generic-hub-icon.png",
       "coordinates": "90 70",
       "next": "scene textiles-shop"
@@ -21,7 +26,7 @@
     {
       "id": "goldsmith-shop",
       "name": "Goldsmith's Stall",
-      "zone": 1,
+      "zone": "z2",
       "icon": "generic-hub-icon.png",
       "next": "scene goldsmith-shop"
     }

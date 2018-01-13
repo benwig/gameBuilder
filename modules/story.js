@@ -109,8 +109,9 @@ const Storyrunner = (function () {
   
   function Hub (settings) {
     this.map = settings.map || false;
+    this.defaultStartZone = settings.defaultStartZone || icons[0].zone;
+    this.travelTimes = settings.travelTimes;
     this.icons = settings.icons || [];
-    this.currentZone = settings.startZone;
   }
   
   function Scene (settings) {
@@ -151,7 +152,7 @@ const Storyrunner = (function () {
   // STORY METHODS //
   ///////////////////
   
-  //fetch a scene/hub JSON, and parse it to create a new scene/hub object if it doesn't already exist
+  //fetch a scene/hub JSON, and parse it to create a new scene/hub object
   Story.prototype.load = function (nameToLoad, typeToLoad, startingPoint) {
     //save references for later
     const that = this,
@@ -175,7 +176,7 @@ const Storyrunner = (function () {
             let settings = JSON.parse(request.responseText).hub;
             that.hubs[nameToLoad] = new Hub(settings);
             // save references for later
-            startingPoint = startingPoint || that.hubs[nameToLoad].startZone;
+            startingPoint = startingPoint || that.hubs[nameToLoad].defaultStartZone;
             that.updateLocationReferences("hub", nameToLoad, startingPoint);
             // render hub
             that.hubs[nameToLoad].init(startingPoint);
@@ -220,12 +221,12 @@ const Storyrunner = (function () {
       }
     } else if (args[0].toLowerCase() === "hub") {
       let hubName = args[1];
-      let startZone = parseInt(args[2]) || 1;
+      let startZone = parseInt(args[2]) || undefined;
       //create Hub and init it, if it hasn't already been parsed
       if (this.hubs[hubName] === undefined) {
         this.load(hubName, "hub", startZone);
       } else {
-        this.updateLocationReferences("hub", hubName, startZone);
+        this.updateLocationReferences("hub", hubName, startZone || this.hubs[hubName].defaultStartZone);
         this.hubs[hubName].init(startZone);
       }
     } else {
@@ -257,15 +258,16 @@ const Storyrunner = (function () {
   /////////////////
   
   Hub.prototype.init = function (startZone) {
-    startZone = startZone || this.startZone;
+    startZone = startZone || this.defaultStartZone;
     console.log(`Hub loaded in zone ${startZone}`);
     View.renderHub(this.icons, this.map, startZone);
-  }
+  };
   
   Hub.prototype.processOption = function (optionId, timelimit, currentZone) {
     let selectedIcon,
         i,
-        next;
+        next,
+        travelTime;
     //look up the selected icon among Hub icons
     for (i = 0; i < this.icons.length; i += 1) {
       if (this.icons[i].id === optionId) {
@@ -274,8 +276,20 @@ const Storyrunner = (function () {
       }
     }
     
-    //TODO: process travel time between currentZone and new Zone, and increment game time
-    //TODO:  & check for game-ending time conditions
+    // Process travel time between currentZone and new Zone, and increment game time
+    console.log("Current zone: " + currentZone);
+    console.log("Destination zone: " + selectedIcon.zone);
+    travelTime = this.timeBetweenZones(currentZone, selectedIcon.zone);
+    console.log(travelTime);
+    Time.increment(travelTime);
+    // check for game-ending time conditions
+    Objectives.checkTimeConditions(); //fail objectives that are out of time
+    if (Player.get("energy") <= 0) {
+      return {next: "scene endgame energy-lose"};
+    }
+    if (timelimit && Time.laterThan(timelimit)) {
+      return {next: "scene endgame timeout-lose"};
+    }
     
     //[optional] change the future 'next' of the selected icon
     if (selectedIcon.next2) {
@@ -286,7 +300,34 @@ const Storyrunner = (function () {
     __runHelpers(selectedIcon);
     
     return {next: next, zone: selectedIcon.zone};
-  }
+  };
+  
+  // return time to travel between two zones
+  Hub.prototype.timeBetweenZones = function (currentZone, destinationZone) {
+    let tt = this.travelTimes,
+        i = 0,
+        x,
+        y;
+    //find current Zone in header
+    for (i = 0; i < tt[0].length; i += 1) {
+      if (tt[0][i] === currentZone) {
+        x = i;
+        break;
+      }
+    }
+    //find destination Zone in first column
+    for (i = 0; i < tt.length; i += 1) {
+      if (tt[i][0] === destinationZone) {
+        y = i;
+        break;
+      }
+    }
+    if (tt[y][x]) {
+      return tt[y][x];
+    } else {
+      return tt[x][y];
+    }
+  };
   
   ///////////////////
   // SCENE METHODS //

@@ -35,7 +35,7 @@
         },
         {
           "text": "Head back to your house",
-          "next": "hub home 1"
+          "next": "hub home z1"
         }
       ]
     },

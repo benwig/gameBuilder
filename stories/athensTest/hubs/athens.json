@@ -4,7 +4,7 @@
     {
       "id": "painted-stoa",
       "name": "Painted Stoa", 
-      "zone": 1,
+      "zone": "z1",
       "icon": "generic-icon.png",
       "coordinates": "95 70",
       "next": "hub home"
