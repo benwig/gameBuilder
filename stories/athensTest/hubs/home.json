@@ -22,7 +22,8 @@
       "zone": "z3",
       "icon": "generic-icon.png",
       "coordinates": "50 50",
-      "next": "hub athens z1"
+      "next": "hub athens z1",
+      "choice": "entered-bedroom"
     },
     {
       "id": "doorway",
@@ -30,7 +31,9 @@
       "zone": "z2",
       "icon": "generic-icon.png",
       "coordinates": "30 100",
-      "next": "scene roadToAthens road-start"
+      "nextif": ["scene dogEncounter", "energy 5", "inventory honey true", "choices entered-bedroom"],
+      "next": "scene roadToAthens road-start",
+      "next2": "scene roadToAthens honeyfield"
     }
   ]
 }}

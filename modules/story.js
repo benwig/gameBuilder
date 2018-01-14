@@ -89,6 +89,51 @@ const Storyrunner = (function () {
     }
   };
   
+  //loop through nested array and return true if all conditions are met; else return false
+  const __allConditionsTrue = function (arr) {
+    const conditions = {
+      inventory: function (itemId) {
+        return Inventory.contains(itemId);
+      },
+      money: function (value) {
+        return Wallet.canAfford(value);
+      },
+      objectiveCompleted: function (id) {
+        return Objectives.getAttribute(id, "complete");
+      },
+      objectiveAssigned: function (id) {
+        return Objectives.getAttribute(id, "assigned");
+      },
+      objectiveFailed: function (id) {
+        return Objectives.getAttribute(id, "failed");
+      },
+      energy: function (value) {
+        return Player.get("energy") >= value;
+      },
+      enthusiasm: function (value) {
+        return Player.get("enthusiasm") >= value;
+      },
+      choices: function (choice) {
+        return Player.get("choices", choice);
+      }
+    };
+    for (let i = 0; i < arr.length; i += 1) {
+      let setting = arr[i][0];
+      let hasValue = arr[i][1];
+      let boolWanted = arr[i][2] || true;
+      //convert boolWanted from string to bool
+      if (boolWanted === "true") {
+        boolWanted = true;
+      } else if (boolWanted === "false") {
+        boolWanted = false;
+      }
+      if (conditions[setting](hasValue) !== boolWanted) {
+        return false;
+      }
+    }
+    return true;
+  };
+  
   //////////////////
   // CONSTRUCTORS //
   //////////////////
@@ -291,10 +336,24 @@ const Storyrunner = (function () {
       return {next: "scene endgame timeout-lose"};
     }
     
+    //TODO: remove duplication between this and processOption
+    
     //[optional] change the future 'next' of the selected icon
     if (selectedIcon.next2) {
       selectedIcon.next = selectedIcon.next2;
       delete selectedIcon.next2;
+    }
+    
+    //[optional] if conditions are met, send player to a different 'next'
+    if (selectedIcon.nextif) {
+      //split nextif strings into arrays
+      let conditions = selectedIcon.nextif.slice(1);
+      for (let i = 0; i < conditions.length; i += 1) {
+        conditions[i] = conditions[i].split(" ");
+      }
+      if (__allConditionsTrue(conditions)) {
+        next = selectedIcon.nextif[0];
+      }
     }
     
     __runHelpers(selectedIcon);
@@ -366,7 +425,7 @@ const Storyrunner = (function () {
           conditions.push(opt.showif[i].split(" "));
         }
         //validate all the conditions
-        let outcome = this.allConditionsTrue(conditions);
+        let outcome = __allConditionsTrue(conditions);
         return outcome;
       } else {
         return true;
@@ -440,7 +499,7 @@ const Storyrunner = (function () {
       for (let i = 0; i < conditions.length; i += 1) {
         conditions[i] = conditions[i].split(" ");
       }
-      if (this.allConditionsTrue(conditions)) {
+      if (__allConditionsTrue(conditions)) {
         next = option.nextif[0];
       }
     }
@@ -462,54 +521,6 @@ const Storyrunner = (function () {
       if (this.options[i].oneoff) {
         this.options.splice(i, 1);
       }
-    }
-  };
-    
-  //loop through nested array and return true if all conditions are met; else return false
-  Frame.prototype.allConditionsTrue = function (arr) {
-    const conditions = {
-      inventory: function (itemId) {
-        return Inventory.contains(itemId);
-      },
-      money: function (value) {
-        return Wallet.canAfford(value);
-      },
-      objectiveCompleted: function (id) {
-        return Objectives.getAttribute(id, "complete");
-      },
-      objectiveAssigned: function (id) {
-        return Objectives.getAttribute(id, "assigned");
-      },
-      objectiveFailed: function (id) {
-        return Objectives.getAttribute(id, "failed");
-      },
-      energy: function (value) {
-        return Player.get("energy") >= value;
-      },
-      enthusiasm: function (value) {
-        return Player.get("enthusiasm") >= value;
-      },
-      choices: function (choice) {
-        return Player.get("choices", choice);
-      }
-    };
-    let outcome;
-    for (let i = 0; i < arr.length; i += 1) {
-      let setting = arr[i][0];
-      let hasValue = arr[i][1];
-      let boolWanted = arr[i][2] || true;
-      //convert boolWanted from string to bool
-      if (boolWanted === "true") {
-        boolWanted = true;
-      } else if (boolWanted === "false") {
-        boolWanted = false;
-      }
-      outcome = conditions[setting](hasValue) === boolWanted;
-    }
-    if (outcome) {
-      return true;
-    } else {
-      return false;
     }
   };
   
