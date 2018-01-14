@@ -27,6 +27,8 @@ const View = (function () {
   
   const __optionsTemplate = Handlebars.compile(document.getElementById("options-template").innerHTML);
   
+  const __continueTemplate = Handlebars.compile(document.getElementById("continue-template").innerHTML);
+  
   const __iteminfoTemplate = Handlebars.compile(document.getElementById("iteminfo-template").innerHTML);
   
   const __storyinfoTemplate = Handlebars.compile(document.getElementById("storyinfo-template").innerHTML);
@@ -41,11 +43,16 @@ const View = (function () {
       $hubframe.addClass('js-hidden');
     },
     
+    // render the options, or a simple 'continue' button if only one option & 'continue' is set to true
     addOptions (options) {
       const context = {
         "options": options
       };
-      $optionList.html(__optionsTemplate(context));
+      if (options.length === 1 && options[0].continue) {
+        $optionList.html(__continueTemplate(context));
+      } else {
+        $optionList.html(__optionsTemplate(context));
+      }
     },
     
     renderStoryInfo (infotext, read) {

@@ -62,6 +62,14 @@
       {{/each}}
     </script>
     
+    <script id="continue-template" type="text/x-handlebars-template">
+      {{#each options}}
+        <li>
+          <button data-optionid="{{this.uid}}">Continue</button>
+        </li>
+      {{/each}}
+    </script>
+    
     <script id="hub-template" type="text/x-handlebars-template">
       {{#each icons}}
         <button style="left:{{this.x}}; top:{{this.y}}" alt="{{this.name}}">
