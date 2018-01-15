@@ -174,7 +174,6 @@ const Storyrunner = (function () {
     this.id = settings.id;
     this.text = settings.text;
     this.text2 = settings.text2 || false;
-    this.next = settings.next || false;
     this.info = settings.info || false;
     this.infoRead = false;
     this.image = settings.image || false;
@@ -188,11 +187,6 @@ const Storyrunner = (function () {
     this.enthusiasm = settings.enthusiasm || false;
     this.money = settings.money || false;
     this.choice = settings.choice || false;
-    //if no options, create a single 'continue' option
-    if (!this.options.length) {
-      this.options.push({continue: true});
-      this.options[0].next = this.next;
-    }
     //add a unique id to each option
     for (let i = 0; i < this.options.length; i += 1) {
       this.options[i].uid = __newUid();

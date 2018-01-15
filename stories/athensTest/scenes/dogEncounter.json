@@ -4,12 +4,7 @@
   "frames": [
     {
       "id": "dog-1",
-      "text": "Suddenly, a dog runs up to you! It's small and scruffy.",
-      "next": "dog-2"
-    },
-    {
-      "id": "dog-2",
-      "text": "BARK BARK BARK!",
+      "text": "Suddenly, a dog runs up to you! It's small and scruffy.//BARK BARK BARK!//The dog seems very excited.",
       "options": [
         {
           "text": "Flee!",

@@ -8,6 +8,7 @@ const View = (function () {
   const $mainframe = $('#mainframe');
   const $frameText = $('#frameText');
   const $optionList = $('#options');
+  const $continue = $('#continue');
   const __itemList = document.querySelector('#inventory');
   const __iteminfo = document.getElementById("iteminfo");
   const __wallet = document.querySelector('#wallet');
@@ -19,6 +20,8 @@ const View = (function () {
   const __mapSpace = document.querySelector('#map');
   const $imageSpace = $('#image');
   const __storyinfo = document.querySelector('#storyinfo');
+  
+  let __textblocks = [];
   
   //compile handlebars templates
   const __hubTemplate = Handlebars.compile(document.getElementById("hub-template").innerHTML);
@@ -36,11 +39,39 @@ const View = (function () {
   return {
 
     setFrameText (prefix, maintext, suffix) {
-      const context = {prefix: prefix, maintext: maintext, suffix: suffix};
+      let context;
+      
+      //TODO: check whether text is supposed to be split into multiple screens (via //)
+      __textblocks = maintext.split("//");
+      if (__textblocks.length > 1) {
+        //TODO: display the prefix (optional) and the first block of text
+        console.log(__textblocks);
+        context = {prefix: prefix, maintext: __textblocks.shift()};
+        //TODO: reveal a 'continue' button
+        $continue.removeClass('js-hidden');
+        //TODO: hide the 'options' buttons
+        $optionList.addClass('js-hidden');
+      } else {
+        // else display prefix + text + suffix
+        context = {prefix: prefix, maintext: maintext, suffix: suffix};
+      }
+      
       $frameText.html(__frameTemplate(context));
       // hide hubframe and reveal mainframe
       $mainframe.removeClass('js-hidden');
       $hubframe.addClass('js-hidden');
+      
+    },
+    
+    showNextTextblock () {
+      //TODO: if this is the final textblock, hide continue button and reveal options
+      if (__textblocks.length === 1) {
+        $continue.addClass('js-hidden');
+        $optionList.removeClass('js-hidden');
+      }
+      //TODO: display the next block of text from the array
+      const context = {maintext: __textblocks.shift()};
+      $frameText.html(__frameTemplate(context));
     },
     
     // render the options, or a simple 'continue' button if only one option & 'continue' is set to true
@@ -48,11 +79,7 @@ const View = (function () {
       const context = {
         "options": options
       };
-      if (options.length === 1 && options[0].continue) {
-        $optionList.html(__continueTemplate(context));
-      } else {
-        $optionList.html(__optionsTemplate(context));
-      }
+      $optionList.html(__optionsTemplate(context));
     },
     
     renderStoryInfo (infotext, read) {

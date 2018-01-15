@@ -16,6 +16,8 @@ const Handlers = (function () {
     bindEvents () {
       $('#options')
         .on('click', 'button', this.processOption.bind(this));
+      $('#continue')
+        .on('click', this.showNextTextblock.bind(this));
       $('#hubframe')
         .on('click', 'button', this.processOption.bind(this));
       $('#inventory')
@@ -41,6 +43,10 @@ const Handlers = (function () {
       if (optionId !== undefined) {
         __story.goToNext(optionId);
       }
+    },
+    
+    showNextTextblock () {
+      View.showNextTextblock();
     },
     
     openItemInfo (event) {
