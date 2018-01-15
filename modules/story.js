@@ -261,7 +261,7 @@ const Storyrunner = (function () {
       if (this.scenes[sceneName] === undefined) {
         this.load(sceneName, "scene", startFrame);
       } else {
-        this.updateLocationReferences("frame", sceneName, startFrame);
+        this.updateLocationReferences("scene", sceneName, startFrame);
         this.currentFrame = this.scenes[sceneName].init(startFrame);
       }
     } else if (args[0].toLowerCase() === "hub") {
