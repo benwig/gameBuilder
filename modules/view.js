@@ -41,15 +41,15 @@ const View = (function () {
     setFrameText (prefix, maintext, suffix) {
       let context;
       
-      //TODO: check whether text is supposed to be split into multiple screens (via //)
+      // Check whether text is supposed to be split into multiple screens (via "//")
       __textblocks = maintext.split("//");
       if (__textblocks.length > 1) {
-        //TODO: display the prefix (optional) and the first block of text
+        //Display the prefix (optional) and the first block of text
         console.log(__textblocks);
         context = {prefix: prefix, maintext: __textblocks.shift()};
-        //TODO: reveal a 'continue' button
+        //Reveal a 'continue' button
         $continue.removeClass('js-hidden');
-        //TODO: hide the 'options' buttons
+        //Hide the 'options' buttons
         $optionList.addClass('js-hidden');
       } else {
         // else display prefix + text + suffix
@@ -64,17 +64,17 @@ const View = (function () {
     },
     
     showNextTextblock () {
-      //TODO: if this is the final textblock, hide continue button and reveal options
+      //If this is the final textblock, hide continue button and reveal options
       if (__textblocks.length === 1) {
         $continue.addClass('js-hidden');
         $optionList.removeClass('js-hidden');
       }
-      //TODO: display the next block of text from the array
+      //Display the next block of text from the textblocks array
       const context = {maintext: __textblocks.shift()};
       $frameText.html(__frameTemplate(context));
     },
     
-    // render the options, or a simple 'continue' button if only one option & 'continue' is set to true
+    // render the player option buttons
     addOptions (options) {
       const context = {
         "options": options
