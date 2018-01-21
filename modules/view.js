@@ -4,6 +4,8 @@ const View = (function () {
   
   "use strict";
   
+  //TODO: be consistent about how you select elements
+  
   const $hubframe = $('#hubframe');
   const $mainframe = $('#mainframe');
   const $frameText = $('#frameText');
